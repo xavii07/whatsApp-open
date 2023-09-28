@@ -1,11 +1,13 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
+import FormComponent from "./src/components/Form";
 
 const App: React.FC = () => {
   return (
     <View style={styles.container}>
-      <Text>Open up .tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Text style={{ flex: 1 }}>Formulário</Text>
+      <FormComponent />
+      <Text style={{ flex: 1 }}>Formulário</Text>
     </View>
   );
 };
@@ -13,10 +15,8 @@ const App: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#25d366",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "#fff",
+    backgroundColor: "#23c28d",
+    paddingHorizontal: 20,
   },
 });
 
