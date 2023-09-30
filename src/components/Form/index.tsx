@@ -5,23 +5,25 @@ import SelectComponent from "../Select";
 import ButtonComponent from "../Button";
 
 const FormComponent = () => {
-  const [codigo, setCodigo] = useState("+593");
+  const [codigo, setCodigo] = useState("");
   const [telefono, setTelefono] = useState("");
 
   console.log(codigo, telefono);
 
   return (
     <View style={styles.container}>
-      <View style={styles.containerRectangle}>
-        <View style={styles.containerSelect}>
-          <SelectComponent onChangeCodigo={setCodigo} />
-        </View>
-        <View style={styles.containerInput}>
-          <InputComponent onChangeInput={setTelefono} />
+      <View style={styles.containerSquare}>
+        <View style={styles.containerRectangle}>
+          <View style={styles.containerSelect}>
+            <SelectComponent onChangeCodigo={setCodigo} />
+          </View>
+          <View style={styles.containerInput}>
+            <InputComponent onChangeInput={setTelefono} />
+          </View>
         </View>
       </View>
-      <View style={{ alignSelf: "flex-end" }}>
-        <ButtonComponent />
+      <View style={styles.containerButton}>
+        <ButtonComponent codigo={codigo} telefono={telefono} />
       </View>
     </View>
   );
@@ -30,9 +32,12 @@ const FormComponent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 2,
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#a0df0e",
+  },
+  containerSquare: {
+    height: "60%",
+    justifyContent: "flex-end",
   },
   containerRectangle: {
     flexDirection: "row",
@@ -45,6 +50,10 @@ const styles = StyleSheet.create({
   },
   containerInput: {
     width: "50%",
+  },
+  containerButton: {
+    height: "40%",
+    justifyContent: "flex-end",
   },
 });
 
