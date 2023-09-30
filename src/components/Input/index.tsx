@@ -1,7 +1,12 @@
 import React from "react";
 import { Input } from "@rneui/themed";
+import { StyleSheet } from "react-native";
 
-const InputComponent = () => {
+type InputProps = {
+  onChangeInput: (text: string) => void;
+};
+
+const InputComponent: React.FC<InputProps> = ({ onChangeInput }) => {
   return (
     <Input
       placeholder="XXXXX XXXXX"
@@ -11,17 +16,19 @@ const InputComponent = () => {
       }}
       textAlignVertical="center"
       placeholderTextColor={"#4b46467f"}
-      inputStyle={{
-        fontSize: 16,
-        paddingLeft: 10,
-        letterSpacing: 1,
-        fontWeight: "bold",
-      }}
-      onChange={(e) => {
-        console.log(e.nativeEvent.text);
-      }}
+      inputStyle={styles.input}
+      onChange={(e) => onChangeInput(e.nativeEvent.text)}
     />
   );
 };
+
+const styles = StyleSheet.create({
+  input: {
+    fontSize: 16,
+    paddingLeft: 10,
+    letterSpacing: 1,
+    fontWeight: "bold",
+  },
+});
 
 export default InputComponent;

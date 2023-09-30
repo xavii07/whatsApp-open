@@ -2,7 +2,11 @@ import React from "react";
 import SelectDropdown from "react-native-select-dropdown";
 import { countries } from "../../data/countries";
 
-const SelectComponent: React.FC = () => {
+type SelectProps = {
+  onChangeCodigo: (text: string) => void;
+};
+
+const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
   return (
     <SelectDropdown
       rowTextStyle={{ color: "#000000", fontSize: 14, textAlign: "left" }}
@@ -19,10 +23,12 @@ const SelectComponent: React.FC = () => {
         borderBottomWidth: 0,
       }}
       data={countries.map(
-        (country) => "🇪🇨 " + country.codigoISO + " (" + country.codigoPais + ")"
+        (country) =>
+          country.bandera + country.codigoISO + " (" + country.codigoPais + ")"
       )}
-      onSelect={(selectedItem, index) => {
-        console.log(selectedItem, index);
+      onSelect={(selectedItem) => {
+        const codigo = selectedItem.split("(")[1].split(")")[0];
+        onChangeCodigo(codigo);
       }}
       defaultValueByIndex={0}
     />
