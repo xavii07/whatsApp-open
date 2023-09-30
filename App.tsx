@@ -5,7 +5,7 @@ import FormComponent from "./src/components/Form";
 const App: React.FC = () => {
   return (
     <View style={styles.container}>
-      <Text style={{ flex: 1 }}>Formulário</Text>
+      <Text style={{ flex: 1, backgroundColor: "#546" }}>Formulário</Text>
       <FormComponent />
       <Text style={{ flex: 1 }}>Formulário</Text>
     </View>
@@ -15,7 +15,7 @@ const App: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#23c28d",
+    backgroundColor: "#075e54",
     paddingHorizontal: 20,
   },
 });
