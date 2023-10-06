@@ -1,16 +1,24 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import React from "react";
 import FormComponent from "../../components/Form";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 const Home = () => {
   return (
     <View style={styles.container}>
-      <View style={{ flex: 1, backgroundColor: "#596" }}>
-        <Text>Formulário</Text>
+      <View style={{ flex: 1 }}>
+        <Header />
       </View>
       <FormComponent />
-      <View style={{ flex: 1, backgroundColor: "#2b4981" }}>
-        <Text>Formulário</Text>
+      <View
+        style={{
+          flex: 1,
+
+          justifyContent: "flex-end",
+        }}
+      >
+        <Footer />
       </View>
     </View>
   );
