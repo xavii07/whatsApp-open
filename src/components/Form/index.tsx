@@ -8,8 +8,6 @@ const FormComponent = () => {
   const [codigo, setCodigo] = useState("");
   const [telefono, setTelefono] = useState("");
 
-  console.log(codigo, telefono);
-
   return (
     <View style={styles.container}>
       <View style={styles.containerSquare}>
@@ -32,6 +30,7 @@ const FormComponent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 2,
+    paddingHorizontal: 20,
     justifyContent: "space-between",
     alignItems: "center",
   },
