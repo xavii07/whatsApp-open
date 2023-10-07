@@ -1,24 +1,20 @@
-import { View, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import FormComponent from "../../components/Form";
-import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import { getCountry } from "../../data/getContry";
+import Header from "../../components/Header";
 
-const Home = () => {
-  const country = getCountry();
-  console.log(country);
-
+const History = () => {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1 }}>
         <Header />
       </View>
-      <FormComponent />
+      <View>
+        <Text>skjdfhjk</Text>
+      </View>
       <View
         style={{
           flex: 1,
-
           justifyContent: "flex-end",
         }}
       >
@@ -31,8 +27,8 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#075e54",
+    backgroundColor: "#fafafa",
   },
 });
 
-export default Home;
+export default History;
