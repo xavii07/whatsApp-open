@@ -2,7 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Home from "../views/home";
-import { RootStackParams } from "../types";
+import { RootStackParams } from "../../infrastructure/types";
 import History from "../views/historial";
 
 const Stack = createNativeStackNavigator<RootStackParams>();

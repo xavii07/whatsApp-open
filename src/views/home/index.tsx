@@ -3,7 +3,7 @@ import React from "react";
 import FormComponent from "../../components/Form";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import { getCountry } from "../../data/getContry";
+import { getCountry } from "../../../config/data/getContry";
 
 const Home = () => {
   const country = getCountry();
