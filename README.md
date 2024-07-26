@@ -1,50 +1,30 @@
-# Welcome to your Expo app 👋
+# Welcome to WhatsLink App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+WhatsLink is a mobile app that allows you to share links with your friends and family. You can create a link, share it with your friends, and they can open it in their browser. The app is built with [Expo](https://expo.dev/), a platform for universal React applications.
 
 ## Get started
 
-1. Install dependencies
+1. Clone the repository
 
    ```bash
-   npm install
+      git clone https://github.com
    ```
 
-2. Start the app
+2. Install dependencies
 
    ```bash
-    npx expo start
+      yarn
    ```
 
-In the output, you'll find options to open the app in a
+3. Start the development server
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   ```bash
+      yarn run start
+   ```
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+4. Open the app in expo go app or in the browser
 
-## Get a fresh project
+   ```bash
+      http://localhost:19006
+   ```
 
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
