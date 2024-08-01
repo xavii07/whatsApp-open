@@ -12,7 +12,7 @@ const InputComponent: React.FC<InputProps> = ({ onChangeInput }) => {
       keyboardType="numeric"
       textAlignVertical="center"
       placeholderTextColor={"#4b46467f"}
-      style={[styles.input, { marginTop: 20 }]}
+      style={[styles.input]}
       onChange={(e) => onChangeInput(e.nativeEvent.text)}
       collapsable={true}
     />
@@ -21,10 +21,11 @@ const InputComponent: React.FC<InputProps> = ({ onChangeInput }) => {
 
 const styles = StyleSheet.create({
   input: {
-    fontSize: 16,
-    paddingLeft: 10,
+    height: 50,
+    fontSize: 14,
+    paddingLeft: 5,
     letterSpacing: 1,
-    fontWeight: "bold",
+    fontFamily: "PoppinsRegular",
   },
 });
 

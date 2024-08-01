@@ -8,22 +8,18 @@ const FormComponent = () => {
   const [codigo, setCodigo] = useState("");
   const [telefono, setTelefono] = useState("");
 
-  console.log({ codigo, telefono });
-
   return (
     <View style={styles.container}>
-      <View style={styles.containerSquare}>
-        <View style={styles.containerRectangle}>
-          <View style={styles.containerSelect}>
-            <SelectComponent onChangeCodigo={setCodigo} />
-          </View>
-          <View style={styles.containerInput}>
-            <InputComponent onChangeInput={setTelefono} />
-          </View>
+      <View style={styles.containerRectangle}>
+        <View style={styles.containerSelect}>
+          <SelectComponent onChangeCodigo={setCodigo} />
         </View>
-      </View>
-      <View style={styles.containerButton}>
-        <ButtonComponent codigo={codigo} telefono={telefono} />
+        <View style={styles.containerInput}>
+          <InputComponent onChangeInput={setTelefono} />
+        </View>
+        <View style={styles.containerButton}>
+          <ButtonComponent codigo={codigo} telefono={telefono} />
+        </View>
       </View>
     </View>
   );
@@ -31,15 +27,13 @@ const FormComponent = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flex: 1,
+    flexDirection: "row",
     paddingHorizontal: 20,
     justifyContent: "space-between",
     alignItems: "center",
   },
-  containerSquare: {
-    height: "60%",
-    justifyContent: "flex-end",
-  },
+
   containerRectangle: {
     flexDirection: "row",
     backgroundColor: "#e2faf5",
@@ -48,13 +42,17 @@ const styles = StyleSheet.create({
   },
   containerSelect: {
     width: "50%",
+    position: "relative",
   },
   containerInput: {
     width: "50%",
+    alignSelf: "flex-end",
+    justifyContent: "center",
   },
   containerButton: {
-    height: "40%",
-    justifyContent: "flex-end",
+    position: "absolute",
+    backgroundColor: "#25d366",
+    bottom: -40,
   },
 });
 
