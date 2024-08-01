@@ -1,7 +1,7 @@
 import React from "react";
 import SelectDropdown from "react-native-select-dropdown";
 import { countries, Country } from "@/config/data/countries";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import MyIcon from "../ui/MyIcon";
 
 type SelectProps = {
@@ -11,21 +11,10 @@ type SelectProps = {
 const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
   return (
     <SelectDropdown
-      //rowTextStyle={{ color: "#000000", fontSize: 14, textAlign: "left" }}
-      //buttonTextStyle={{ fontSize: 14, fontWeight: "bold" }}
       renderButton={(selectedItem, isOpened) => {
         return (
-          <View
-            style={{
-              backgroundColor: "#e2faf5",
-              flexDirection: "row",
-              height: 30,
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            {selectedItem && <MyIcon name={"flag"} />}
-            <Text style={{ color: "#000000", fontSize: 14, textAlign: "left" }}>
+          <View style={styles.containerSelect}>
+            <Text style={styles.textSelect}>
               {(selectedItem && selectedItem) || "Seleccione un país"}
             </Text>
             <MyIcon name={isOpened ? "chevron-up" : "chevron-down"} />
@@ -33,22 +22,28 @@ const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
         );
       }}
       renderItem={(item, index, isSelected) => {
-        console.log({ item, index, isSelected });
         return (
           <View
-            style={{
-              ...(isSelected && { backgroundColor: "aqua" }),
-            }}
+            style={[
+              styles.containerItem,
+              {
+                backgroundColor: isSelected ? "#25d366" : "#e2faf5",
+              },
+            ]}
           >
-            <MyIcon name={"flag"} color="green" />
-            <Text style={{ color: "#000000", fontSize: 14, textAlign: "left" }}>
+            <Text
+              style={[
+                styles.itemText,
+                {
+                  fontFamily: isSelected ? "PoppinsBold" : "PoppinsRegular",
+                },
+              ]}
+            >
               {item}
             </Text>
           </View>
         );
       }}
-      //buttonStyle={{width: "100%",height: 30,backgroundColor: "#e2faf5",}}
-      //rowStyle={{width: "100%",height: 50,backgroundColor: "#e2faf5",borderBottomWidth: 0,}}
       data={countries.map(
         (country: Country) =>
           country.bandera + country.codigoISO + " (" + country.codigoPais + ")"
@@ -61,4 +56,33 @@ const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  containerSelect: {
+    backgroundColor: "#e2faf5",
+    flexDirection: "row",
+    height: 30,
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  textSelect: {
+    color: "#000000",
+    fontSize: 14,
+    textAlign: "left",
+    fontFamily: "PoppinsRegular",
+  },
+  containerItem: {
+    backgroundColor: "#e2faf5",
+    flexDirection: "row",
+    height: 40,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingLeft: 10,
+  },
+  itemText: {
+    color: "#000000",
+    fontSize: 12,
+  },
+});
+
 export default SelectComponent;
