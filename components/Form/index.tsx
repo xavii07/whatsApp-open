@@ -8,6 +8,8 @@ const FormComponent = () => {
   const [codigo, setCodigo] = useState("");
   const [telefono, setTelefono] = useState("");
 
+  console.log({ codigo, telefono });
+
   return (
     <View style={styles.container}>
       <View style={styles.containerSquare}>

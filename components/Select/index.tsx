@@ -1,6 +1,6 @@
 import React from "react";
 import SelectDropdown from "react-native-select-dropdown";
-import { countries } from "@/config/data/countries";
+import { countries, Country } from "@/config/data/countries";
 import { Text, View } from "react-native";
 import MyIcon from "../ui/MyIcon";
 
@@ -15,31 +15,42 @@ const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
       //buttonTextStyle={{ fontSize: 14, fontWeight: "bold" }}
       renderButton={(selectedItem, isOpened) => {
         return (
-          <View>
-            {selectedItem && <MyIcon name={selectedItem.icon} />}
-            <Text>
-              {(selectedItem && selectedItem.title) || "Select your mood"}
+          <View
+            style={{
+              backgroundColor: "#e2faf5",
+              flexDirection: "row",
+              height: 30,
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            {selectedItem && <MyIcon name={"flag"} />}
+            <Text style={{ color: "#000000", fontSize: 14, textAlign: "left" }}>
+              {(selectedItem && selectedItem) || "Seleccione un país"}
             </Text>
             <MyIcon name={isOpened ? "chevron-up" : "chevron-down"} />
           </View>
         );
       }}
       renderItem={(item, index, isSelected) => {
+        console.log({ item, index, isSelected });
         return (
           <View
             style={{
-              ...(isSelected && { backgroundColor: "#D2D9DF" }),
+              ...(isSelected && { backgroundColor: "aqua" }),
             }}
           >
-            <MyIcon name={item.icon} />
-            <Text>{item.title}</Text>
+            <MyIcon name={"flag"} color="green" />
+            <Text style={{ color: "#000000", fontSize: 14, textAlign: "left" }}>
+              {item}
+            </Text>
           </View>
         );
       }}
       //buttonStyle={{width: "100%",height: 30,backgroundColor: "#e2faf5",}}
       //rowStyle={{width: "100%",height: 50,backgroundColor: "#e2faf5",borderBottomWidth: 0,}}
       data={countries.map(
-        (country) =>
+        (country: Country) =>
           country.bandera + country.codigoISO + " (" + country.codigoPais + ")"
       )}
       onSelect={(selectedItem) => {

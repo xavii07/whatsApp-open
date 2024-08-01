@@ -4,7 +4,7 @@ import { router } from "expo-router";
 
 const index = () => {
   return (
-    <View>
+    <View style={{ marginTop: 50 }}>
       <Text>index</Text>
       <Pressable
         onPress={() => {

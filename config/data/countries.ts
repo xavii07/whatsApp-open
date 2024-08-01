@@ -1,3 +1,11 @@
+export type Country = {
+  id: number;
+  pais: string;
+  codigoPais: string;
+  codigoISO: string;
+  bandera: string;
+};
+
 export const countries = [
   {
     id: 1,
