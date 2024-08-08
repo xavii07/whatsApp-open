@@ -15,7 +15,7 @@ const Header = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#25d366",
+    backgroundColor: "#075e54bb",
     height: "7%",
   },
   text: {

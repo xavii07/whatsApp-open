@@ -8,6 +8,8 @@ const FormComponent = () => {
   const [codigo, setCodigo] = useState("");
   const [telefono, setTelefono] = useState("");
 
+  console.log({ codigo });
+
   return (
     <View style={styles.container}>
       <View style={styles.containerRectangle}>
@@ -17,9 +19,9 @@ const FormComponent = () => {
         <View style={styles.containerInput}>
           <InputComponent onChangeInput={setTelefono} />
         </View>
-        <View style={styles.containerButton}>
-          <ButtonComponent codigo={codigo} telefono={telefono} />
-        </View>
+      </View>
+      <View style={styles.containerButton}>
+        <ButtonComponent codigo={codigo} telefono={telefono} />
       </View>
     </View>
   );
@@ -28,9 +30,9 @@ const FormComponent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: "column",
     paddingHorizontal: 20,
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
   },
 
@@ -42,7 +44,6 @@ const styles = StyleSheet.create({
   },
   containerSelect: {
     width: "50%",
-    position: "relative",
   },
   containerInput: {
     width: "50%",
@@ -50,9 +51,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   containerButton: {
-    position: "absolute",
-    backgroundColor: "#25d366",
-    bottom: -40,
+    marginTop: 20,
   },
 });
 

@@ -1,21 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SelectDropdown from "react-native-select-dropdown";
 import { countries, Country } from "@/config/data/countries";
 import { StyleSheet, Text, View } from "react-native";
 import MyIcon from "../ui/MyIcon";
+import useIp from "@/presentation/hooks/useIp";
 
 type SelectProps = {
   onChangeCodigo: (text: string) => void;
 };
 
 const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
+  const { country } = useIp();
+
+  const selectedCountry = countries.find((c) =>
+    c.codigoISO.includes(country || "")
+  );
+
+  const defaultIndex = selectedCountry
+    ? countries.findIndex((c) => c.codigoISO === selectedCountry.codigoISO)
+    : 0;
+
+  useEffect(() => {
+    if (selectedCountry) {
+      onChangeCodigo(selectedCountry.codigoPais);
+    }
+  }, [selectedCountry]);
+
   return (
     <SelectDropdown
       renderButton={(selectedItem, isOpened) => {
         return (
           <View style={styles.containerSelect}>
             <Text style={styles.textSelect}>
-              {(selectedItem && selectedItem) || "Seleccione un país"}
+              {selectedItem || "Seleccione un país"}
             </Text>
             <MyIcon name={isOpened ? "chevron-up" : "chevron-down"} />
           </View>
@@ -46,13 +63,13 @@ const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
       }}
       data={countries.map(
         (country: Country) =>
-          country.bandera + country.codigoISO + " (" + country.codigoPais + ")"
+          `${country.bandera} ${country.codigoISO} (${country.codigoPais})`
       )}
+      defaultValueByIndex={defaultIndex}
       onSelect={(selectedItem) => {
         const codigo = selectedItem.split("(")[1].split(")")[0];
         onChangeCodigo(codigo);
       }}
-      defaultValueByIndex={0}
     />
   );
 };

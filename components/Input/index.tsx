@@ -9,7 +9,7 @@ const InputComponent: React.FC<InputProps> = ({ onChangeInput }) => {
   return (
     <TextInput
       placeholder="XXXXX XXXXX"
-      keyboardType="numeric"
+      keyboardType="phone-pad"
       textAlignVertical="center"
       placeholderTextColor={"#4b46467f"}
       style={[styles.input]}
