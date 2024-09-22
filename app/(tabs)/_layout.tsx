@@ -13,15 +13,19 @@ export default function TabLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: "Home",
-          tabBarIcon: ({ color }) => <MyIcon name="home" color={color} />,
+          title: "Inicio",
+          tabBarIcon: ({ color }) => (
+            <MyIcon name="home-outline" color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
-          title: "Explore",
-          tabBarIcon: ({ color }) => <MyIcon name="search" color={color} />,
+          title: "Historial",
+          tabBarIcon: ({ color }) => (
+            <MyIcon name="reader-outline" color={color} />
+          ),
         }}
       />
     </Tabs>
