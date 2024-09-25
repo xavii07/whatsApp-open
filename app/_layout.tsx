@@ -1,3 +1,4 @@
+import { useHistory } from "@/presentation/store/useHistory";
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
@@ -14,11 +15,17 @@ export default function RootLayout() {
     PoppinsBold: require("@/assets/fonts/Poppins/Poppins-Bold.ttf"),
   });
 
+  const getHistory = useHistory((state) => state.getHistory);
+
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
+
+  useEffect(() => {
+    getHistory();
+  }, []);
 
   if (!loaded) {
     return null;
