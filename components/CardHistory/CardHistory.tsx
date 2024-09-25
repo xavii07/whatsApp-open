@@ -1,0 +1,67 @@
+import { View, Text, StyleSheet, Pressable } from "react-native";
+import MyIcon from "../ui/MyIcon";
+import { CardData } from "@/infrastructure/interfaces/history.response";
+import { useHistory } from "@/presentation/store/useHistory";
+
+interface Props {
+  data: CardData;
+  fecha: string;
+}
+
+const CardHistory = ({ data, fecha }: Props) => {
+  const removeHistory = useHistory((state) => state.removeHistory);
+
+  return (
+    <View style={styles.containerCard}>
+      <View style={styles.cardIcon}>
+        <MyIcon name="logo-whatsapp" />
+      </View>
+      <View>
+        <Text style={styles.cardText}>
+          {data.bandera} {data.codigoISO} ({data.codigoPais}) {data.telefono}
+        </Text>
+      </View>
+      <View style={{ flexDirection: "row", gap: 10 }}>
+        <Pressable onPress={() => removeHistory(fecha, data.id)}>
+          <MyIcon name="trash" />
+        </Pressable>
+
+        <MyIcon name="arrow-forward" />
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  containerCard: {
+    flexDirection: "row",
+    backgroundColor: "#25D36622",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 5,
+    borderRadius: 5,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    marginHorizontal: 20,
+    shadowColor: "#fff",
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 0.75,
+    elevation: 1,
+  },
+  cardIcon: {
+    backgroundColor: "#f0f0f0",
+    borderRadius: 10,
+    padding: 8,
+  },
+  cardText: {
+    fontFamily: "PoppinsRegular",
+    fontSize: 12,
+    color: "#000",
+  },
+});
+
+export default CardHistory;

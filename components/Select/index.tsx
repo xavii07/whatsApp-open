@@ -13,7 +13,7 @@ const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
   const { country } = useIp();
 
   const selectedCountry = countries.find((c) =>
-    c.codigoISO.includes(country || "")
+    c.codigoISO.includes(country ?? "")
   );
 
   const defaultIndex = selectedCountry

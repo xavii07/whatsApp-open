@@ -1,6 +1,9 @@
 import React from "react";
 import { URL_WHATSAPP } from "@/config/data/consts";
 import { Linking, Pressable, StyleSheet, Text } from "react-native";
+import { useHistory } from "@/presentation/store/useHistory";
+import { countries, Country } from "@/config/data/countries";
+import uuid from "react-native-uuid";
 
 type ButtonProps = {
   codigo: string;
@@ -8,8 +11,23 @@ type ButtonProps = {
 };
 
 const ButtonComponent: React.FC<ButtonProps> = ({ codigo, telefono }) => {
+  const addHistory = useHistory((state) => state.addHistory);
+
   const handlePressButton = () => {
     Linking.openURL(`${URL_WHATSAPP}/${codigo}${telefono}`);
+    const country = countries.find(
+      (country: Country) => country.codigoPais === codigo
+    );
+    addHistory(
+      {
+        id: uuid.v4() as string,
+        codigoISO: codigo,
+        bandera: country?.bandera ?? "",
+        codigoPais: country?.codigoPais ?? "",
+        telefono,
+      },
+      new Date().toISOString().split("T")[0]
+    );
   };
 
   return (
