@@ -1,38 +1,13 @@
-import CardHistory from "@/components/CardHistory/CardHistory";
+import CardDate from "@/components/CardDate/CardDate";
 import Header from "@/components/Header";
-import {
-  CardData,
-  HistoryData,
-} from "@/infrastructure/interfaces/history.response";
+import { HistoryData } from "@/infrastructure/interfaces/history.response";
 import { useHistory } from "@/presentation/store/useHistory";
 import { StyleSheet, View, Text, Image, FlatList } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabTwoScreen() {
   const { top } = useSafeAreaInsets();
-
   const { history } = useHistory();
-
-  const formatDate = (date: string) => {
-    const options: Intl.DateTimeFormatOptions = {
-      timeZone: "America/Guayaquil",
-      weekday: "short",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-
-    return new Date(date).toLocaleDateString("es-EC", options);
-  };
-
-  const renderSection = ({ item }: { item: HistoryData }) => (
-    <>
-      <Text style={styles.textDate}>{formatDate(item.date)}</Text>
-      {item.data.map((data: CardData) => (
-        <CardHistory data={data} fecha={item.date} />
-      ))}
-    </>
-  );
 
   const sections: HistoryData[] = Object.keys(history).map((date) => ({
     date,
@@ -53,7 +28,7 @@ export default function TabTwoScreen() {
       <FlatList
         data={sections}
         keyExtractor={(item) => item.date}
-        renderItem={renderSection}
+        renderItem={({ item }) => <CardDate item={item} />}
       />
     </View>
   );
@@ -78,12 +53,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 14,
     marginTop: 20,
-  },
-  textDate: {
-    fontFamily: "PoppinsRegular",
-    letterSpacing: 1,
-    fontSize: 12,
-    marginTop: 20,
-    paddingLeft: 20,
   },
 });

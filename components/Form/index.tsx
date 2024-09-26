@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import InputComponent from "../Input";
 import SelectComponent from "../Select";
 import ButtonComponent from "../Button";
-import { Country } from "@/config/data/countries";
 
 const FormComponent = () => {
   const [codigo, setCodigo] = useState("");

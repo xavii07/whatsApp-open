@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, Linking } from "react-native";
 import MyIcon from "../ui/MyIcon";
 import { CardData } from "@/infrastructure/interfaces/history.response";
 import { useHistory } from "@/presentation/store/useHistory";
+import { URL_WHATSAPP } from "@/config/data/consts";
 
 interface Props {
   data: CardData;
@@ -10,6 +11,11 @@ interface Props {
 
 const CardHistory = ({ data, fecha }: Props) => {
   const removeHistory = useHistory((state) => state.removeHistory);
+
+  const openWhatsApp = () => {
+    console.log({ data });
+    Linking.openURL(`${URL_WHATSAPP}/${data.codigoPais}${data.telefono}`);
+  };
 
   return (
     <View style={styles.containerCard}>
@@ -25,8 +31,9 @@ const CardHistory = ({ data, fecha }: Props) => {
         <Pressable onPress={() => removeHistory(fecha, data.id)}>
           <MyIcon name="trash" />
         </Pressable>
-
-        <MyIcon name="arrow-forward" />
+        <Pressable onPress={() => openWhatsApp()}>
+          <MyIcon name="arrow-forward" />
+        </Pressable>
       </View>
     </View>
   );

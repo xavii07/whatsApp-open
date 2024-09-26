@@ -21,9 +21,9 @@ const ButtonComponent: React.FC<ButtonProps> = ({ codigo, telefono }) => {
     addHistory(
       {
         id: uuid.v4() as string,
-        codigoISO: codigo,
+        codigoISO: country?.codigoISO ?? "",
         bandera: country?.bandera ?? "",
-        codigoPais: country?.codigoPais ?? "",
+        codigoPais: codigo,
         telefono,
       },
       new Date().toISOString().split("T")[0]
