@@ -13,14 +13,13 @@ const CardHistory = ({ data, fecha }: Props) => {
   const removeHistory = useHistory((state) => state.removeHistory);
 
   const openWhatsApp = () => {
-    console.log({ data });
     Linking.openURL(`${URL_WHATSAPP}/${data.codigoPais}${data.telefono}`);
   };
 
   return (
     <View style={styles.containerCard}>
       <View style={styles.cardIcon}>
-        <MyIcon name="logo-whatsapp" />
+        <MyIcon name="logo-whatsapp" size={15} />
       </View>
       <View>
         <Text style={styles.cardText}>
@@ -28,10 +27,24 @@ const CardHistory = ({ data, fecha }: Props) => {
         </Text>
       </View>
       <View style={{ flexDirection: "row", gap: 10 }}>
-        <Pressable onPress={() => removeHistory(fecha, data.id)}>
+        <Pressable
+          onPress={() => removeHistory(fecha, data.id)}
+          style={({ pressed }) => ({
+            backgroundColor: pressed ? "#25D366FF" : "#fff",
+            borderRadius: 10,
+            padding: 4,
+          })}
+        >
           <MyIcon name="trash" />
         </Pressable>
-        <Pressable onPress={() => openWhatsApp()}>
+        <Pressable
+          onPress={() => openWhatsApp()}
+          style={({ pressed }) => ({
+            backgroundColor: pressed ? "#25D36699" : "#fff",
+            borderRadius: 10,
+            padding: 4,
+          })}
+        >
           <MyIcon name="arrow-forward" />
         </Pressable>
       </View>

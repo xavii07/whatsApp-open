@@ -14,6 +14,12 @@ export default function TabTwoScreen() {
     data: history[date] ?? [],
   }));
 
+  const orderSectionsByDate = (a: HistoryData, b: HistoryData) => {
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  };
+
+  sections.sort(orderSectionsByDate);
+
   return (
     <View style={[styles.container, { marginTop: top }]}>
       <Header />
