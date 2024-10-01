@@ -1,7 +1,8 @@
+import MyIcon from "@/components/ui/MyIcon";
 import { useHistory } from "@/presentation/store/useHistory";
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, Tabs } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
@@ -33,15 +34,37 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={DefaultTheme}>
-      <Stack
+      <Tabs
         screenOptions={{
+          tabBarActiveTintColor: "#25d366",
           headerShown: false,
         }}
       >
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-        <Stack.Screen name="index" />
-      </Stack>
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: "Inicio",
+            tabBarIcon: ({ color }) => (
+              <MyIcon name="home-outline" color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="explore"
+          options={{
+            title: "Historial",
+            tabBarIcon: ({ color }) => (
+              <MyIcon name="reader-outline" color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="+not-found"
+          options={{
+            tabBarButton: () => null,
+          }}
+        />
+      </Tabs>
     </ThemeProvider>
   );
 }

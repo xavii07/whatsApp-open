@@ -1,27 +1,35 @@
-import { View, Text, Pressable } from "react-native";
-import React from "react";
-import { router } from "expo-router";
+import FormComponent from "@/components/Form";
+import Header from "@/components/Header";
+import { Image, StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const index = () => {
+export default function HomeScreen() {
+  const { top } = useSafeAreaInsets();
+
   return (
-    <View style={{ marginTop: 50 }}>
-      <Text>index</Text>
-      <Pressable
-        onPress={() => {
-          router.push("home");
-        }}
-      >
-        <Text
-          style={{
-            color: "blue",
-            textDecorationLine: "underline",
-          }}
-        >
-          Ir a tabs
-        </Text>
-      </Pressable>
+    <View style={[styles.container, { marginTop: top }]}>
+      <Header />
+      <FormComponent />
+      <Image
+        source={require("@/assets/images/fondo.png")}
+        style={styles.fondo}
+      />
     </View>
   );
-};
+}
 
-export default index;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#25D366",
+    position: "relative",
+  },
+  fondo: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+    zIndex: -1,
+    opacity: 0.9,
+  },
+});
