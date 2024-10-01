@@ -22,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#25D366"
-      }
+      },
+      "package": "com.xavii077.whatsLink"
     },
     "web": {
       "favicon": "./assets/images/icon.png"
@@ -32,6 +33,12 @@
     ],
     "experimental": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b5e27654-948d-4888-a574-5ad2d93e08a5"
+      }
+    },
+    "owner": "xavii077"
   }
 }
