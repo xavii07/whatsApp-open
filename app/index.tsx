@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#25D366",
     position: "relative",
+    zIndex: 0,
   },
   fondo: {
     position: "absolute",

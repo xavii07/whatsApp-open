@@ -36,7 +36,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({ codigo, telefono }) => {
       disabled={!telefono}
       style={({ pressed }) => [
         {
-          opacity: pressed ? 0.5 : 1,
+          opacity: pressed ? 0.8 : 1,
         },
         styles.button,
         !telefono && styles.disabled,
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     fontFamily: "PoppinsRegular",
   },
   disabled: {
-    backgroundColor: "#075e5492",
+    backgroundColor: "#075e5480",
   },
 });
 

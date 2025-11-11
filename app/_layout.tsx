@@ -2,12 +2,11 @@ import MyIcon from "@/components/ui/MyIcon";
 import { useHistory } from "@/presentation/store/useHistory";
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack, Tabs } from "expo-router";
+import { Tabs } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -56,12 +55,6 @@ export default function RootLayout() {
             tabBarIcon: ({ color }) => (
               <MyIcon name="reader-outline" color={color} />
             ),
-          }}
-        />
-        <Tabs.Screen
-          name="+not-found"
-          options={{
-            tabBarButton: () => null,
           }}
         />
       </Tabs>
