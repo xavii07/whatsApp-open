@@ -1,8 +1,10 @@
-import { StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import React, { useState } from "react";
 import InputComponent from "../Input";
 import SelectComponent from "../Select";
 import ButtonComponent from "../Button";
+import { mensajesPredefinidos } from "@/config/data/consts";
+import CardMessage from "../Home/CardMessage";
 
 const FormComponent = () => {
   const [codigo, setCodigo] = useState("");
@@ -17,6 +19,15 @@ const FormComponent = () => {
         <View style={styles.containerInput}>
           <InputComponent onChangeInput={setTelefono} />
         </View>
+      </View>
+      <View style={styles.containerCards}>
+        <FlatList
+          data={mensajesPredefinidos}
+          horizontal
+          keyExtractor={(item) => item.categoria}
+          renderItem={({ item }) => <CardMessage item={item} />}
+          showsHorizontalScrollIndicator={false}
+        />
       </View>
       <View style={styles.containerButton}>
         <ButtonComponent codigo={codigo} telefono={telefono} />
@@ -50,6 +61,11 @@ const styles = StyleSheet.create({
   },
   containerButton: {
     marginTop: 20,
+  },
+  containerCards: {
+    marginTop: 5,
+    width: "100%",
+    height: 110,
   },
 });
 
