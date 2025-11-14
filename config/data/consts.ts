@@ -2,7 +2,7 @@ export const URL_WHATSAPP = "https://wa.me";
 
 export const mensajesPredefinidos = [
   {
-    categoria: "🎯 Personalizado / directo",
+    categoria: "Personalizado / directo",
     mensajes: [
       "Hola, tengo una consulta rápida.",
       "Buenas, ¿puedo llamarte un momento?",
@@ -10,7 +10,7 @@ export const mensajesPredefinidos = [
     ],
   },
   {
-    categoria: "💬 Primer contacto",
+    categoria: "Primer contacto",
     mensajes: [
       "¡Hola! Vi tu número y quería consultarte sobre tus servicios.",
       "Hola 👋, me interesa obtener más información.",
@@ -19,7 +19,7 @@ export const mensajesPredefinidos = [
     ],
   },
   {
-    categoria: "💼 Ventas / Negocios",
+    categoria: "Ventas / Negocios",
     mensajes: [
       "Hola 👋, ¿podrías enviarme una cotización o lista de precios?",
       "¡Buenas! Quisiera saber si tienen disponibilidad del producto.",
@@ -28,7 +28,7 @@ export const mensajesPredefinidos = [
     ],
   },
   {
-    categoria: "🧠 Asesoría / Soporte",
+    categoria: "Asesoría / Soporte",
     mensajes: [
       "Hola, necesito ayuda con mi pedido.",
       "Buenas, tengo una duda sobre el servicio que adquirí.",
@@ -37,7 +37,7 @@ export const mensajesPredefinidos = [
     ],
   },
   {
-    categoria: "🙋‍♂️ Presentación personal / profesional",
+    categoria: "Presentación personal",
     mensajes: [
       "¡Hola! Mi nombre es [Tu nombre], te contacto porque me interesa colaborar contigo.",
       "Hola, soy [Tu nombre] de [Tu empresa], quisiera conversar sobre una posible alianza.",
@@ -45,7 +45,7 @@ export const mensajesPredefinidos = [
     ],
   },
   {
-    categoria: "🔁 Seguimiento / Recontacto",
+    categoria: "Seguimiento / Recontacto",
     mensajes: [
       "Hola 👋, ¿tuviste oportunidad de revisar mi mensaje anterior?",
       "Buenas, solo quería hacer seguimiento a nuestra conversación anterior.",
