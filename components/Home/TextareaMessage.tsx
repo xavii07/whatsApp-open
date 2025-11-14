@@ -1,6 +1,7 @@
-import { View, TextInput, StyleSheet, Pressable } from "react-native";
+import { View, TextInput, StyleSheet, Pressable, Platform } from "react-native";
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { obtenerMensajeAleatorio } from "@/config/utils/selectRandomMessage";
 
 interface Props {
   showTextarea: boolean;
@@ -15,47 +16,86 @@ const TextareaMessage = ({
   setMensaje,
   setShowTextarea,
 }: Props) => {
+  if (!showTextarea) return null;
+
   return (
-    <>
-      {showTextarea && (
-        <View style={styles.container}>
-          <Pressable
-            onPress={() => {
-              setMensaje("");
-              if (setShowTextarea) {
-                setShowTextarea(false);
-              }
-            }}
-            style={({ pressed }) => [
-              styles.closeButtonCloseTextarea,
-              { opacity: pressed ? 0.6 : 1 },
-            ]}
-          >
-            <Ionicons name="close" size={16} color="white" />
-          </Pressable>
-          {mensaje && (
+    <View style={styles.container}>
+      <View style={styles.buttonGroup}>
+        {mensaje.length > 0 && (
+          <>
             <Pressable
-              onPress={() => {
-                setMensaje("");
-              }}
+              onPress={() => setMensaje("")}
               style={({ pressed }) => [
-                styles.closeButtonCleanTextarea,
-                { opacity: pressed ? 0.6 : 1 },
+                styles.actionButton,
+                styles.improveButton,
+                { opacity: pressed ? 0.7 : 1 },
               ]}
+              accessibilityLabel="Borrar mensaje"
+              accessibilityRole="button"
             >
-              <Ionicons name="refresh" size={16} color="white" />
+              <Ionicons name="trash-bin" size={18} color="#fff" />
             </Pressable>
-          )}
-          <TextInput
-            placeholder="Escribe tu mensaje aquí..."
-            value={mensaje}
-            onChangeText={setMensaje}
-            multiline
-            style={styles.textInput}
-          />
-        </View>
-      )}
-    </>
+
+            <Pressable
+              onPress={() => console.log("Guardar como favorito")}
+              style={({ pressed }) => [
+                styles.actionButton,
+                styles.setFavoriteButton,
+                { opacity: pressed ? 0.7 : 1 },
+              ]}
+              accessibilityLabel="Guardar mensaje como favorito"
+              accessibilityRole="button"
+            >
+              <Ionicons name="star" size={18} color="#fff" />
+            </Pressable>
+          </>
+        )}
+
+        <Pressable
+          onPress={() => {
+            setMensaje(obtenerMensajeAleatorio());
+          }}
+          style={({ pressed }) => [
+            styles.actionButton,
+            styles.randomButton,
+            { opacity: pressed ? 0.7 : 1 },
+          ]}
+          accessibilityLabel="Generar mensaje aleatorio"
+          accessibilityRole="button"
+        >
+          <Ionicons name="refresh" size={18} color="#fff" />
+        </Pressable>
+
+        <Pressable
+          onPress={() => {
+            setMensaje("");
+            if (setShowTextarea) {
+              setShowTextarea(false);
+            }
+          }}
+          style={({ pressed }) => [
+            styles.actionButton,
+            styles.closeButton,
+            { opacity: pressed ? 0.7 : 1 },
+          ]}
+          accessibilityLabel="Cerrar editor"
+          accessibilityRole="button"
+        >
+          <Ionicons name="close" size={18} color="#fff" />
+        </Pressable>
+      </View>
+
+      <TextInput
+        placeholder="Escribe tu mensaje aquí..."
+        placeholderTextColor="#94a3b8"
+        value={mensaje}
+        onChangeText={setMensaje}
+        multiline
+        textAlignVertical="top"
+        style={styles.textInput}
+        numberOfLines={4}
+      />
+    </View>
   );
 };
 
@@ -64,41 +104,70 @@ export default TextareaMessage;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    marginTop: 5,
-    backgroundColor: "#e2faf5",
-    borderRadius: 10,
-    paddingLeft: 10,
-    paddingRight: 20,
-    paddingVertical: 5,
-    maxHeight: 150,
-    position: "relative",
+    marginTop: 4,
+    marginBottom: 8,
+    backgroundColor: "#ffffff",
+    borderRadius: 12,
+    padding: 4,
+    minHeight: 100,
+    maxHeight: 180,
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
+  },
+  buttonGroup: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginBottom: 2,
+    gap: 4,
+  },
+  actionButton: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    justifyContent: "center",
+    alignItems: "center",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  randomButton: {
+    backgroundColor: "#10b981",
+  },
+  closeButton: {
+    backgroundColor: "#ef4444",
+  },
+  setFavoriteButton: {
+    backgroundColor: "#f0e925ff",
+  },
+  improveButton: {
+    backgroundColor: "#eb7e57ff",
   },
   textInput: {
     fontFamily: "PoppinsRegular",
-    fontSize: 12,
-  },
-  closeButtonCloseTextarea: {
-    position: "absolute",
-    top: 2,
-    right: 3,
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: "#ff5c5c",
-    zIndex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  closeButtonCleanTextarea: {
-    position: "absolute",
-    top: 25,
-    right: 3,
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: "#4caf50",
-    zIndex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    fontSize: 14,
+    lineHeight: 18,
+    color: "#1e293b",
+    flex: 1,
+    paddingTop: 4,
   },
 });
