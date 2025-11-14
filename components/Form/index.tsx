@@ -23,6 +23,7 @@ const FormComponent = () => {
           <InputComponent onChangeInput={setTelefono} />
         </View>
       </View>
+
       <View style={styles.containerCards}>
         <FlatList
           data={mensajesPredefinidos}

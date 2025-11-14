@@ -26,10 +26,26 @@ const TextareaMessage = ({
                 setShowTextarea(false);
               }
             }}
-            style={styles.closeButton}
+            style={({ pressed }) => [
+              styles.closeButtonCloseTextarea,
+              { opacity: pressed ? 0.6 : 1 },
+            ]}
           >
-            <Ionicons name="close" size={18} color="white" />
+            <Ionicons name="close" size={16} color="white" />
           </Pressable>
+          {mensaje && (
+            <Pressable
+              onPress={() => {
+                setMensaje("");
+              }}
+              style={({ pressed }) => [
+                styles.closeButtonCleanTextarea,
+                { opacity: pressed ? 0.6 : 1 },
+              ]}
+            >
+              <Ionicons name="refresh" size={16} color="white" />
+            </Pressable>
+          )}
           <TextInput
             placeholder="Escribe tu mensaje aquí..."
             value={mensaje}
@@ -61,14 +77,26 @@ const styles = StyleSheet.create({
     fontFamily: "PoppinsRegular",
     fontSize: 12,
   },
-  closeButton: {
+  closeButtonCloseTextarea: {
     position: "absolute",
-    top: 5,
-    right: 5,
-    width: 22,
-    height: 22,
-    borderRadius: 12.5,
+    top: 2,
+    right: 3,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
     backgroundColor: "#ff5c5c",
+    zIndex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  closeButtonCleanTextarea: {
+    position: "absolute",
+    top: 25,
+    right: 3,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: "#4caf50",
     zIndex: 1,
     justifyContent: "center",
     alignItems: "center",
