@@ -43,6 +43,7 @@ const FormComponent = () => {
         showTextarea={showTextarea}
         mensaje={mensaje}
         setMensaje={setMensaje}
+        setShowTextarea={setShowTextarea}
       />
 
       <View style={styles.containerButton}>
