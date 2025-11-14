@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     resizeMode: "cover",
-    zIndex: -1,
-    opacity: 0.1,
+    zIndex: 0,
+    opacity: 0.4,
   },
   title: {
     fontFamily: "PoppinsBold",

@@ -2,7 +2,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
 
 interface Props {
-  name: any;
+  name: keyof typeof Ionicons.glyphMap;
   color?: string;
   size?: number;
   onPress?: () => void;

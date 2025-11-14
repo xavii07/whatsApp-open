@@ -25,6 +25,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({ codigo, telefono }) => {
         bandera: country?.bandera ?? "",
         codigoPais: codigo,
         telefono,
+        nombreUser: "Anonimo",
       },
       new Date().toISOString().split("T")[0]
     );

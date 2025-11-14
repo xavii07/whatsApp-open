@@ -4,6 +4,7 @@ export interface CardData {
   bandera: string;
   codigoPais: string;
   telefono: string;
+  nombreUser: string;
 }
 
 export interface HistoryData {

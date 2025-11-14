@@ -19,9 +19,12 @@ const CardHistory = ({ data, fecha }: Props) => {
   return (
     <View style={styles.containerCard}>
       <View style={styles.cardIcon}>
-        <MyIcon name="logo-whatsapp" size={15} />
+        <MyIcon name="person" size={14} />
       </View>
       <View>
+        <Text style={[styles.cardText, { color: "#ddd" }]}>
+          {data.nombreUser || "Anonimo"}
+        </Text>
         <Text style={styles.cardText}>
           {data.bandera} {data.codigoISO} ({data.codigoPais}) {data.telefono}
         </Text>
@@ -55,11 +58,11 @@ const CardHistory = ({ data, fecha }: Props) => {
 const styles = StyleSheet.create({
   containerCard: {
     flexDirection: "row",
-    backgroundColor: "#25D36622",
+    backgroundColor: "#075e54ff",
     alignItems: "center",
     justifyContent: "space-between",
     marginTop: 5,
-    borderRadius: 5,
+    borderRadius: 10,
     paddingVertical: 14,
     paddingHorizontal: 20,
     marginHorizontal: 20,
@@ -80,7 +83,7 @@ const styles = StyleSheet.create({
   cardText: {
     fontFamily: "PoppinsRegular",
     fontSize: 12,
-    color: "#000",
+    color: "#fff",
   },
 });
 
