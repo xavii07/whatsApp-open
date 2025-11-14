@@ -1,19 +1,31 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
 import React from "react";
 import { mensajesPredefinidos } from "@/config/data/consts";
 
 interface Props {
   item: (typeof mensajesPredefinidos)[0];
+  setMessage?: (message: string) => void;
+  setShowTextarea?: (show: boolean) => void;
 }
 
-const CardMessage = ({ item }: Props) => {
+const CardMessage = ({ item, setMessage, setShowTextarea }: Props) => {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.categoryText}>{item.categoria}</Text>
       {item.mensajes.map((mensaje, index) => (
-        <View key={index} style={styles.messageContainer}>
+        <Pressable
+          onPress={() => {
+            if (setMessage) setMessage(mensaje);
+            if (setShowTextarea) setShowTextarea(true);
+          }}
+          key={index}
+          style={({ pressed }) => [
+            styles.messageContainer,
+            { elevation: 1, opacity: pressed ? 0.6 : 1 },
+          ]}
+        >
           <Text style={styles.messageText}>{mensaje}</Text>
-        </View>
+        </Pressable>
       ))}
     </ScrollView>
   );
@@ -40,7 +52,7 @@ const styles = StyleSheet.create({
   messageContainer: {
     backgroundColor: "#ffffff",
     borderRadius: 5,
-    padding: 5,
+    padding: 7,
     marginBottom: 5,
   },
   messageText: {

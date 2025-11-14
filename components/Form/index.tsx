@@ -1,14 +1,17 @@
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, TextInput, View } from "react-native";
 import React, { useState } from "react";
 import InputComponent from "../Input";
 import SelectComponent from "../Select";
 import ButtonComponent from "../Button";
 import { mensajesPredefinidos } from "@/config/data/consts";
 import CardMessage from "../Home/CardMessage";
+import TextareaMessage from "../Home/TextareaMessage";
 
 const FormComponent = () => {
   const [codigo, setCodigo] = useState("");
   const [telefono, setTelefono] = useState("");
+  const [mensaje, setMensaje] = useState("");
+  const [showTextarea, setShowTextarea] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -25,10 +28,23 @@ const FormComponent = () => {
           data={mensajesPredefinidos}
           horizontal
           keyExtractor={(item) => item.categoria}
-          renderItem={({ item }) => <CardMessage item={item} />}
+          renderItem={({ item }) => (
+            <CardMessage
+              item={item}
+              setMessage={setMensaje}
+              setShowTextarea={setShowTextarea}
+            />
+          )}
           showsHorizontalScrollIndicator={false}
         />
       </View>
+
+      <TextareaMessage
+        showTextarea={showTextarea}
+        mensaje={mensaje}
+        setMensaje={setMensaje}
+      />
+
       <View style={styles.containerButton}>
         <ButtonComponent codigo={codigo} telefono={telefono} />
       </View>
