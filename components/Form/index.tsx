@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, TextInput, View } from "react-native";
+import { FlatList, StyleSheet, View, Platform, Dimensions } from "react-native";
 import React, { useState } from "react";
 import InputComponent from "../Input";
 import SelectComponent from "../Select";
@@ -6,6 +6,9 @@ import ButtonComponent from "../Button";
 import { mensajesPredefinidos } from "@/config/data/consts";
 import CardMessage from "../Home/CardMessage";
 import TextareaMessage from "../Home/TextareaMessage";
+
+const { width } = Dimensions.get("window");
+const isSmallScreen = width < 375;
 
 const FormComponent = () => {
   const [codigo, setCodigo] = useState("");
@@ -15,16 +18,18 @@ const FormComponent = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.containerRectangle}>
-        <View style={styles.containerSelect}>
-          <SelectComponent onChangeCodigo={setCodigo} />
-        </View>
-        <View style={styles.containerInput}>
-          <InputComponent onChangeInput={setTelefono} />
+      <View style={styles.phoneSection}>
+        <View style={styles.phoneInputWrapper}>
+          <View style={styles.selectWrapper}>
+            <SelectComponent onChangeCodigo={setCodigo} />
+          </View>
+          <View style={styles.inputWrapper}>
+            <InputComponent onChangeInput={setTelefono} />
+          </View>
         </View>
       </View>
 
-      <View style={styles.containerCards}>
+      <View style={styles.messagesSection}>
         <FlatList
           data={mensajesPredefinidos}
           horizontal
@@ -37,6 +42,9 @@ const FormComponent = () => {
             />
           )}
           showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.listContent}
+          snapToInterval={292}
+          decelerationRate="fast"
         />
       </View>
 
@@ -47,7 +55,7 @@ const FormComponent = () => {
         setShowTextarea={setShowTextarea}
       />
 
-      <View style={styles.containerButton}>
+      <View style={styles.buttonSection}>
         <ButtonComponent codigo={codigo} telefono={telefono} />
       </View>
     </View>
@@ -57,33 +65,54 @@ const FormComponent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
-    paddingHorizontal: 20,
+    paddingHorizontal: isSmallScreen ? 16 : 20,
+    paddingVertical: 16,
     justifyContent: "center",
-    alignItems: "center",
   },
 
-  containerRectangle: {
+  phoneSection: {
+    marginBottom: 4,
+  },
+
+  phoneInputWrapper: {
     flexDirection: "row",
-    backgroundColor: "#e2faf5",
-    borderRadius: 10,
-    alignItems: "center",
+    paddingHorizontal: 8,
+    backgroundColor: "#ffffff",
+    borderRadius: 12,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
   },
-  containerSelect: {
-    width: "50%",
-  },
-  containerInput: {
-    width: "50%",
-    alignSelf: "flex-end",
+
+  selectWrapper: {
     justifyContent: "center",
+    // flex: isSmallScreen ? 0.4 : 0.35,
+    borderRightWidth: 1,
+    borderRightColor: "#e2e8f0",
   },
-  containerButton: {
-    marginTop: 20,
+  inputWrapper: {
+    flex: isSmallScreen ? 0.6 : 0.65,
   },
-  containerCards: {
-    marginTop: 5,
-    width: "100%",
-    height: 110,
+  messagesSection: {
+    height: 200,
+  },
+  listContent: {
+    paddingVertical: 8,
+  },
+  buttonSection: {
+    marginTop: 4,
+    alignItems: "center",
   },
 });
 

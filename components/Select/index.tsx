@@ -44,7 +44,7 @@ const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
             style={[
               styles.containerItem,
               {
-                backgroundColor: isSelected ? "#25d366" : "#e2faf5",
+                backgroundColor: isSelected ? "#075e54ff" : "#e2faf5",
               },
             ]}
           >
@@ -53,6 +53,7 @@ const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
                 styles.itemText,
                 {
                   fontFamily: isSelected ? "PoppinsBold" : "PoppinsRegular",
+                  color: isSelected ? "#ffffff" : "#000000",
                 },
               ]}
             >
@@ -76,7 +77,7 @@ const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
 
 const styles = StyleSheet.create({
   containerSelect: {
-    backgroundColor: "#e2faf5",
+    // backgroundColor: "#e2faf5",
     flexDirection: "row",
     height: 30,
     alignItems: "center",

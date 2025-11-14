@@ -22,7 +22,7 @@ const InputComponent: React.FC<InputProps> = ({ onChangeInput }) => {
 const styles = StyleSheet.create({
   input: {
     height: 50,
-    fontSize: 14,
+    fontSize: 15,
     paddingLeft: 5,
     letterSpacing: 1,
     fontFamily: "PoppinsRegular",

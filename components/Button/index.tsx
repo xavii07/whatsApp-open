@@ -42,7 +42,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({ codigo, telefono }) => {
         !telefono && styles.disabled,
       ]}
     >
-      <Text style={styles.text}>Abrir WhatsApp</Text>
+      <Text style={styles.text}>Enviar Mensaje</Text>
     </Pressable>
   );
 };
