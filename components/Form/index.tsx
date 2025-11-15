@@ -11,10 +11,10 @@ const { width } = Dimensions.get("window");
 const isSmallScreen = width < 375;
 
 interface Props {
-  onSendMessage: () => void;
+  onOpenModal: () => void;
 }
 
-const FormComponent = ({ onSendMessage }: Props) => {
+const FormComponent = ({ onOpenModal }: Props) => {
   const [codigo, setCodigo] = useState("");
   const [telefono, setTelefono] = useState("");
   const [mensaje, setMensaje] = useState("");
@@ -62,9 +62,9 @@ const FormComponent = ({ onSendMessage }: Props) => {
       <View style={styles.buttonSection}>
         <ButtonComponent
           codigo={codigo}
-          telefono={telefono}
+          telefono={telefono.trim().replace(/\s+/g, "")}
           mensaje={mensaje}
-          onSendMessage={onSendMessage}
+          onOpenModal={onOpenModal}
         />
       </View>
     </View>

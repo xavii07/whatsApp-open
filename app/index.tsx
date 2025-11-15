@@ -2,14 +2,14 @@ import FormComponent from "@/components/Form";
 import Header from "@/components/Header";
 import ModalPicker from "@/components/Home/ModalPicker";
 import { useState } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   const { top } = useSafeAreaInsets();
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
-  const onSendMessage = () => {
+  const onOpenModal = () => {
     setIsModalVisible(true);
   };
 
@@ -20,9 +20,9 @@ export default function HomeScreen() {
   return (
     <View style={[styles.container, { marginTop: top }]}>
       <Header />
-      <FormComponent onSendMessage={onSendMessage} />
+      <FormComponent onOpenModal={onOpenModal} />
       <ModalPicker isVisible={isModalVisible} onClose={onModalClose}>
-        {/* Emoji list component will go here */}
+        <Text>Hoal</Text>
       </ModalPicker>
       <Image
         source={require("@/assets/images/fondo.png")}

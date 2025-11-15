@@ -9,16 +9,46 @@ type ButtonProps = {
   codigo: string;
   telefono: string;
   mensaje?: string;
-  onSendMessage: () => void;
+  onOpenModal: () => void;
 };
 
 const ButtonComponent: React.FC<ButtonProps> = ({
   codigo,
   telefono,
   mensaje,
-  onSendMessage,
+  onOpenModal,
 }) => {
+  console.log({ telefono });
   const addHistory = useHistory((state) => state.addHistory);
+
+  const abrirChat = async () => {
+    const urlWhatsapp = `whatsapp://send?phone=${codigo}${telefono}&text=${
+      mensaje || ""
+    }`;
+    const urlBusiness = `whatsapp-business://send?phone=${codigo}${telefono}&text=${
+      mensaje || ""
+    }`;
+    const urlTelegram = `tg://resolve?domain=${codigo}${telefono}&text=${
+      mensaje || ""
+    }`;
+
+    const puedeAbrir = await Linking.canOpenURL(urlWhatsapp);
+    const puedeAbrirBusiness = await Linking.canOpenURL(urlBusiness);
+    const puedeAbrirTelegram = await Linking.canOpenURL(urlTelegram);
+
+    if (puedeAbrirTelegram) {
+      console.log("Abriendo Telegram");
+      Linking.openURL(urlTelegram);
+    } else if (puedeAbrir) {
+      Linking.openURL(urlWhatsapp);
+      console.log("Abriendo WhatsApp");
+    } else if (puedeAbrirBusiness) {
+      Linking.openURL(urlBusiness);
+      console.log("Abriendo WhatsApp Business");
+    } else {
+      alert("No se encontró ninguna app de mensajería instalada.");
+    }
+  };
 
   const handlePressButton = () => {
     Linking.openURL(
@@ -42,7 +72,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
 
   return (
     <Pressable
-      onPress={handlePressButton}
+      onPress={onOpenModal}
       disabled={!telefono}
       style={({ pressed }) => [
         {
