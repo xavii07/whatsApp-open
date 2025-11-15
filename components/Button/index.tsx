@@ -8,13 +8,22 @@ import uuid from "react-native-uuid";
 type ButtonProps = {
   codigo: string;
   telefono: string;
+  mensaje?: string;
+  onSendMessage: () => void;
 };
 
-const ButtonComponent: React.FC<ButtonProps> = ({ codigo, telefono }) => {
+const ButtonComponent: React.FC<ButtonProps> = ({
+  codigo,
+  telefono,
+  mensaje,
+  onSendMessage,
+}) => {
   const addHistory = useHistory((state) => state.addHistory);
 
   const handlePressButton = () => {
-    Linking.openURL(`${URL_WHATSAPP}/${codigo}${telefono}`);
+    Linking.openURL(
+      `${URL_WHATSAPP}/${codigo}${telefono}?text=${mensaje || ""}`
+    );
     const country = countries.find(
       (country: Country) => country.codigoPais === codigo
     );

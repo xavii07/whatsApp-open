@@ -10,7 +10,11 @@ import TextareaMessage from "../Home/TextareaMessage";
 const { width } = Dimensions.get("window");
 const isSmallScreen = width < 375;
 
-const FormComponent = () => {
+interface Props {
+  onSendMessage: () => void;
+}
+
+const FormComponent = ({ onSendMessage }: Props) => {
   const [codigo, setCodigo] = useState("");
   const [telefono, setTelefono] = useState("");
   const [mensaje, setMensaje] = useState("");
@@ -56,7 +60,12 @@ const FormComponent = () => {
       />
 
       <View style={styles.buttonSection}>
-        <ButtonComponent codigo={codigo} telefono={telefono} />
+        <ButtonComponent
+          codigo={codigo}
+          telefono={telefono}
+          mensaje={mensaje}
+          onSendMessage={onSendMessage}
+        />
       </View>
     </View>
   );
