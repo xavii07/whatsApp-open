@@ -1,4 +1,11 @@
-import { View, TextInput, StyleSheet, Pressable, Platform } from "react-native";
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  Pressable,
+  Platform,
+  Alert,
+} from "react-native";
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { obtenerMensajeAleatorio } from "@/config/utils/selectRandomMessage";
@@ -50,6 +57,24 @@ const TextareaMessage = ({
             </Pressable>
           </>
         )}
+
+        <Pressable
+          onPress={() =>
+            Alert.alert(
+              "Genera mensaje con IA",
+              "Funcionalidad en desarrollo..."
+            )
+          }
+          style={({ pressed }) => [
+            styles.actionButton,
+            styles.iaGenerateButton,
+            { opacity: pressed ? 0.7 : 1 },
+          ]}
+          accessibilityLabel="Generar mensaje con IA (próximamente)"
+          accessibilityRole="button"
+        >
+          <Ionicons name="bulb" size={18} color="#fff" />
+        </Pressable>
 
         <Pressable
           onPress={() => {
@@ -169,5 +194,8 @@ const styles = StyleSheet.create({
     color: "#1e293b",
     flex: 1,
     paddingTop: 4,
+  },
+  iaGenerateButton: {
+    backgroundColor: "#6365f1",
   },
 });
