@@ -13,7 +13,9 @@ export default function ModalPicker({ isVisible, children, onClose }: Props) {
       <Modal animationType="slide" transparent={true} visible={isVisible}>
         <View style={styles.modalContent}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Aplicación para enviar mensaje</Text>
+            <Text style={styles.title}>
+              Escoje la aplicación para enviar el mensaje
+            </Text>
             <Pressable onPress={onClose}>
               <MaterialIcons name="close" color="#fff" size={22} />
             </Pressable>
@@ -27,7 +29,7 @@ export default function ModalPicker({ isVisible, children, onClose }: Props) {
 
 const styles = StyleSheet.create({
   modalContent: {
-    height: "25%",
+    height: "18%",
     width: "100%",
     backgroundColor: "#25292e",
     borderTopRightRadius: 18,
@@ -36,17 +38,19 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   titleContainer: {
-    height: "16%",
+    height: "30%",
     backgroundColor: "#464C55",
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
     paddingHorizontal: 20,
+    paddingVertical: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
   title: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 13,
+    fontFamily: "PoppinsRegular",
   },
 });

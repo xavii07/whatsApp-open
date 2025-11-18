@@ -1,8 +1,8 @@
 import FormComponent from "@/components/Form";
 import Header from "@/components/Header";
-import ModalPicker from "@/components/Home/ModalPicker";
+import ModalApps from "@/components/Home/ModalApps";
 import { useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
@@ -21,9 +21,7 @@ export default function HomeScreen() {
     <View style={[styles.container, { marginTop: top }]}>
       <Header />
       <FormComponent onOpenModal={onOpenModal} />
-      <ModalPicker isVisible={isModalVisible} onClose={onModalClose}>
-        <Text>Hoal</Text>
-      </ModalPicker>
+      <ModalApps isModalVisible={isModalVisible} onModalClose={onModalClose} />
       <Image
         source={require("@/assets/images/fondo.png")}
         style={styles.fondo}
