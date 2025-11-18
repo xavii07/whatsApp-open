@@ -6,19 +6,25 @@ import ButtonComponent from "../Button";
 import { mensajesPredefinidos } from "@/config/data/consts";
 import CardMessage from "../Home/CardMessage";
 import TextareaMessage from "../Home/TextareaMessage";
+import ModalApps from "../Home/ModalApps";
 
 const { width } = Dimensions.get("window");
 const isSmallScreen = width < 375;
 
-interface Props {
-  onOpenModal: () => void;
-}
-
-const FormComponent = ({ onOpenModal }: Props) => {
+const FormComponent = () => {
   const [codigo, setCodigo] = useState("");
   const [telefono, setTelefono] = useState("");
   const [mensaje, setMensaje] = useState("");
   const [showTextarea, setShowTextarea] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+
+  const onOpenModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const onModalClose = () => {
+    setIsModalVisible(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -61,12 +67,18 @@ const FormComponent = ({ onOpenModal }: Props) => {
 
       <View style={styles.buttonSection}>
         <ButtonComponent
-          codigo={codigo}
           telefono={telefono.trim().replace(/\s+/g, "")}
-          mensaje={mensaje}
           onOpenModal={onOpenModal}
         />
       </View>
+
+      <ModalApps
+        isModalVisible={isModalVisible}
+        onModalClose={onModalClose}
+        codigo={codigo}
+        telefono={telefono.trim().replace(/\s+/g, "")}
+        mensaje={mensaje}
+      />
     </View>
   );
 };

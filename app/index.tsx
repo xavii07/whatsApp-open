@@ -7,21 +7,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   const { top } = useSafeAreaInsets();
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-
-  const onOpenModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const onModalClose = () => {
-    setIsModalVisible(false);
-  };
 
   return (
     <View style={[styles.container, { marginTop: top }]}>
       <Header />
-      <FormComponent onOpenModal={onOpenModal} />
-      <ModalApps isModalVisible={isModalVisible} onModalClose={onModalClose} />
+      <FormComponent />
+
       <Image
         source={require("@/assets/images/fondo.png")}
         style={styles.fondo}
