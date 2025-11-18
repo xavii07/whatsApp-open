@@ -1,8 +1,14 @@
-import { View, Text, StyleSheet, Pressable, Linking } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Linking,
+  Image,
+} from "react-native";
 import MyIcon from "../ui/MyIcon";
 import { CardData } from "@/infrastructure/interfaces/history.response";
 import { useHistory } from "@/presentation/store/useHistory";
-import { URL_WHATSAPP } from "@/config/data/consts";
 
 interface Props {
   data: CardData;
@@ -12,14 +18,60 @@ interface Props {
 const CardHistory = ({ data, fecha }: Props) => {
   const removeHistory = useHistory((state) => state.removeHistory);
 
-  const openWhatsApp = () => {
-    Linking.openURL(`${URL_WHATSAPP}/${data.codigoPais}${data.telefono}`);
+  const openBusinessWhatsApp = async () => {
+    const urlBusiness = `whatsapp-business://send?phone=${data.codigoPais}${data.telefono}`;
+    const puedeAbrir = await Linking.canOpenURL(urlBusiness);
+
+    if (puedeAbrir) {
+      Linking.openURL(
+        `whatsapp-business://send?phone=${data.codigoPais}${data.telefono}`
+      );
+    }
+  };
+
+  const openWhatsApp = async () => {
+    const urlWhatsapp = `whatsapp://send?phone=${data.codigoPais}${data.telefono}`;
+    const puedeAbrir = await Linking.canOpenURL(urlWhatsapp);
+
+    if (puedeAbrir) {
+      Linking.openURL(
+        `whatsapp://send?phone=${data.codigoPais}${data.telefono}`
+      );
+    }
+  };
+
+  const openTelegram = async () => {
+    const urlTelegram = `tg://resolve?domain=${data.codigoPais}${data.telefono}`;
+    const puedeAbrir = await Linking.canOpenURL(urlTelegram);
+    if (puedeAbrir) {
+      Linking.openURL(`tg://resolve?domain=${data.codigoPais}${data.telefono}`);
+    }
+  };
+
+  const openAppMessage = (tipoApp: string) => {
+    if (tipoApp.toLowerCase() === "whatsapp") {
+      openWhatsApp();
+    } else if (tipoApp.toLowerCase() === "whatsapp business") {
+      openBusinessWhatsApp();
+    } else if (tipoApp.toLowerCase() === "telegram") {
+      openTelegram();
+    }
   };
 
   return (
     <View style={styles.containerCard}>
       <View style={styles.cardIcon}>
-        <MyIcon name="person" size={14} />
+        {data.tipoApp.toLowerCase().includes("whatsapp") ? (
+          <Image
+            source={require("@/assets/images/whatsapp.png")}
+            style={{ width: 14, height: 14 }}
+          />
+        ) : (
+          <Image
+            source={require("@/assets/images/telegrama.png")}
+            style={{ width: 14, height: 14 }}
+          />
+        )}
       </View>
       <View>
         <Text style={[styles.cardText, { color: "#ddd" }]}>
@@ -41,7 +93,7 @@ const CardHistory = ({ data, fecha }: Props) => {
           <MyIcon name="trash" />
         </Pressable>
         <Pressable
-          onPress={() => openWhatsApp()}
+          onPress={() => openAppMessage(data.tipoApp)}
           style={({ pressed }) => ({
             backgroundColor: pressed ? "#25D36699" : "#fff",
             borderRadius: 10,

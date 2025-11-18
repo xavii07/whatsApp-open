@@ -29,7 +29,7 @@ const ModalApps = ({
 }: Props) => {
   const addHistory = useHistory((state) => state.addHistory);
 
-  const addMessageToHistory = () => {
+  const addMessageToHistory = (tipoApp: string) => {
     const country = countries.find(
       (country: Country) => country.codigoPais === codigo
     );
@@ -41,6 +41,7 @@ const ModalApps = ({
         codigoPais: codigo,
         telefono,
         nombreUser: "Anonimo",
+        tipoApp,
       },
       new Date().toISOString().split("T")[0]
     );
@@ -57,11 +58,11 @@ const ModalApps = ({
     const puedeAbrirBusiness = await Linking.canOpenURL(urlBusiness);
 
     if (puedeAbrirWhatsapp) {
-      addMessageToHistory();
+      addMessageToHistory("WhatsApp");
       Linking.openURL(urlWhatsapp);
       onModalClose();
     } else if (puedeAbrirBusiness) {
-      addMessageToHistory();
+      addMessageToHistory("WhatsApp Business");
       Linking.openURL(urlBusiness);
       onModalClose();
     } else {
@@ -75,7 +76,7 @@ const ModalApps = ({
     );
 
     if (puedeAbrir) {
-      addMessageToHistory();
+      addMessageToHistory("Telegram");
       Linking.openURL(
         `tg://resolve?domain=${codigo}${telefono}&text=${mensaje || ""}`
       );

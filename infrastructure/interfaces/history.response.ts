@@ -5,6 +5,7 @@ export interface CardData {
   codigoPais: string;
   telefono: string;
   nombreUser: string;
+  tipoApp: string;
 }
 
 export interface HistoryData {
