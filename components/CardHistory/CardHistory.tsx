@@ -7,6 +7,7 @@ import {
   Image,
   Platform,
   Alert,
+  TextInput,
 } from "react-native";
 import { CardData } from "@/infrastructure/interfaces/history.response";
 import { useHistory } from "@/presentation/store/useHistory";
@@ -22,6 +23,7 @@ interface Props {
 const CardHistory = ({ data, fecha }: Props) => {
   const removeHistory = useHistory((state) => state.removeHistory);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [nombreUser, setNombreUser] = useState(data.nombreUser);
 
   const openBusinessWhatsApp = async () => {
     const urlBusiness = `whatsapp-business://send?phone=${data.codigoPais}${data.telefono}`;
@@ -100,6 +102,10 @@ const CardHistory = ({ data, fecha }: Props) => {
     setIsModalVisible(true);
   };
 
+  const handleSaveName = () => {
+    setIsModalVisible(false);
+  };
+
   const getAppIcon = () => {
     if (data.tipoApp.toLowerCase().includes("whatsapp")) {
       return (
@@ -128,6 +134,7 @@ const CardHistory = ({ data, fecha }: Props) => {
           {data.bandera} {data.codigoISO} ({data.codigoPais}) {data.telefono}
         </Text>
       </View>
+
       <View style={styles.actionsContainer}>
         <Pressable
           onPress={handleOpenModal}
@@ -168,13 +175,32 @@ const CardHistory = ({ data, fecha }: Props) => {
           <Ionicons name="arrow-forward" size={18} color="#10b981" />
         </Pressable>
       </View>
+
       <ModalPicker
         isModalVisible={isModalVisible}
         onModalClose={() => setIsModalVisible(false)}
-        text="Editar nombre de usuario"
+        text="Editar nombre de contacto"
       >
-        <View>
-          <Text>Contenido del modal para seleccionar la aplicación</Text>
+        <View style={styles.container}>
+          <View style={styles.inputWrapper}>
+            <TextInput
+              placeholder="Juan Pérez"
+              placeholderTextColor="#9ca3af"
+              style={styles.input}
+              value={nombreUser}
+              onChangeText={(text) => setNombreUser(text.slice(0, 20))}
+            />
+
+            <Pressable
+              onPress={handleSaveName}
+              style={({ pressed }) => [
+                styles.iconButtonRight,
+                { opacity: pressed ? 0.6 : 1 },
+              ]}
+            >
+              <Ionicons name="checkmark" size={25} color="#fff" />
+            </Pressable>
+          </View>
         </View>
       </ModalPicker>
     </View>
@@ -202,36 +228,43 @@ const styles = StyleSheet.create({
       },
     }),
   },
+
   iconContainer: {
     backgroundColor: "#f1f5f9",
     borderRadius: 10,
     padding: 10,
     marginRight: 12,
   },
+
   appIcon: {
     width: 20,
     height: 20,
   },
+
   infoContainer: {
     flex: 1,
     marginRight: 8,
   },
+
   nameText: {
     fontFamily: "PoppinsSemiBold",
     fontSize: 13,
     color: "#fff",
     marginBottom: 2,
   },
+
   phoneText: {
     fontFamily: "PoppinsRegular",
     fontSize: 11,
     color: "#fff",
     lineHeight: 16,
   },
+
   actionsContainer: {
     flexDirection: "row",
     gap: 4,
   },
+
   actionButton: {
     width: 25,
     height: 25,
@@ -240,13 +273,62 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
   },
+
   deleteButton: {
     backgroundColor: "#fef2f2",
     borderColor: "#fecaca",
   },
+
   openButton: {
     backgroundColor: "#f0fdf4",
     borderColor: "#bbf7d0",
+  },
+
+  container: {
+    paddingHorizontal: 20,
+    marginTop: 15,
+  },
+
+  inputWrapper: {
+    position: "relative",
+    justifyContent: "center",
+  },
+
+  input: {
+    backgroundColor: "#fff",
+    paddingVertical: 10,
+    paddingLeft: 14,
+    paddingRight: 90,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+    fontFamily: "PoppinsRegular",
+    color: "#111827",
+    fontSize: 14,
+  },
+
+  iconButtonRight: {
+    position: "absolute",
+    right: 0,
+    top: 0,
+    borderTopEndRadius: 10,
+    borderBottomEndRadius: 10,
+    width: 50,
+    height: "100%",
+    backgroundColor: "#10b981",
+    justifyContent: "center",
+    alignItems: "center",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
   },
 });
 
