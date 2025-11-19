@@ -22,6 +22,7 @@ interface Props {
 
 const CardHistory = ({ data, fecha }: Props) => {
   const removeHistory = useHistory((state) => state.removeHistory);
+  const updateNombreUser = useHistory((state) => state.updateNombreUser);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [nombreUser, setNombreUser] = useState(data.nombreUser);
 
@@ -100,9 +101,11 @@ const CardHistory = ({ data, fecha }: Props) => {
 
   const handleOpenModal = () => {
     setIsModalVisible(true);
+    setNombreUser(data.nombreUser);
   };
 
   const handleSaveName = () => {
+    updateNombreUser(data.id, nombreUser);
     setIsModalVisible(false);
   };
 
@@ -193,6 +196,7 @@ const CardHistory = ({ data, fecha }: Props) => {
 
             <Pressable
               onPress={handleSaveName}
+              disabled={nombreUser.trim().length === 0}
               style={({ pressed }) => [
                 styles.iconButtonRight,
                 { opacity: pressed ? 0.6 : 1 },
@@ -300,8 +304,6 @@ const styles = StyleSheet.create({
     paddingLeft: 14,
     paddingRight: 90,
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#e5e7eb",
     fontFamily: "PoppinsRegular",
     color: "#111827",
     fontSize: 14,
@@ -311,24 +313,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 0,
     top: 0,
+    bottom: 0,
     borderTopEndRadius: 10,
     borderBottomEndRadius: 10,
     width: 50,
-    height: "100%",
-    backgroundColor: "#10b981",
+    backgroundColor: "#075e54",
     justifyContent: "center",
     alignItems: "center",
-    ...Platform.select({
-      ios: {
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-      },
-      android: {
-        elevation: 2,
-      },
-    }),
   },
 });
 

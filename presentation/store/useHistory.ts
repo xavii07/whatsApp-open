@@ -7,6 +7,7 @@ export interface HistoryState {
   getHistory: () => void;
   addHistory: (history: CardData, date: string) => void;
   removeHistory: (date: string, idHistory: string) => void;
+  updateNombreUser: (idHistory: string, nombreUser: string) => void;
 }
 
 export const useHistory = create<HistoryState>((set, get) => ({
@@ -55,5 +56,20 @@ export const useHistory = create<HistoryState>((set, get) => ({
       set({ history });
       await StorageAdapter.setItem("history", JSON.stringify(history));
     }
+  },
+
+  updateNombreUser: async (idHistory: string, nombreUser: string) => {
+    const history = get().history;
+
+    for (const [date, data] of Object.entries(history)) {
+      const index = data.findIndex((item) => item.id === idHistory);
+      if (index !== -1) {
+        history[date][index].nombreUser = nombreUser;
+        break;
+      }
+    }
+
+    set({ history });
+    await StorageAdapter.setItem("history", JSON.stringify(history));
   },
 }));
