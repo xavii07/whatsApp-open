@@ -3,20 +3,24 @@ import { PropsWithChildren } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 type Props = PropsWithChildren<{
-  isVisible: boolean;
-  onClose: () => void;
+  isModalVisible: boolean;
+  text: string;
+  onModalClose: () => void;
 }>;
 
-export default function ModalPicker({ isVisible, children, onClose }: Props) {
+export default function ModalPicker({
+  isModalVisible,
+  text,
+  children,
+  onModalClose,
+}: Props) {
   return (
     <View>
-      <Modal animationType="slide" transparent={true} visible={isVisible}>
+      <Modal animationType="slide" transparent={true} visible={isModalVisible}>
         <View style={styles.modalContent}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>
-              Escoje la aplicación para enviar el mensaje
-            </Text>
-            <Pressable onPress={onClose}>
+            <Text style={styles.title}>{text}</Text>
+            <Pressable onPress={onModalClose}>
               <MaterialIcons name="close" color="#fff" size={22} />
             </Pressable>
           </View>

@@ -11,6 +11,8 @@ import {
 import { CardData } from "@/infrastructure/interfaces/history.response";
 import { useHistory } from "@/presentation/store/useHistory";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import ModalPicker from "../Home/ModalPicker";
+import { useState } from "react";
 
 interface Props {
   data: CardData;
@@ -19,6 +21,7 @@ interface Props {
 
 const CardHistory = ({ data, fecha }: Props) => {
   const removeHistory = useHistory((state) => state.removeHistory);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const openBusinessWhatsApp = async () => {
     const urlBusiness = `whatsapp-business://send?phone=${data.codigoPais}${data.telefono}`;
@@ -93,6 +96,10 @@ const CardHistory = ({ data, fecha }: Props) => {
     );
   };
 
+  const handleOpenModal = () => {
+    setIsModalVisible(true);
+  };
+
   const getAppIcon = () => {
     if (data.tipoApp.toLowerCase().includes("whatsapp")) {
       return (
@@ -113,7 +120,6 @@ const CardHistory = ({ data, fecha }: Props) => {
   return (
     <View style={styles.containerCard}>
       <View style={styles.iconContainer}>{getAppIcon()}</View>
-
       <View style={styles.infoContainer}>
         <Text style={styles.nameText} numberOfLines={1}>
           {data.nombreUser || "Anónimo"}
@@ -122,10 +128,9 @@ const CardHistory = ({ data, fecha }: Props) => {
           {data.bandera} {data.codigoISO} ({data.codigoPais}) {data.telefono}
         </Text>
       </View>
-
       <View style={styles.actionsContainer}>
         <Pressable
-          onPress={() => {}}
+          onPress={handleOpenModal}
           style={({ pressed }) => [
             styles.actionButton,
             { backgroundColor: "#e0f2fe", borderColor: "#bae6fd" },
@@ -136,6 +141,7 @@ const CardHistory = ({ data, fecha }: Props) => {
         >
           <Ionicons name="pencil-outline" size={18} color="#3b82f6" />
         </Pressable>
+
         <Pressable
           onPress={handleDelete}
           style={({ pressed }) => [
@@ -162,6 +168,15 @@ const CardHistory = ({ data, fecha }: Props) => {
           <Ionicons name="arrow-forward" size={18} color="#10b981" />
         </Pressable>
       </View>
+      <ModalPicker
+        isModalVisible={isModalVisible}
+        onModalClose={() => setIsModalVisible(false)}
+        text="Editar nombre de usuario"
+      >
+        <View>
+          <Text>Contenido del modal para seleccionar la aplicación</Text>
+        </View>
+      </ModalPicker>
     </View>
   );
 };

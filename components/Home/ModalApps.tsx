@@ -87,7 +87,11 @@ const ModalApps = ({
   };
 
   return (
-    <ModalPicker isVisible={isModalVisible} onClose={onModalClose}>
+    <ModalPicker
+      text="Selecciona la aplicación"
+      isModalVisible={isModalVisible}
+      onModalClose={onModalClose}
+    >
       <View style={styles.container}>
         <Pressable
           onPress={openAppWhatsApp}
