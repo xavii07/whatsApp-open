@@ -5,10 +5,12 @@ import {
   Pressable,
   Linking,
   Image,
+  Platform,
+  Alert,
 } from "react-native";
-import MyIcon from "../ui/MyIcon";
 import { CardData } from "@/infrastructure/interfaces/history.response";
 import { useHistory } from "@/presentation/store/useHistory";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface Props {
   data: CardData;
@@ -26,6 +28,11 @@ const CardHistory = ({ data, fecha }: Props) => {
       Linking.openURL(
         `whatsapp-business://send?phone=${data.codigoPais}${data.telefono}`
       );
+    } else {
+      Alert.alert(
+        "Error",
+        "No se pudo abrir WhatsApp Business. Verifica que esté instalado."
+      );
     }
   };
 
@@ -37,6 +44,11 @@ const CardHistory = ({ data, fecha }: Props) => {
       Linking.openURL(
         `whatsapp://send?phone=${data.codigoPais}${data.telefono}`
       );
+    } else {
+      Alert.alert(
+        "Error",
+        "No se pudo abrir WhatsApp. Verifica que esté instalado."
+      );
     }
   };
 
@@ -45,6 +57,11 @@ const CardHistory = ({ data, fecha }: Props) => {
     const puedeAbrir = await Linking.canOpenURL(urlTelegram);
     if (puedeAbrir) {
       Linking.openURL(`tg://resolve?domain=${data.codigoPais}${data.telefono}`);
+    } else {
+      Alert.alert(
+        "Error",
+        "No se pudo abrir Telegram. Verifica que esté instalado."
+      );
     }
   };
 
@@ -58,49 +75,91 @@ const CardHistory = ({ data, fecha }: Props) => {
     }
   };
 
+  const handleDelete = () => {
+    Alert.alert(
+      "Eliminar registro",
+      "¿Estás seguro de eliminar este registro del historial?",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "Eliminar",
+          style: "destructive",
+          onPress: () => removeHistory(fecha, data.id),
+        },
+      ]
+    );
+  };
+
+  const getAppIcon = () => {
+    if (data.tipoApp.toLowerCase().includes("whatsapp")) {
+      return (
+        <Image
+          source={require("@/assets/images/whatsapp.png")}
+          style={styles.appIcon}
+        />
+      );
+    }
+    return (
+      <Image
+        source={require("@/assets/images/telegrama.png")}
+        style={styles.appIcon}
+      />
+    );
+  };
+
   return (
     <View style={styles.containerCard}>
-      <View style={styles.cardIcon}>
-        {data.tipoApp.toLowerCase().includes("whatsapp") ? (
-          <Image
-            source={require("@/assets/images/whatsapp.png")}
-            style={{ width: 14, height: 14 }}
-          />
-        ) : (
-          <Image
-            source={require("@/assets/images/telegrama.png")}
-            style={{ width: 14, height: 14 }}
-          />
-        )}
-      </View>
-      <View>
-        <Text style={[styles.cardText, { color: "#ddd" }]}>
-          {data.nombreUser || "Anonimo"}
+      <View style={styles.iconContainer}>{getAppIcon()}</View>
+
+      <View style={styles.infoContainer}>
+        <Text style={styles.nameText} numberOfLines={1}>
+          {data.nombreUser || "Anónimo"}
         </Text>
-        <Text style={styles.cardText}>
+        <Text style={styles.phoneText} numberOfLines={1}>
           {data.bandera} {data.codigoISO} ({data.codigoPais}) {data.telefono}
         </Text>
       </View>
-      <View style={{ flexDirection: "row", gap: 10 }}>
+
+      <View style={styles.actionsContainer}>
         <Pressable
-          onPress={() => removeHistory(fecha, data.id)}
-          style={({ pressed }) => ({
-            backgroundColor: pressed ? "#25D366FF" : "#fff",
-            borderRadius: 10,
-            padding: 4,
-          })}
+          onPress={() => {}}
+          style={({ pressed }) => [
+            styles.actionButton,
+            { backgroundColor: "#e0f2fe", borderColor: "#bae6fd" },
+            { opacity: pressed ? 0.7 : 1 },
+          ]}
+          accessibilityLabel="Editar nombre de usuario"
+          accessibilityRole="button"
         >
-          <MyIcon name="trash" />
+          <Ionicons name="pencil-outline" size={18} color="#3b82f6" />
         </Pressable>
         <Pressable
-          onPress={() => openAppMessage(data.tipoApp)}
-          style={({ pressed }) => ({
-            backgroundColor: pressed ? "#25D36699" : "#fff",
-            borderRadius: 10,
-            padding: 4,
-          })}
+          onPress={handleDelete}
+          style={({ pressed }) => [
+            styles.actionButton,
+            styles.deleteButton,
+            { opacity: pressed ? 0.7 : 1 },
+          ]}
+          accessibilityLabel="Eliminar del historial"
+          accessibilityRole="button"
         >
-          <MyIcon name="arrow-forward" />
+          <Ionicons name="trash-bin" size={18} color="#ef4444" />
+        </Pressable>
+
+        <Pressable
+          onPress={() => openAppMessage(data.tipoApp)}
+          style={({ pressed }) => [
+            styles.actionButton,
+            styles.openButton,
+            { opacity: pressed ? 0.7 : 1 },
+          ]}
+          accessibilityLabel="Abrir conversación"
+          accessibilityRole="button"
+        >
+          <Ionicons name="arrow-forward" size={18} color="#10b981" />
         </Pressable>
       </View>
     </View>
@@ -110,32 +169,69 @@ const CardHistory = ({ data, fecha }: Props) => {
 const styles = StyleSheet.create({
   containerCard: {
     flexDirection: "row",
-    backgroundColor: "#075e54ff",
+    backgroundColor: "#075e54bb",
     alignItems: "center",
-    justifyContent: "space-between",
-    marginTop: 5,
-    borderRadius: 10,
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-    marginHorizontal: 20,
-    shadowColor: "#fff",
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 0.75,
-    elevation: 1,
+    borderRadius: 12,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
   },
-  cardIcon: {
-    backgroundColor: "#f0f0f0",
+  iconContainer: {
+    backgroundColor: "#f1f5f9",
     borderRadius: 10,
-    padding: 8,
+    padding: 10,
+    marginRight: 12,
   },
-  cardText: {
-    fontFamily: "PoppinsRegular",
-    fontSize: 12,
+  appIcon: {
+    width: 20,
+    height: 20,
+  },
+  infoContainer: {
+    flex: 1,
+    marginRight: 8,
+  },
+  nameText: {
+    fontFamily: "PoppinsSemiBold",
+    fontSize: 13,
     color: "#fff",
+    marginBottom: 2,
+  },
+  phoneText: {
+    fontFamily: "PoppinsRegular",
+    fontSize: 11,
+    color: "#fff",
+    lineHeight: 16,
+  },
+  actionsContainer: {
+    flexDirection: "row",
+    gap: 4,
+  },
+  actionButton: {
+    width: 25,
+    height: 25,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+  },
+  deleteButton: {
+    backgroundColor: "#fef2f2",
+    borderColor: "#fecaca",
+  },
+  openButton: {
+    backgroundColor: "#f0fdf4",
+    borderColor: "#bbf7d0",
   },
 });
 

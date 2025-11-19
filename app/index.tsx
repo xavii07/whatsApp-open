@@ -1,7 +1,5 @@
 import FormComponent from "@/components/Form";
 import Header from "@/components/Header";
-import ModalApps from "@/components/Home/ModalApps";
-import { useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -10,13 +8,12 @@ export default function HomeScreen() {
 
   return (
     <View style={[styles.container, { marginTop: top }]}>
-      <Header />
-      <FormComponent />
-
       <Image
         source={require("@/assets/images/fondo.png")}
         style={styles.fondo}
       />
+      <Header />
+      <FormComponent />
     </View>
   );
 }
