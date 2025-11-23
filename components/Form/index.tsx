@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import InputComponent from "../Input";
 import SelectComponent from "../Select";
 import ButtonComponent from "../Button";
-import { mensajesPredefinidos } from "@/config/data/consts";
 import CardMessage from "../Home/CardMessage";
 import TextareaMessage from "../Home/TextareaMessage";
 import ModalApps from "../Home/ModalApps";
+import { useMessagesStore } from "@/presentation/store/useMessages";
 
 const { width } = Dimensions.get("window");
 const isSmallScreen = width < 375;
@@ -17,6 +17,8 @@ const FormComponent = () => {
   const [mensaje, setMensaje] = useState("");
   const [showTextarea, setShowTextarea] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+
+  const { messages } = useMessagesStore();
 
   const onOpenModal = () => {
     setIsModalVisible(true);
@@ -41,7 +43,7 @@ const FormComponent = () => {
 
       <View style={styles.messagesSection}>
         <FlatList
-          data={mensajesPredefinidos}
+          data={messages}
           horizontal
           keyExtractor={(item) => item.categoria}
           renderItem={({ item }) => (

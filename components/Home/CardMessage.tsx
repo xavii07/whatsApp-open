@@ -5,9 +5,12 @@ import {
   Pressable,
   Platform,
   ScrollView,
+  Alert,
 } from "react-native";
 import React from "react";
 import { mensajesPredefinidos } from "@/config/data/consts";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useMessagesStore } from "@/presentation/store/useMessages";
 
 interface Props {
   item: (typeof mensajesPredefinidos)[0];
@@ -16,9 +19,29 @@ interface Props {
 }
 
 const CardMessage = ({ item, setMessage, setShowTextarea }: Props) => {
-  const handlePress = (mensaje: string) => {
+  const { deleteFavorito } = useMessagesStore();
+
+  const handleAddMessageToInput = (mensaje: string) => {
     if (setMessage) setMessage(mensaje);
     if (setShowTextarea) setShowTextarea(true);
+  };
+
+  const handleDeleteFavoritoMessage = (mensajeABorrar: string) => {
+    Alert.alert(
+      "Eliminar favorito",
+      "¿Estás seguro de que deseas eliminar este mensaje de tus favoritos?",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "Eliminar",
+          style: "destructive",
+          onPress: () => deleteFavorito(mensajeABorrar),
+        },
+      ]
+    );
   };
 
   return (
@@ -30,7 +53,7 @@ const CardMessage = ({ item, setMessage, setShowTextarea }: Props) => {
       <ScrollView style={styles.messagesContainer}>
         {item.mensajes.map((mensaje, index) => (
           <Pressable
-            onPress={() => handlePress(mensaje)}
+            onPress={() => handleAddMessageToInput(mensaje)}
             key={index}
             style={({ pressed }) => [
               styles.messageCard,
@@ -42,6 +65,17 @@ const CardMessage = ({ item, setMessage, setShowTextarea }: Props) => {
             accessibilityLabel={`Seleccionar mensaje: ${mensaje}`}
             accessibilityRole="button"
           >
+            {item.categoria === "⭐ Favoritos" && (
+              <Pressable
+                style={({ pressed }) => [
+                  styles.botonDeleteMessageFavorito,
+                  { opacity: pressed ? 0.7 : 1 },
+                ]}
+                onPress={() => handleDeleteFavoritoMessage(mensaje)}
+              >
+                <Ionicons name="close" size={16} color="#fff" />
+              </Pressable>
+            )}
             <Text style={styles.messageText} numberOfLines={3}>
               {mensaje}
             </Text>
@@ -93,6 +127,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     marginTop: 4,
   },
+  botonDeleteMessageFavorito: {
+    position: "absolute",
+    top: 1,
+    backgroundColor: "#ef4444",
+    right: 1,
+    borderRadius: 4,
+    padding: 2,
+    zIndex: 10,
+  },
   messageCard: {
     backgroundColor: "#f8fafc",
     borderRadius: 5,
@@ -102,6 +145,7 @@ const styles = StyleSheet.create({
     minHeight: 50,
     justifyContent: "center",
     marginBottom: 4,
+    position: "relative",
   },
   messageText: {
     fontFamily: "PoppinsRegular",
