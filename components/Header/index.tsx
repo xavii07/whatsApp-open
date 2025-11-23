@@ -2,18 +2,16 @@ import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 
 interface Props {
-  subtitle?: string;
+  children?: React.ReactNode;
 }
 
-const Header = ({ subtitle }: Props) => {
+const Header = ({ children }: Props) => {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1, justifyContent: "center" }}>
         <Text style={styles.text}>WhatsLink</Text>
       </View>
-      <View>
-        <Text style={styles.subtitle}>{subtitle}</Text>
-      </View>
+      <View>{children}</View>
     </View>
   );
 };
@@ -33,12 +31,6 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     fontSize: 18,
     color: "#fcfdff",
-  },
-  subtitle: {
-    fontFamily: "PoppinsSemiBold",
-    fontSize: 14,
-    color: "#fff",
-    letterSpacing: 0.4,
   },
 });
 

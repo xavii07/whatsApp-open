@@ -39,7 +39,9 @@ export default function TabTwoScreen() {
         source={require("@/assets/images/fondo.png")}
         style={styles.fondo}
       />
-      <Header subtitle="Historial" />
+      <Header>
+        <Text style={styles.subtitle}>Historial</Text>
+      </Header>
 
       <FlatList
         data={sections}
@@ -119,5 +121,11 @@ const styles = StyleSheet.create({
     color: "#ccc",
     textAlign: "center",
     lineHeight: 20,
+  },
+  subtitle: {
+    fontFamily: "PoppinsSemiBold",
+    fontSize: 14,
+    color: "#fff",
+    letterSpacing: 0.4,
   },
 });

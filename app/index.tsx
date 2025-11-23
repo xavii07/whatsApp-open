@@ -1,6 +1,7 @@
 import FormComponent from "@/components/Form";
 import Header from "@/components/Header";
-import { Image, StyleSheet, View } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
@@ -12,7 +13,11 @@ export default function HomeScreen() {
         source={require("@/assets/images/fondo.png")}
         style={styles.fondo}
       />
-      <Header />
+      <Header>
+        <Pressable onPress={() => console.log("Favorites pressed")}>
+          <Ionicons name="information-circle" size={24} color="#fff" />
+        </Pressable>
+      </Header>
       <FormComponent />
     </View>
   );
@@ -32,5 +37,11 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     zIndex: -1,
     opacity: 0.9,
+  },
+  subtitle: {
+    fontFamily: "PoppinsSemiBold",
+    fontSize: 14,
+    color: "#fff",
+    letterSpacing: 0.4,
   },
 });
