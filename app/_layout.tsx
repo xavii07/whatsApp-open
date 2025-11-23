@@ -1,5 +1,6 @@
 import MyIcon from "@/components/ui/MyIcon";
 import { useHistory } from "@/presentation/store/useHistory";
+import { useMessagesStore } from "@/presentation/store/useMessages";
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Tabs } from "expo-router";
@@ -16,12 +17,19 @@ export default function RootLayout() {
   });
 
   const getHistory = useHistory((state) => state.getHistory);
+  const getMessagesFavoritos = useMessagesStore(
+    (state) => state.getMessagesFavoritos
+  );
 
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
+
+  useEffect(() => {
+    getMessagesFavoritos();
+  }, []);
 
   useEffect(() => {
     getHistory();

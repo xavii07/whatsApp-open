@@ -129,9 +129,9 @@ const styles = StyleSheet.create({
   },
   botonDeleteMessageFavorito: {
     position: "absolute",
-    top: 1,
+    top: 2,
     backgroundColor: "#ef4444",
-    right: 1,
+    right: 2,
     borderRadius: 4,
     padding: 2,
     zIndex: 10,

@@ -9,6 +9,7 @@ import {
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { obtenerMensajeAleatorio } from "@/config/utils/selectRandomMessage";
+import { useMessagesStore } from "@/presentation/store/useMessages";
 
 interface Props {
   showTextarea: boolean;
@@ -23,6 +24,12 @@ const TextareaMessage = ({
   setMensaje,
   setShowTextarea,
 }: Props) => {
+  const addFavorito = useMessagesStore((state) => state.addFavorito);
+
+  const addFavoriteMessage = (mensajeAGuardar: string) => {
+    addFavorito(mensajeAGuardar);
+  };
+
   if (!showTextarea) return null;
 
   return (
@@ -44,7 +51,7 @@ const TextareaMessage = ({
             </Pressable>
 
             <Pressable
-              onPress={() => console.log("Guardar como favorito")}
+              onPress={() => addFavoriteMessage(mensaje)}
               style={({ pressed }) => [
                 styles.actionButton,
                 styles.setFavoriteButton,
