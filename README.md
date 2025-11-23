@@ -1,6 +1,6 @@
-# Welcome to WhatsLink App
+# Welcome to MensaLink App
 
-WhatsLink is a mobile app that allows you to share links with your friends and family. You can create a link, share it with your friends, and they can open it in their browser. The app is built with [Expo](https://expo.dev/), a platform for universal React applications.
+MensaLink is a mobile app that allows you to share links with your friends and family. You can create a link, share it with your friends, and they can open it in their browser. The app is built with [Expo](https://expo.dev/), a platform for universal React applications.
 
 ## Get started
 
@@ -27,4 +27,3 @@ WhatsLink is a mobile app that allows you to share links with your friends and f
    ```bash
       http://localhost:19006
    ```
-

@@ -1,20 +1,18 @@
 {
   "expo": {
-    "name": "whatsLink",
-    "slug": "whatsLink",
+    "name": "mensalink",
+    "slug": "mensalink",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "whatslink",
+    "scheme": "mensalink",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#25D366"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -23,16 +21,12 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#25D366"
       },
-      "package": "com.xavii077.whatsLink"
+      "package": "com.xavii077.mensalink"
     },
     "web": {
       "favicon": "./assets/images/icon.png"
     },
-    "plugins": [
-      "expo-router",
-      "expo-font",
-      "expo-web-browser"
-    ],
+    "plugins": ["expo-router", "expo-font", "expo-web-browser"],
     "experimental": {
       "typedRoutes": true
     },
