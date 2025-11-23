@@ -9,7 +9,7 @@ const Header = ({ children }: Props) => {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1, justifyContent: "center" }}>
-        <Text style={styles.text}>WhatsLink</Text>
+        <Text style={styles.text}>MensaLink</Text>
       </View>
       <View>{children}</View>
     </View>

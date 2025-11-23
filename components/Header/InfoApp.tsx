@@ -47,7 +47,7 @@ export default function AppInfoModal({
             <TouchableOpacity onPress={onClose} style={styles.headerBack}>
               <Text style={styles.backChevron}>‹</Text>
             </TouchableOpacity>
-            <Text style={styles.title}>Click para chatear</Text>
+            <Text style={styles.title}>MensaLink</Text>
           </View>
 
           <ScrollView
@@ -58,47 +58,38 @@ export default function AppInfoModal({
               Abre chats en <Text style={{ fontWeight: "700" }}>WhatsApp</Text>,{" "}
               <Text style={{ fontWeight: "700" }}>WhatsApp Business</Text> o{" "}
               <Text style={{ fontWeight: "700" }}>Telegram</Text> sin guardar el
-              número.
+              número. ¡Rápido y fácil!
             </Text>
 
-            {/* Privacy Section */}
             <Accordion
               title="Privacidad y seguridad"
               open={openSection === "privacy"}
               onToggle={() => toggle("privacy")}
               accentColor={accentColor}
             >
-              <Text style={styles.paragraph}>
-                • No recolectamos ni compartimos datos personales.{"\n"}• Todo
-                se guarda <Text style={{ fontWeight: "700" }}>localmente</Text>{" "}
-                en tu dispositivo (historial, favoritos, nombres).{"\n"}• No
-                enviamos información a servidores externos.{"\n"}• Sólo usamos
-                las APIs públicas para abrir chats.
-              </Text>
+              <FeatureItem text="No recolectamos ni compartimos datos personales." />
+              <FeatureItem text="Todo se guarda localmente en tu dispositivo (historial, favoritos, nombres)." />
+              <FeatureItem text="No enviamos información a servidores externos." />
+              <FeatureItem text="Sólo usamos las APIs públicas para abrir chats." />
             </Accordion>
 
-            {/* How it works */}
             <Accordion
               title="Cómo funciona"
               open={openSection === "how"}
               onToggle={() => toggle("how")}
               accentColor={accentColor}
             >
-              <Text style={styles.paragraph}>
-                1. Selecciona el país (o deja la detección automática).{"\n"}
-                2. Ingresa prefijo + número (solo dígitos 0–9).{"\n"}
-                3. Elige app: WhatsApp / WhatsApp Business / Telegram.{"\n"}
-                4. Escribe un mensaje, selecciona uno predefinido o abre sin
-                mensaje.
-              </Text>
+              <FeatureItem text="Selecciona el país o deja la detección automática." />
+              <FeatureItem text="Ingresa el número de teléfono (solo dígitos 0–9)." />
+              <FeatureItem text="Escribe un mensaje, selecciona uno predefinido o abre sin mensaje." />
+              <FeatureItem text="Elige la app: WhatsApp / WhatsApp Business / Telegram." />
 
               <Text style={[styles.small, { marginTop: 8 }]}>
-                Ejemplo: para España (+34) escribe{" "}
-                <Text style={{ fontWeight: "700" }}>34 123456789</Text>
+                Ejemplo: para Ecuador (+593) escribe{" "}
+                <Text style={{ fontWeight: "700" }}>0956324511</Text>
               </Text>
             </Accordion>
 
-            {/* Features */}
             <Accordion
               title="Funciones principales"
               open={openSection === "features"}
@@ -111,25 +102,21 @@ export default function AppInfoModal({
                 <FeatureItem text="Mensajes predefinidos, editar y guardar como favoritos" />
                 <FeatureItem text="Seleccionar un mensaje aleatorio de la lista" />
                 <FeatureItem text="Historial local con opción de asignar nombre" />
-                <FeatureItem text="Borrar historial y favoritos desde ajustes" />
+                <FeatureItem text="Borrar historial y favoritos" />
               </View>
             </Accordion>
 
-            {/* Coming soon */}
             <Accordion
               title="Próximamente"
               open={openSection === "coming"}
               onToggle={() => toggle("coming")}
               accentColor={accentColor}
             >
-              <Text style={styles.paragraph}>
-                • Generación de mensajes con IA (local o privada).{"\n"}• Más
-                plantillas inteligentes según el contexto.{"\n"}• Opciones de
-                exportar historial en CSV/JSON.
-              </Text>
+              <FeatureItem text="Generación de mensajes con IA" />
+              <FeatureItem text="Más plantillas inteligentes según el contexto" />
+              <FeatureItem text="Opciones de exportar historial en CSV" />
             </Accordion>
 
-            {/* Small important note */}
             <View style={styles.noteBox}>
               <Text style={styles.noteTitle}>Importante</Text>
               <Text style={styles.noteText}>
@@ -140,32 +127,16 @@ export default function AppInfoModal({
               </Text>
             </View>
 
-            {/* Buttons */}
             <View style={styles.row}>
               <TouchableOpacity
                 style={[styles.btn, { borderColor: accentColor }]}
                 onPress={() => {
-                  // ejemplo: abrir pantalla con detalles completos
-                  // puedes enviar navegación o abrir otra modal desde aqui
-                  // por ahora simplemente cierra
                   onClose();
                 }}
               >
                 <Text style={[styles.btnText, { color: accentColor }]}>
                   Cerrar
                 </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[styles.btnFilled, { backgroundColor: accentColor }]}
-                onPress={() => {
-                  // acción sugerida: abrir pantalla de ayuda completa
-                  // para demo cerramos y podrías navegar después
-                  onClose();
-                  // navigation?.navigate('HelpDetail');
-                }}
-              >
-                <Text style={[styles.btnTextFilled]}>Más información</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
@@ -219,12 +190,12 @@ function FeatureItem({ text }: { text: string }) {
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.45)",
+    backgroundColor: "rgba(0, 0, 0, 0.568)",
     justifyContent: "center",
     padding: 16,
   },
   container: {
-    backgroundColor: "#0f1720",
+    backgroundColor: "#075e54bb",
     borderRadius: 14,
     borderWidth: 2,
     maxHeight: "85%",
@@ -253,20 +224,20 @@ const styles = StyleSheet.create({
   body: {
     paddingHorizontal: 14,
     paddingBottom: 10,
-    backgroundColor: "#071013",
+    backgroundColor: "#fff",
   },
   lead: {
-    color: "#e6f4ee",
+    color: "#000",
     fontSize: 14,
     marginBottom: 12,
   },
   paragraph: {
-    color: "#d6eade",
+    color: "#000",
     fontSize: 13,
     lineHeight: 20,
   },
   small: {
-    color: "#bcdcc4",
+    color: "#000",
     fontSize: 12,
   },
   accordion: {
@@ -306,12 +277,12 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   noteTitle: {
-    color: "#fff",
+    color: "#000",
     fontWeight: "800",
     marginBottom: 6,
   },
   noteText: {
-    color: "#cfead4",
+    color: "#000",
     fontSize: 13,
     lineHeight: 18,
   },

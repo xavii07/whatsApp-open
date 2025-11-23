@@ -2,10 +2,12 @@ import FormComponent from "@/components/Form";
 import Header from "@/components/Header";
 import InfoApp from "@/components/Header/InfoApp";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useState } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
+  const [showModalInfo, setShowModalInfo] = useState(false);
   const { top } = useSafeAreaInsets();
 
   return (
@@ -15,12 +17,19 @@ export default function HomeScreen() {
         style={styles.fondo}
       />
       <Header>
-        <Pressable onPress={() => console.log("Favorites pressed")}>
+        <Pressable
+          style={({ pressed }) => [pressed && { opacity: 0.5 }]}
+          onPress={() => setShowModalInfo(true)}
+        >
           <Ionicons name="information-circle" size={24} color="#fff" />
         </Pressable>
       </Header>
       <FormComponent />
-      <InfoApp onClose={() => {}} visible={true} accentColor="#25D366" />
+      <InfoApp
+        onClose={() => setShowModalInfo(false)}
+        visible={showModalInfo}
+        accentColor="#25D366"
+      />
     </View>
   );
 }
