@@ -1,6 +1,6 @@
 import FormComponent from "@/components/Form";
 import Header from "@/components/Header";
-import InfoApp from "@/components/Header/InfoApp";
+import InfoApp from "@/components/Header/info/InfoApp";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
