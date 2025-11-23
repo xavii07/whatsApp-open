@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import InfoApp from "@/components/Header/info/InfoApp";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
@@ -24,6 +24,7 @@ export default function HomeScreen() {
           <Ionicons name="information-circle" size={24} color="#fff" />
         </Pressable>
       </Header>
+      <Text style={styles.label}>Ingresa un número de teléfono</Text>
       <FormComponent />
       <InfoApp
         onClose={() => setShowModalInfo(false)}
@@ -40,6 +41,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#25D366",
     position: "relative",
     zIndex: 0,
+  },
+  label: {
+    fontFamily: "PoppinsMedium",
+    fontSize: 22,
+    color: "#fff",
+    marginTop: 20,
+    textAlign: "center",
+    shadowColor: "#000000",
+    shadowOffset: { width: 2, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 8,
   },
   fondo: {
     position: "absolute",

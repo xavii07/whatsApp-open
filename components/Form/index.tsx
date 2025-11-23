@@ -1,4 +1,11 @@
-import { FlatList, StyleSheet, View, Platform, Dimensions } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  Platform,
+  Dimensions,
+  Text,
+} from "react-native";
 import React, { useState } from "react";
 import InputComponent from "../Input";
 import SelectComponent from "../Select";
@@ -90,7 +97,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: isSmallScreen ? 16 : 20,
     paddingVertical: 16,
-    justifyContent: "center",
+    // justifyContent: "center",
   },
 
   phoneSection: {
