@@ -1,5 +1,6 @@
 import FormComponent from "@/components/Form";
 import Header from "@/components/Header";
+import InfoApp from "@/components/Header/InfoApp";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -19,6 +20,7 @@ export default function HomeScreen() {
         </Pressable>
       </Header>
       <FormComponent />
+      <InfoApp onClose={() => {}} visible={true} accentColor="#25D366" />
     </View>
   );
 }
