@@ -24,7 +24,12 @@ export default function HomeScreen() {
           <Ionicons name="information-circle" size={24} color="#fff" />
         </Pressable>
       </Header>
-      <Text style={styles.label}>Ingresa un número de teléfono</Text>
+      <View style={styles.containerLabel}>
+        <Text style={styles.label}> Escribe y envía al instante</Text>
+        <Text style={styles.subtitle}>
+          Ingresa cualquier número de teléfono
+        </Text>
+      </View>
       <FormComponent />
       <InfoApp
         onClose={() => setShowModalInfo(false)}
@@ -42,17 +47,31 @@ const styles = StyleSheet.create({
     position: "relative",
     zIndex: 0,
   },
+  containerLabel: {
+    marginTop: 14,
+    backgroundColor: "#075e54bb",
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    // borderRadius: 8,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    // marginBottom: 4,
+    marginHorizontal: 20,
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    borderColor: "#ffffff",
+    borderWidth: 1,
+  },
   label: {
-    fontFamily: "PoppinsMedium",
-    fontSize: 22,
+    fontFamily: "PoppinsRegular",
+    fontSize: 14,
     color: "#fff",
-    marginTop: 20,
     textAlign: "center",
-    shadowColor: "#000000",
-    shadowOffset: { width: 2, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 8,
   },
   fondo: {
     position: "absolute",
@@ -63,9 +82,8 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   subtitle: {
-    fontFamily: "PoppinsSemiBold",
-    fontSize: 14,
-    color: "#fff",
-    letterSpacing: 0.4,
+    fontFamily: "PoppinsRegular",
+    fontSize: 12,
+    color: "#ddd",
   },
 });

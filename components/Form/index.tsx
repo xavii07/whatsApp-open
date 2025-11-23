@@ -1,11 +1,4 @@
-import {
-  FlatList,
-  StyleSheet,
-  View,
-  Platform,
-  Dimensions,
-  Text,
-} from "react-native";
+import { FlatList, StyleSheet, View, Platform, Dimensions } from "react-native";
 import React, { useState } from "react";
 import InputComponent from "../Input";
 import SelectComponent from "../Select";
@@ -96,7 +89,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: isSmallScreen ? 16 : 20,
-    paddingVertical: 16,
+    // paddingVertical: 16,
     // justifyContent: "center",
   },
 
@@ -108,7 +101,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: 8,
     backgroundColor: "#ffffff",
-    borderRadius: 12,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
     overflow: "hidden",
     borderWidth: 1,
     borderColor: "#e2e8f0",
