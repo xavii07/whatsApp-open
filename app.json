@@ -12,7 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#25D366"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -26,15 +28,20 @@
     "web": {
       "favicon": "./assets/images/icon.png"
     },
-    "plugins": ["expo-router", "expo-font", "expo-web-browser"],
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-web-browser"
+    ],
     "experimental": {
       "typedRoutes": true
     },
     "extra": {
       "eas": {
-        "projectId": "b5e27654-948d-4888-a574-5ad2d93e08a5"
-      }
+        "projectId": "94e33654-d1fd-4fb6-8cf9-ff4b741bcdf9"
+      },
+      "router": {}
     },
-    "owner": "xavii077"
+    "owner": "prograwebs"
   }
 }
