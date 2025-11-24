@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "mensalink",
+    "name": "MensaLink",
     "slug": "mensalink",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -14,7 +14,8 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.xavii077.mensalink"
     },
     "android": {
       "adaptiveIcon": {
@@ -26,7 +27,25 @@
     "web": {
       "favicon": "./assets/images/icon.png"
     },
-    "plugins": ["expo-router", "expo-font", "expo-web-browser"],
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-web-browser",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "manifestQueries": {
+              "package": [
+                "com.whatsapp",
+                "com.whatsapp.w4b",
+                "org.telegram.messenger"
+              ]
+            }
+          }
+        }
+      ]
+    ],
     "extra": {
       "eas": {
         "projectId": "94e33654-d1fd-4fb6-8cf9-ff4b741bcdf9"
