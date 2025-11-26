@@ -71,15 +71,16 @@ const ModalApps = ({
   };
 
   const openAppTelegram = async () => {
+    const urlTelegram = `https://t.me/${codigo}${telefono}?text=${
+      mensaje || ""
+    }`;
     const puedeAbrir = await Linking.canOpenURL(
       `tg://resolve?domain=${codigo}${telefono}`
     );
 
     if (puedeAbrir) {
       addMessageToHistory("Telegram");
-      Linking.openURL(
-        `tg://resolve?domain=${codigo}${telefono}&text=${mensaje || ""}`
-      );
+      Linking.openURL(urlTelegram);
       onModalClose();
     } else {
       alert("No se encontró Telegram instalado.");

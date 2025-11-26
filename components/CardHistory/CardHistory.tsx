@@ -62,7 +62,7 @@ const CardHistory = ({ data, fecha }: Props) => {
     const urlTelegram = `tg://resolve?domain=${data.codigoPais}${data.telefono}`;
     const puedeAbrir = await Linking.canOpenURL(urlTelegram);
     if (puedeAbrir) {
-      Linking.openURL(`tg://resolve?domain=${data.codigoPais}${data.telefono}`);
+      Linking.openURL(urlTelegram);
     } else {
       Alert.alert(
         "Error",

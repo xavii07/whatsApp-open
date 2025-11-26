@@ -1,9 +1,7 @@
 export const formatDate = (date: string) => {
-  const [y, m, d] = date.split("-").map(Number);
-  const localDate = new Date(y, m - 1, d);
+  const localDate = new Date(date + "T00:00:00");
 
   const options: Intl.DateTimeFormatOptions = {
-    timeZone: "America/Guayaquil",
     weekday: "short",
     year: "numeric",
     month: "long",
