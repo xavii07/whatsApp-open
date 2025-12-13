@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
+import { COLOR_BLANCO } from "@/config/data/consts";
 
 interface Props {
   title: string;
@@ -70,6 +71,6 @@ const styles = StyleSheet.create({
   accordionBody: {
     paddingVertical: 12,
     paddingHorizontal: 16,
-    backgroundColor: "#fff",
+    backgroundColor: COLOR_BLANCO,
   },
 });

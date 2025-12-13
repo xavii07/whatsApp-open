@@ -10,6 +10,7 @@ import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { obtenerMensajeAleatorio } from "@/config/utils/selectRandomMessage";
 import { useMessagesStore } from "@/presentation/store/useMessages";
+import { COLOR_BLANCO } from "@/config/data/consts";
 
 interface Props {
   showTextarea: boolean;
@@ -47,7 +48,7 @@ const TextareaMessage = ({
               accessibilityLabel="Borrar mensaje"
               accessibilityRole="button"
             >
-              <Ionicons name="trash-bin" size={18} color="#fff" />
+              <Ionicons name="trash-bin" size={18} color={COLOR_BLANCO} />
             </Pressable>
 
             <Pressable
@@ -60,7 +61,7 @@ const TextareaMessage = ({
               accessibilityLabel="Guardar mensaje como favorito"
               accessibilityRole="button"
             >
-              <Ionicons name="star" size={18} color="#fff" />
+              <Ionicons name="star" size={18} color={COLOR_BLANCO} />
             </Pressable>
           </>
         )}
@@ -80,7 +81,7 @@ const TextareaMessage = ({
           accessibilityLabel="Generar mensaje con IA (próximamente)"
           accessibilityRole="button"
         >
-          <Ionicons name="bulb" size={18} color="#fff" />
+          <Ionicons name="bulb" size={18} color={COLOR_BLANCO} />
         </Pressable>
 
         <Pressable
@@ -95,7 +96,7 @@ const TextareaMessage = ({
           accessibilityLabel="Generar mensaje aleatorio"
           accessibilityRole="button"
         >
-          <Ionicons name="refresh" size={18} color="#fff" />
+          <Ionicons name="refresh" size={18} color={COLOR_BLANCO} />
         </Pressable>
 
         <Pressable
@@ -113,7 +114,7 @@ const TextareaMessage = ({
           accessibilityLabel="Cerrar editor"
           accessibilityRole="button"
         >
-          <Ionicons name="close" size={18} color="#fff" />
+          <Ionicons name="close" size={18} color={COLOR_BLANCO} />
         </Pressable>
       </View>
 
@@ -138,7 +139,7 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 4,
     marginBottom: 8,
-    backgroundColor: "#ffffff",
+    backgroundColor: COLOR_BLANCO,
     borderRadius: 12,
     padding: 4,
     minHeight: 100,

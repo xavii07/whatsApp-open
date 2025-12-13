@@ -1,4 +1,5 @@
 import MyIcon from "@/components/ui/MyIcon";
+import { COLOR_PRIMARY } from "@/config/data/consts";
 import { useHistory } from "@/presentation/store/useHistory";
 import { useMessagesStore } from "@/presentation/store/useMessages";
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
@@ -43,7 +44,7 @@ export default function RootLayout() {
     <ThemeProvider value={DefaultTheme}>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: "#25d366",
+          tabBarActiveTintColor: COLOR_PRIMARY,
           headerShown: false,
         }}
       >

@@ -4,6 +4,7 @@ import { countries, Country } from "@/config/data/countries";
 import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import MyIcon from "../ui/MyIcon";
 import useIp from "@/presentation/hooks/useIp";
+import { COLOR_BLANCO, COLOR_SECONDARY } from "@/config/data/consts";
 
 type SelectProps = {
   onChangeCodigo: (text: string) => void;
@@ -28,7 +29,7 @@ const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="small" color="#075e54" />
+        <ActivityIndicator size="small" color={COLOR_SECONDARY} />
         <Text style={styles.loadingText}>Detectando país...</Text>
       </View>
     );
@@ -40,7 +41,10 @@ const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
         return (
           <View style={styles.containerSelect}>
             <Text style={styles.textSelect}>
-              {selectedItem || (selectedCountry ? selectedCountry.bandera + " " + selectedCountry.codigoISO : "Seleccione un país")}
+              {selectedItem ||
+                (selectedCountry
+                  ? selectedCountry.bandera + " " + selectedCountry.codigoISO
+                  : "Seleccione un país")}
             </Text>
             <MyIcon name={isOpened ? "chevron-up" : "chevron-down"} />
           </View>
@@ -61,7 +65,7 @@ const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
                 styles.itemText,
                 {
                   fontFamily: isSelected ? "PoppinsBold" : "PoppinsRegular",
-                  color: isSelected ? "#ffffff" : "#000000",
+                  color: isSelected ? COLOR_BLANCO : "#000000",
                 },
               ]}
             >

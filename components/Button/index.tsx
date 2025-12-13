@@ -1,3 +1,4 @@
+import { COLOR_BLANCO, COLOR_SECONDARY } from "@/config/data/consts";
 import React from "react";
 import { Pressable, StyleSheet, Text } from "react-native";
 
@@ -26,7 +27,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({ telefono, onOpenModal }) => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#075e54",
+    backgroundColor: COLOR_SECONDARY,
     borderWidth: 0,
     borderColor: "transparent",
     width: "100%",
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   text: {
-    color: "#fff",
+    color: COLOR_BLANCO,
     letterSpacing: 1,
     textAlign: "center",
     fontFamily: "PoppinsRegular",

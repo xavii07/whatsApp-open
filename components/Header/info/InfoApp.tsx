@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import Accordion from "./Accordion";
 import FeatureItem from "./FeatureItem";
+import { COLOR_BLANCO, COLOR_SECONDARY } from "@/config/data/consts";
 
 interface Props {
   visible: boolean;
@@ -35,7 +36,7 @@ export default function AppInfoModal({
     <Modal visible={visible} animationType="slide" transparent>
       <View style={styles.backdrop}>
         <View style={styles.container}>
-          <View style={[styles.header, { backgroundColor: "#075e54" }]}>
+          <View style={[styles.header, { backgroundColor: COLOR_SECONDARY }]}>
             <TouchableOpacity onPress={onClose} style={styles.headerBack}>
               <Text style={styles.backChevron}>‹</Text>
             </TouchableOpacity>
@@ -178,7 +179,7 @@ export default function AppInfoModal({
             </View>
 
             <TouchableOpacity
-              style={[styles.btn, { backgroundColor: "#075e54" }]}
+              style={[styles.btn, { backgroundColor: COLOR_SECONDARY }]}
               onPress={onClose}
               activeOpacity={0.8}
             >
@@ -199,7 +200,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   container: {
-    backgroundColor: "#ffffff",
+    backgroundColor: COLOR_BLANCO,
     borderRadius: 20,
     maxHeight: "90%",
     overflow: "hidden",
@@ -232,11 +233,11 @@ const styles = StyleSheet.create({
   },
   backChevron: {
     fontSize: 32,
-    color: "#fff",
+    color: COLOR_BLANCO,
     fontWeight: "300",
   },
   title: {
-    color: "#fff",
+    color: COLOR_BLANCO,
     fontSize: 20,
     fontWeight: "700",
     letterSpacing: 0.5,
@@ -284,7 +285,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   btnText: {
-    color: "#fff",
+    color: COLOR_BLANCO,
     fontWeight: "700",
     fontSize: 14,
   },

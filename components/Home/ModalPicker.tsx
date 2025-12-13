@@ -2,6 +2,7 @@ import { Modal, View, Text, Pressable, StyleSheet } from "react-native";
 import { PropsWithChildren } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { COLOR_BLANCO } from "@/config/data/consts";
 
 type Props = PropsWithChildren<{
   isModalVisible: boolean;
@@ -23,7 +24,7 @@ export default function ModalPicker({
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{text}</Text>
             <Pressable onPress={onModalClose}>
-              <MaterialIcons name="close" color="#fff" size={22} />
+              <MaterialIcons name="close" color={COLOR_BLANCO} size={22} />
             </Pressable>
           </View>
           {children}
@@ -36,8 +37,8 @@ export default function ModalPicker({
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    justifyContent: 'flex-end',
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    justifyContent: "flex-end",
   },
   modalContent: {
     width: "100%",
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   title: {
-    color: "#fff",
+    color: COLOR_BLANCO,
     fontSize: 13,
     fontFamily: "PoppinsRegular",
   },

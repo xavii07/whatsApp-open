@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
+import { COLOR_SECONDARY_ACCENT } from "@/config/data/consts";
 
 interface Props {
   children?: React.ReactNode;
@@ -18,8 +19,7 @@ const Header = ({ children }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#075e54bb",
-    // height: "7%",
+    backgroundColor: COLOR_SECONDARY_ACCENT,
     height: 60,
     flexDirection: "row",
     alignItems: "center",

@@ -7,6 +7,7 @@ import CardMessage from "../Home/CardMessage";
 import TextareaMessage from "../Home/TextareaMessage";
 import ModalApps from "../Home/ModalApps";
 import { useMessagesStore } from "@/presentation/store/useMessages";
+import { COLOR_BLANCO } from "@/config/data/consts";
 
 const { width } = Dimensions.get("window");
 const isSmallScreen = width < 375;
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
   phoneInputWrapper: {
     flexDirection: "row",
     paddingHorizontal: 8,
-    backgroundColor: "#ffffff",
+    backgroundColor: COLOR_BLANCO,
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
     overflow: "hidden",

@@ -1,6 +1,11 @@
 import FormComponent from "@/components/Form";
 import Header from "@/components/Header";
 import InfoApp from "@/components/Header/info/InfoApp";
+import {
+  COLOR_BLANCO,
+  COLOR_PRIMARY,
+  COLOR_SECONDARY_ACCENT,
+} from "@/config/data/consts";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 import {
@@ -38,7 +43,11 @@ export default function HomeScreen() {
               style={({ pressed }) => [pressed && { opacity: 0.5 }]}
               onPress={() => setShowModalInfo(true)}
             >
-              <Ionicons name="information-circle" size={24} color="#fff" />
+              <Ionicons
+                name="information-circle"
+                size={24}
+                color={COLOR_BLANCO}
+              />
             </Pressable>
           </Header>
           <View style={styles.containerLabel}>
@@ -53,7 +62,7 @@ export default function HomeScreen() {
       <InfoApp
         onClose={() => setShowModalInfo(false)}
         visible={showModalInfo}
-        accentColor="#25D366"
+        accentColor={COLOR_PRIMARY}
       />
     </View>
   );
@@ -62,34 +71,32 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#25D366",
+    backgroundColor: COLOR_PRIMARY,
     position: "relative",
     zIndex: 0,
   },
   containerLabel: {
     marginTop: 14,
-    backgroundColor: "#075e54bb",
+    backgroundColor: COLOR_SECONDARY_ACCENT,
     paddingVertical: 6,
     paddingHorizontal: 12,
-    // borderRadius: 8,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     alignItems: "center",
     justifyContent: "center",
-    // marginBottom: 4,
     marginHorizontal: 20,
     elevation: 2,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
-    borderColor: "#ffffff",
+    borderColor: COLOR_BLANCO,
     borderWidth: 1,
   },
   label: {
     fontFamily: "PoppinsRegular",
     fontSize: 14,
-    color: "#fff",
+    color: COLOR_BLANCO,
     textAlign: "center",
   },
   fondo: {

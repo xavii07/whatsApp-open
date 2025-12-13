@@ -14,6 +14,11 @@ import { useHistory } from "@/presentation/store/useHistory";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import ModalPicker from "../Home/ModalPicker";
 import { useState } from "react";
+import {
+  COLOR_BLANCO,
+  COLOR_SECONDARY,
+  COLOR_SECONDARY_ACCENT,
+} from "@/config/data/consts";
 
 interface Props {
   data: CardData;
@@ -202,7 +207,7 @@ const CardHistory = ({ data, fecha }: Props) => {
                 { opacity: pressed ? 0.6 : 1 },
               ]}
             >
-              <Ionicons name="checkmark" size={25} color="#fff" />
+              <Ionicons name="checkmark" size={25} color={COLOR_BLANCO} />
             </Pressable>
           </View>
         </View>
@@ -214,7 +219,7 @@ const CardHistory = ({ data, fecha }: Props) => {
 const styles = StyleSheet.create({
   containerCard: {
     flexDirection: "row",
-    backgroundColor: "#075e54bb",
+    backgroundColor: COLOR_SECONDARY_ACCENT,
     alignItems: "center",
     borderRadius: 12,
     padding: 12,
@@ -253,14 +258,14 @@ const styles = StyleSheet.create({
   nameText: {
     fontFamily: "PoppinsSemiBold",
     fontSize: 13,
-    color: "#fff",
+    color: COLOR_BLANCO,
     marginBottom: 2,
   },
 
   phoneText: {
     fontFamily: "PoppinsRegular",
     fontSize: 11,
-    color: "#fff",
+    color: COLOR_BLANCO,
     lineHeight: 16,
   },
 
@@ -299,7 +304,7 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    backgroundColor: "#fff",
+    backgroundColor: COLOR_BLANCO,
     paddingVertical: 10,
     paddingLeft: 14,
     paddingRight: 90,
@@ -317,7 +322,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 10,
     borderBottomEndRadius: 10,
     width: 50,
-    backgroundColor: "#075e54",
+    backgroundColor: COLOR_SECONDARY,
     justifyContent: "center",
     alignItems: "center",
   },

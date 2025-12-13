@@ -5,6 +5,7 @@ import { useHistory } from "@/presentation/store/useHistory";
 import { StyleSheet, View, Text, Image, FlatList } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { COLOR_BLANCO, COLOR_SECONDARY } from "@/config/data/consts";
 
 export default function TabTwoScreen() {
   const { top, bottom } = useSafeAreaInsets();
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
   },
   emptyContainer2: {
     alignItems: "center",
-    backgroundColor: "#075e54",
+    backgroundColor: COLOR_SECONDARY,
     padding: 20,
     borderRadius: 10,
     shadowColor: "#000",
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontFamily: "PoppinsBold",
     fontSize: 18,
-    color: "#fff",
+    color: COLOR_BLANCO,
     marginTop: 10,
   },
   emptySubtitle: {
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontFamily: "PoppinsSemiBold",
     fontSize: 14,
-    color: "#fff",
+    color: COLOR_BLANCO,
     letterSpacing: 0.4,
   },
 });

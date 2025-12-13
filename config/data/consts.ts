@@ -1,12 +1,16 @@
 export const URL_WHATSAPP = "https://wa.me";
 
+export const COLOR_PRIMARY = "#25D366";
+export const COLOR_SECONDARY = "#075E54";
+export const COLOR_SECONDARY_ACCENT = "#075E54bb";
+export const COLOR_BLANCO = "#ffffff";
+
 export interface MensajePredefinido {
   categoria: string;
   mensajes: string[];
 }
 
 export const mensajesPredefinidos: MensajePredefinido[] = [
-  //add emojis to category names
   {
     categoria: " 📝 Personalizado / directo",
     mensajes: [

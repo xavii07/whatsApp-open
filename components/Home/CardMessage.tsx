@@ -8,7 +8,7 @@ import {
   Alert,
 } from "react-native";
 import React from "react";
-import { mensajesPredefinidos } from "@/config/data/consts";
+import { COLOR_BLANCO, mensajesPredefinidos } from "@/config/data/consts";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useMessagesStore } from "@/presentation/store/useMessages";
 
@@ -73,7 +73,7 @@ const CardMessage = ({ item, setMessage, setShowTextarea }: Props) => {
                 ]}
                 onPress={() => handleDeleteFavoritoMessage(mensaje)}
               >
-                <Ionicons name="close" size={16} color="#fff" />
+                <Ionicons name="close" size={16} color={COLOR_BLANCO} />
               </Pressable>
             )}
             <Text style={styles.messageText} numberOfLines={3}>
@@ -90,7 +90,7 @@ export default CardMessage;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#ffffff",
+    backgroundColor: COLOR_BLANCO,
     borderRadius: 16,
     marginRight: 12,
     width: 280,
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   categoryText: {
     fontFamily: "PoppinsBold",
     fontSize: 14,
-    color: "#ffffff",
+    color: COLOR_BLANCO,
     textAlign: "center",
     letterSpacing: 0.5,
   },

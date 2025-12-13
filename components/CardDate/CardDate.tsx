@@ -5,6 +5,7 @@ import {
 import { Text, StyleSheet, View } from "react-native";
 import CardHistory from "../CardHistory/CardHistory";
 import { formatDate } from "@/presentation/helpers/transform-data";
+import { COLOR_BLANCO } from "@/config/data/consts";
 
 interface Props {
   item: HistoryData;
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   dateBadge: {
-    backgroundColor: "#ffffff",
+    backgroundColor: COLOR_BLANCO,
     paddingHorizontal: 16,
     paddingVertical: 6,
     borderRadius: 20,
