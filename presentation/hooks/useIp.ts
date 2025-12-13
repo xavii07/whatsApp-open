@@ -1,20 +1,18 @@
-// presentation/hooks/useIp.ts
 import { useEffect } from "react";
 import { useCountryStore } from "../store/useCountryStore";
 
 const useIp = () => {
-  const { countryCode, isLoading, error, loadCountry } = useCountryStore();
-  console.log({countryCode, isLoading, error})
+  const { countryCode, isLoading, error, loadCountry, hasHydrated } = useCountryStore();
 
   useEffect(() => {
-    if (!countryCode && !isLoading) {
+    if (hasHydrated && !countryCode && !isLoading) {
       loadCountry();
     }
-  }, [countryCode, isLoading]);
+  }, [countryCode, isLoading, hasHydrated]);
 
   return { 
     country: countryCode, 
-    isLoading, 
+    isLoading: isLoading || !hasHydrated, 
     error 
   };
 };

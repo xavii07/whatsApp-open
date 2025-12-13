@@ -1,5 +1,5 @@
-// stores/useCountryStore.ts
 import { StorageAdapter } from "@/config/adapters/storage-adapter";
+import { getCountry } from "@/config/data/getContry";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
@@ -10,6 +10,8 @@ interface CountryState {
   setCountryCode: (code: string) => void;
   loadCountry: () => Promise<void>;
   clearCountry: () => void;
+  hasHydrated: boolean;
+  setHasHydrated: (state: boolean) => void;
 }
 
 export const useCountryStore = create<CountryState>()(
@@ -25,27 +27,18 @@ export const useCountryStore = create<CountryState>()(
 
       loadCountry: async () => {
         if (get().countryCode) {
-            console.log("ya existe el pais");
           return;
         }
 
         set({ isLoading: true, error: null });
 
         try {
-          const response = await fetch("https://ipinfo.io/json");
-          console.log({"llamada api": response});
-          
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          
-          const data = await response.json();
+            const country = await getCountry();
           set({ 
-            countryCode: data.country, 
+            countryCode: country, 
             isLoading: false 
           });
         } catch (error) {
-          console.error("Error al obtener la ubicación:", error);
           set({ 
             error: "No se pudo obtener la ubicación", 
             isLoading: false 
@@ -56,6 +49,11 @@ export const useCountryStore = create<CountryState>()(
       clearCountry: () => {
         set({ countryCode: null });
       },
+      
+      hasHydrated: false,
+      setHasHydrated: (state: boolean) => {
+        set({ hasHydrated: state });
+      }
     }),
     {
       name: "country-storage",
@@ -63,6 +61,9 @@ export const useCountryStore = create<CountryState>()(
       partialize: (state) => ({ 
         countryCode: state.countryCode 
       }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );

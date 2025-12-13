@@ -11,15 +11,10 @@ type SelectProps = {
 
 const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
   const { country, isLoading } = useIp();
-  console.log(country);
-  console.log(isLoading);
-
-  // Encontrar el país correspondiente
   const selectedCountry = countries.find((c) =>
     c.codigoISO.includes(country ?? "")
   );
 
-  // Establecer índice por defecto
   const defaultIndex = selectedCountry
     ? countries.findIndex((c) => c.codigoISO === selectedCountry.codigoISO)
     : 0;
@@ -30,7 +25,6 @@ const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
     }
   }, [selectedCountry]);
 
-  // Mostrar loading mientras se obtiene el país
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
@@ -52,7 +46,7 @@ const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
           </View>
         );
       }}
-      renderItem={(item, index, isSelected) => {
+      renderItem={(item, isSelected) => {
         return (
           <View
             style={[
