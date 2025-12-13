@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import SelectDropdown from "react-native-select-dropdown";
 import { countries, Country } from "@/config/data/countries";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import MyIcon from "../ui/MyIcon";
 import useIp from "@/presentation/hooks/useIp";
 
@@ -10,12 +10,16 @@ type SelectProps = {
 };
 
 const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
-  const { country } = useIp();
+  const { country, isLoading } = useIp();
+  console.log(country);
+  console.log(isLoading);
 
+  // Encontrar el país correspondiente
   const selectedCountry = countries.find((c) =>
     c.codigoISO.includes(country ?? "")
   );
 
+  // Establecer índice por defecto
   const defaultIndex = selectedCountry
     ? countries.findIndex((c) => c.codigoISO === selectedCountry.codigoISO)
     : 0;
@@ -26,13 +30,23 @@ const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
     }
   }, [selectedCountry]);
 
+  // Mostrar loading mientras se obtiene el país
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="small" color="#075e54" />
+        <Text style={styles.loadingText}>Detectando país...</Text>
+      </View>
+    );
+  }
+
   return (
     <SelectDropdown
       renderButton={(selectedItem, isOpened) => {
         return (
           <View style={styles.containerSelect}>
             <Text style={styles.textSelect}>
-              {selectedItem || "Seleccione un país"}
+              {selectedItem || (selectedCountry ? selectedCountry.bandera + " " + selectedCountry.codigoISO : "Seleccione un país")}
             </Text>
             <MyIcon name={isOpened ? "chevron-up" : "chevron-down"} />
           </View>
@@ -77,7 +91,6 @@ const SelectComponent: React.FC<SelectProps> = ({ onChangeCodigo }) => {
 
 const styles = StyleSheet.create({
   containerSelect: {
-    // backgroundColor: "#e2faf5",
     flexDirection: "row",
     height: 30,
     alignItems: "center",
@@ -100,6 +113,18 @@ const styles = StyleSheet.create({
   itemText: {
     color: "#000000",
     fontSize: 12,
+  },
+  loadingContainer: {
+    flexDirection: "row",
+    height: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+  },
+  loadingText: {
+    color: "#666",
+    fontSize: 12,
+    fontFamily: "PoppinsRegular",
   },
 });
 

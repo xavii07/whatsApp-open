@@ -1,14 +1,22 @@
-import { useEffect, useState } from "react";
-import { getCountry } from "@/config/data/getContry";
+// presentation/hooks/useIp.ts
+import { useEffect } from "react";
+import { useCountryStore } from "../store/useCountryStore";
 
 const useIp = () => {
-  const [country, setCountry] = useState<string | undefined>("");
+  const { countryCode, isLoading, error, loadCountry } = useCountryStore();
+  console.log({countryCode, isLoading, error})
 
   useEffect(() => {
-    getCountry().then((data) => setCountry(data));
-  }, []);
+    if (!countryCode && !isLoading) {
+      loadCountry();
+    }
+  }, [countryCode, isLoading]);
 
-  return { country };
+  return { 
+    country: countryCode, 
+    isLoading, 
+    error 
+  };
 };
 
 export default useIp;
