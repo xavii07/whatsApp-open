@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 20,
     alignItems: "center",
-    height: "70%",
+    paddingVertical: 20,
   },
   image: {
     width: 50,
