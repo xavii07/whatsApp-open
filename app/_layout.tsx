@@ -2,7 +2,6 @@ import MyIcon from "@/components/ui/MyIcon";
 import { COLOR_PRIMARY } from "@/config/data/consts";
 import { useHistory } from "@/presentation/store/useHistory";
 import { useMessagesStore } from "@/presentation/store/useMessages";
-import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Tabs } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -41,7 +40,6 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={DefaultTheme}>
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: COLOR_PRIMARY,
@@ -67,6 +65,5 @@ export default function RootLayout() {
           }}
         />
       </Tabs>
-    </ThemeProvider>
   );
 }
