@@ -3,12 +3,21 @@ import Header from "@/components/Header";
 import InfoApp from "@/components/Header/info/InfoApp";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   const [showModalInfo, setShowModalInfo] = useState(false);
-  const { top } = useSafeAreaInsets();
+  const { top, bottom } = useSafeAreaInsets();
 
   return (
     <View style={[styles.container, { marginTop: top }]}>
@@ -16,21 +25,31 @@ export default function HomeScreen() {
         source={require("@/assets/images/fondo.png")}
         style={styles.fondo}
       />
-      <Header>
-        <Pressable
-          style={({ pressed }) => [pressed && { opacity: 0.5 }]}
-          onPress={() => setShowModalInfo(true)}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: bottom + 20 }}
+          showsVerticalScrollIndicator={false}
         >
-          <Ionicons name="information-circle" size={24} color="#fff" />
-        </Pressable>
-      </Header>
-      <View style={styles.containerLabel}>
-        <Text style={styles.label}> Escribe y envía al instante</Text>
-        <Text style={styles.subtitle}>
-          Ingresa cualquier número de teléfono
-        </Text>
-      </View>
-      <FormComponent />
+          <Header>
+            <Pressable
+              style={({ pressed }) => [pressed && { opacity: 0.5 }]}
+              onPress={() => setShowModalInfo(true)}
+            >
+              <Ionicons name="information-circle" size={24} color="#fff" />
+            </Pressable>
+          </Header>
+          <View style={styles.containerLabel}>
+            <Text style={styles.label}> Escribe y envía al instante</Text>
+            <Text style={styles.subtitle}>
+              Ingresa cualquier número de teléfono
+            </Text>
+          </View>
+          <FormComponent />
+        </ScrollView>
+      </KeyboardAvoidingView>
       <InfoApp
         onClose={() => setShowModalInfo(false)}
         visible={showModalInfo}

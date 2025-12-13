@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function TabTwoScreen() {
-  const { top } = useSafeAreaInsets();
+  const { top, bottom } = useSafeAreaInsets();
   const { history } = useHistory();
 
   const sections: HistoryData[] = Object.keys(history).map((date) => ({
@@ -49,6 +49,7 @@ export default function TabTwoScreen() {
         renderItem={({ item }) => <CardDate item={item} />}
         contentContainerStyle={[
           styles.listContent,
+          { paddingBottom: 24 + bottom },
           sections.length === 0 && styles.listContentEmpty,
         ]}
         showsVerticalScrollIndicator={false}
