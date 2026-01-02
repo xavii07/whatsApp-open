@@ -1,4 +1,13 @@
-import { Modal, View, Text, Pressable, StyleSheet } from "react-native";
+import {
+  Modal,
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+} from "react-native";
 import { PropsWithChildren } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -20,15 +29,26 @@ export default function ModalPicker({
   return (
     <Modal animationType="slide" transparent={true} visible={isModalVisible}>
       <View style={styles.modalOverlay}>
-        <View style={[styles.modalContent, { paddingBottom: bottom }]}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>{text}</Text>
-            <Pressable onPress={onModalClose}>
-              <MaterialIcons name="close" color={COLOR_BLANCO} size={22} />
-            </Pressable>
-          </View>
-          {children}
-        </View>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.keyboardAvoidingView}
+        >
+          <ScrollView
+            contentContainerStyle={styles.scrollContent}
+            scrollEnabled={false}
+            keyboardShouldPersistTaps="handled"
+          >
+            <View style={[styles.modalContent, { paddingBottom: bottom + 20 }]}>
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>{text}</Text>
+                <Pressable onPress={onModalClose}>
+                  <MaterialIcons name="close" color={COLOR_BLANCO} size={22} />
+                </Pressable>
+              </View>
+              {children}
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </View>
     </Modal>
   );
@@ -38,6 +58,14 @@ const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.6)",
+    justifyContent: "flex-end",
+  },
+  keyboardAvoidingView: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  scrollContent: {
+    flexGrow: 1,
     justifyContent: "flex-end",
   },
   modalContent: {

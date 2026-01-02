@@ -37,22 +37,22 @@ export default function HomeScreen() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
       >
+        <Header>
+          <Pressable
+            style={({ pressed }) => [pressed && { opacity: 0.5 }]}
+            onPress={() => setShowModalInfo(true)}
+          >
+            <Ionicons
+              name="information-circle"
+              size={24}
+              color={COLOR_BLANCO}
+            />
+          </Pressable>
+        </Header>
         <ScrollView
           contentContainerStyle={{ flexGrow: 1, paddingBottom: bottom + 20 }}
           showsVerticalScrollIndicator={false}
         >
-          <Header>
-            <Pressable
-              style={({ pressed }) => [pressed && { opacity: 0.5 }]}
-              onPress={() => setShowModalInfo(true)}
-            >
-              <Ionicons
-                name="information-circle"
-                size={24}
-                color={COLOR_BLANCO}
-              />
-            </Pressable>
-          </Header>
           <View style={styles.containerLabel}>
             <Text style={styles.label}> Escribe y envía al instante</Text>
             <Text style={styles.subtitle}>
