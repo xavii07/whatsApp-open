@@ -3,9 +3,16 @@ import Header from "@/components/Header";
 import { HistoryData } from "@/infrastructure/interfaces/history.response";
 import { useHistory } from "@/presentation/store/useHistory";
 import { StyleSheet, View, Text, Image, FlatList } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { COLOR_BLANCO, COLOR_SECONDARY } from "@/config/data/consts";
+import {
+  COLOR_BLANCO,
+  COLOR_PRIMARY,
+  COLOR_SECONDARY,
+} from "@/config/data/consts";
 
 export default function TabTwoScreen() {
   const { top, bottom } = useSafeAreaInsets();
@@ -23,7 +30,7 @@ export default function TabTwoScreen() {
   sections.sort(orderSectionsByDate);
 
   const EmptyComponent = () => (
-    <View style={styles.emptyContainer}>
+    <SafeAreaView style={styles.emptyContainer}>
       <View style={styles.emptyContainer2}>
         <Ionicons name="time-outline" size={64} color="#ccc" />
         <Text style={styles.emptyTitle}>Sin historial</Text>
@@ -31,14 +38,14 @@ export default function TabTwoScreen() {
           Tus mensajes enviados aparecerán aquí
         </Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 
   return (
-    <View style={[styles.container, { marginTop: top }]}>
+    <SafeAreaView style={[styles.container]}>
       <Image
         source={require("@/assets/images/fondo.png")}
-        style={styles.fondo}
+        style={[styles.fondo, { top }]}
       />
       <Header>
         <Text style={styles.subtitle}>Historial</Text>
@@ -50,19 +57,19 @@ export default function TabTwoScreen() {
         renderItem={({ item }) => <CardDate item={item} />}
         contentContainerStyle={[
           styles.listContent,
-          { paddingBottom: 24 + bottom },
           sections.length === 0 && styles.listContentEmpty,
         ]}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={EmptyComponent}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLOR_PRIMARY,
   },
   fondo: {
     position: "absolute",

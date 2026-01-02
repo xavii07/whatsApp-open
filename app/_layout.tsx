@@ -42,7 +42,7 @@ export default function RootLayout() {
 
   return (
     <>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: COLOR_PRIMARY,

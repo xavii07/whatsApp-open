@@ -18,17 +18,20 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   const [showModalInfo, setShowModalInfo] = useState(false);
   const { top, bottom } = useSafeAreaInsets();
 
   return (
-    <View style={[styles.container, { marginTop: top }]}>
+    <SafeAreaView style={[styles.container]}>
       <Image
         source={require("@/assets/images/fondo.png")}
-        style={styles.fondo}
+        style={[styles.fondo, { top }]}
       />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -64,7 +67,7 @@ export default function HomeScreen() {
         visible={showModalInfo}
         accentColor={COLOR_PRIMARY}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -72,8 +75,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLOR_PRIMARY,
-    position: "relative",
-    zIndex: 0,
   },
   containerLabel: {
     marginTop: 14,
@@ -106,6 +107,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     zIndex: -1,
     opacity: 0.9,
+    // backgroundColor: COLOR_PRIMARY,
   },
   subtitle: {
     fontFamily: "PoppinsRegular",
