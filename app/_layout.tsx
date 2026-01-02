@@ -6,6 +6,7 @@ import { useFonts } from "expo-font";
 import { Tabs } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
 SplashScreen.preventAutoHideAsync();
@@ -40,6 +41,8 @@ export default function RootLayout() {
   }
 
   return (
+    <>
+      <StatusBar style="dark" />
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: COLOR_PRIMARY,
@@ -65,5 +68,6 @@ export default function RootLayout() {
           }}
         />
       </Tabs>
+    </>
   );
 }
