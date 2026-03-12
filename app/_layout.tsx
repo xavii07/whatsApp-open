@@ -19,7 +19,7 @@ export default function RootLayout() {
 
   const getHistory = useHistory((state) => state.getHistory);
   const getMessagesFavoritos = useMessagesStore(
-    (state) => state.getMessagesFavoritos
+    (state) => state.getMessagesFavoritos,
   );
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function RootLayout() {
 
   return (
     <>
-      <StatusBar style="light" />
+      <StatusBar style="dark" backgroundColor="#FFFFFF" translucent={false} />
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: COLOR_PRIMARY,
@@ -55,6 +55,15 @@ export default function RootLayout() {
             title: "Inicio",
             tabBarIcon: ({ color }) => (
               <MyIcon name="home-outline" color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="mensajes"
+          options={{
+            title: "Mensajes",
+            tabBarIcon: ({ color }) => (
+              <MyIcon name="chatbubble-outline" color={color} />
             ),
           }}
         />
