@@ -57,7 +57,7 @@ export default function AppInfoModal({
             </Text>
 
             <Accordion
-              title="🔒 Privacidad y seguridad"
+              title="Privacidad y seguridad"
               open={openSection === "privacy"}
               onToggle={() => toggle("privacy")}
               accentColor={accentColor}
@@ -81,7 +81,7 @@ export default function AppInfoModal({
             </Accordion>
 
             <Accordion
-              title="⚙️ Cómo funciona"
+              title="Cómo funciona"
               open={openSection === "how"}
               onToggle={() => toggle("how")}
               accentColor={accentColor}
@@ -117,7 +117,7 @@ export default function AppInfoModal({
             </Accordion>
 
             <Accordion
-              title="✨ Funciones principales"
+              title="Funciones principales"
               open={openSection === "features"}
               onToggle={() => toggle("features")}
               accentColor={accentColor}
@@ -149,15 +149,11 @@ export default function AppInfoModal({
             </Accordion>
 
             <Accordion
-              title="🚀 Próximamente"
+              title="Próximamente"
               open={openSection === "coming"}
               onToggle={() => toggle("coming")}
               accentColor={accentColor}
             >
-              <FeatureItem
-                text="Generación de mensajes con IA"
-                accentColor={accentColor}
-              />
               <FeatureItem
                 text="Más plantillas inteligentes según el contexto"
                 accentColor={accentColor}
