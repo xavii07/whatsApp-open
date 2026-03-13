@@ -1,9 +1,17 @@
-import { FlatList, StyleSheet, View, Platform, Dimensions } from "react-native";
-import React, { useState } from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Platform,
+  Dimensions,
+  Pressable,
+  Text,
+} from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
+import { router } from "expo-router";
 import InputComponent from "../Input";
 import SelectComponent from "../Select";
 import ButtonComponent from "../Button";
-import CardMessage from "../Home/CardMessage";
 import TextareaMessage from "../Home/TextareaMessage";
 import ModalApps from "../Home/ModalApps";
 import { useMessagesStore } from "@/presentation/store/useMessages";
@@ -12,6 +20,14 @@ import { COLOR_BLANCO } from "@/config/data/consts";
 const { width } = Dimensions.get("window");
 const isSmallScreen = width < 375;
 
+const getCardWidthByWords = (message: string) => {
+  const charsCount = message.trim().length;
+  const base = isSmallScreen ? 120 : 140;
+  const widthByChars = base + charsCount * 4;
+
+  return Math.max(base, widthByChars);
+};
+
 const FormComponent = () => {
   const [codigo, setCodigo] = useState("");
   const [telefono, setTelefono] = useState("");
@@ -19,7 +35,28 @@ const FormComponent = () => {
   const [showTextarea, setShowTextarea] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
-  const { messages } = useMessagesStore();
+  const { favoritos, getMessagesFavoritos } = useMessagesStore();
+
+  useEffect(() => {
+    getMessagesFavoritos();
+  }, [getMessagesFavoritos]);
+
+  const favoriteRows = useMemo(() => {
+    const rows = 3;
+    const groupedRows: string[][] = Array.from({ length: rows }, () => []);
+
+    favoritos.mensajes.forEach((message, index) => {
+      const rowIndex = index % rows;
+      groupedRows[rowIndex].push(message);
+    });
+
+    return groupedRows;
+  }, [favoritos.mensajes]);
+
+  const onSelectFavoriteMessage = (favoriteMessage: string) => {
+    setMensaje(favoriteMessage);
+    setShowTextarea(true);
+  };
 
   const onOpenModal = () => {
     setIsModalVisible(true);
@@ -43,22 +80,52 @@ const FormComponent = () => {
       </View>
 
       <View style={styles.messagesSection}>
-        <FlatList
-          data={messages}
+        <ScrollView
           horizontal
-          keyExtractor={(item) => item.categoria}
-          renderItem={({ item }) => (
-            <CardMessage
-              item={item}
-              setMessage={setMensaje}
-              setShowTextarea={setShowTextarea}
-            />
-          )}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.listContent}
-          snapToInterval={292}
           decelerationRate="fast"
-        />
+        >
+          {favoritos.mensajes.length === 0 ? (
+            <Pressable
+              onPress={() => router.push("/mensajes")}
+              style={({ pressed }) => [
+                styles.emptyCard,
+                { opacity: pressed ? 0.85 : 1 },
+              ]}
+            >
+              <Text style={styles.emptyText}>
+                Guarda mensajes en la pestaña Favoritos para verlos aquí.
+              </Text>
+            </Pressable>
+          ) : (
+            <View style={styles.rowsContainer}>
+              {favoriteRows.map((row, rowIndex) => (
+                <View key={`row-${rowIndex}`} style={styles.row}>
+                  {row.map((favoriteMessage) => (
+                    <Pressable
+                      key={`${favoriteMessage}-${rowIndex}`}
+                      onPress={() => onSelectFavoriteMessage(favoriteMessage)}
+                      style={({ pressed }) => [
+                        styles.bentoCard,
+                        { width: getCardWidthByWords(favoriteMessage) },
+                        { opacity: pressed ? 0.8 : 1 },
+                      ]}
+                    >
+                      <Text
+                        numberOfLines={1}
+                        ellipsizeMode="clip"
+                        style={styles.bentoText}
+                      >
+                        {favoriteMessage}
+                      </Text>
+                    </Pressable>
+                  ))}
+                </View>
+              ))}
+            </View>
+          )}
+        </ScrollView>
       </View>
 
       <TextareaMessage
@@ -130,10 +197,55 @@ const styles = StyleSheet.create({
     flex: isSmallScreen ? 0.6 : 0.65,
   },
   messagesSection: {
-    height: 200,
+    marginBottom: 4,
   },
   listContent: {
     paddingVertical: 8,
+    paddingRight: 8,
+  },
+  rowsContainer: {
+    gap: 6,
+  },
+  row: {
+    flexDirection: "row",
+    gap: 6,
+    alignItems: "flex-start",
+  },
+  bentoCard: {
+    backgroundColor: "#f8fafc",
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+    borderRadius: 14,
+    paddingVertical: 8,
+    paddingHorizontal: 4,
+    minHeight: 6,
+    justifyContent: "center",
+    elevation: 1,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08,
+    shadowRadius: 2,
+    flexShrink: 0,
+  },
+  bentoText: {
+    fontFamily: "PoppinsRegular",
+    fontSize: 12,
+    color: "#1e293b",
+    lineHeight: 18,
+  },
+  emptyCard: {
+    backgroundColor: "#f8fafc",
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+    padding: 16,
+    width: "100%",
+  },
+  emptyText: {
+    fontFamily: "PoppinsRegular",
+    fontSize: 12,
+    color: "#334155",
+    lineHeight: 12,
   },
   buttonSection: {
     marginTop: 4,
