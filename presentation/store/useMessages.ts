@@ -5,15 +5,25 @@ import { create } from "zustand";
 interface MessageState {
   messages: MensajePredefinido[];
   favoritos: MensajePredefinido;
-  getMessagesFavoritos: () => void;
-  addFavorito: (nuevoMensaje: string) => void;
-  deleteFavorito: (mensajeABorrar: string) => void;
+  getMessagesFavoritos: () => Promise<void>;
+  addFavorito: (nuevoMensaje: string) => Promise<void>;
+  deleteFavorito: (mensajeABorrar: string) => Promise<void>;
 }
+
+const FAVORITOS_CATEGORIA = "⭐ Favoritos";
+
+const buildMessagesWithFavoritos = (favoritosMensajes: string[]) => [
+  {
+    categoria: FAVORITOS_CATEGORIA,
+    mensajes: favoritosMensajes,
+  },
+  ...mensajesPredefinidos,
+];
 
 export const useMessagesStore = create<MessageState>()((set, get) => ({
   messages: mensajesPredefinidos,
   favoritos: {
-    categoria: "⭐ Favoritos",
+    categoria: FAVORITOS_CATEGORIA,
     mensajes: [],
   },
   getMessagesFavoritos: async () => {
@@ -21,56 +31,53 @@ export const useMessagesStore = create<MessageState>()((set, get) => ({
       (await StorageAdapter.getItem("favoritos")) ?? "[]";
     const parsedFavoritos = JSON.parse(favoritosStorage) as string[];
 
+    const safeFavoritos = Array.from(new Set(parsedFavoritos));
+
     set({
       favoritos: {
-        categoria: "⭐ Favoritos",
-        mensajes: parsedFavoritos,
+        categoria: FAVORITOS_CATEGORIA,
+        mensajes: safeFavoritos,
       },
-    });
-    set({
-      messages: [
-        {
-          categoria: "⭐ Favoritos",
-          mensajes: parsedFavoritos,
-        },
-        ...mensajesPredefinidos,
-      ],
+      messages: buildMessagesWithFavoritos(safeFavoritos),
     });
   },
 
   addFavorito: async (nuevoMensaje: string) => {
-    const { favoritos, messages } = get();
+    const { favoritos } = get();
     if (!favoritos.mensajes.includes(nuevoMensaje)) {
-      favoritos.mensajes.push(nuevoMensaje);
-      set({ favoritos });
+      const updatedFavoritos = {
+        ...favoritos,
+        mensajes: [...favoritos.mensajes, nuevoMensaje],
+      };
+
       set({
-        messages: [
-          favoritos,
-          ...messages.filter((msg) => msg.categoria !== "⭐ Favoritos"),
-        ],
+        favoritos: updatedFavoritos,
+        messages: buildMessagesWithFavoritos(updatedFavoritos.mensajes),
       });
+
       await StorageAdapter.setItem(
         "favoritos",
-        JSON.stringify(favoritos.mensajes)
+        JSON.stringify(updatedFavoritos.mensajes),
       );
     }
   },
 
   deleteFavorito: async (mensajeABorrar: string) => {
-    const { favoritos, messages } = get();
-    favoritos.mensajes = favoritos.mensajes.filter(
-      (mensaje) => mensaje !== mensajeABorrar
+    const { favoritos } = get();
+    const updatedMensajes = favoritos.mensajes.filter(
+      (mensaje) => mensaje !== mensajeABorrar,
     );
-    set({ favoritos });
+
+    const updatedFavoritos = {
+      ...favoritos,
+      mensajes: updatedMensajes,
+    };
+
     set({
-      messages: [
-        favoritos,
-        ...messages.filter((msg) => msg.categoria !== "⭐ Favoritos"),
-      ],
+      favoritos: updatedFavoritos,
+      messages: buildMessagesWithFavoritos(updatedMensajes),
     });
-    await StorageAdapter.setItem(
-      "favoritos",
-      JSON.stringify(favoritos.mensajes)
-    );
+
+    await StorageAdapter.setItem("favoritos", JSON.stringify(updatedMensajes));
   },
 }));

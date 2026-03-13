@@ -18,6 +18,7 @@ import { COLOR_PRIMARY, COLOR_BLANCO } from "@/config/data/consts";
 import Header from "@/components/Header";
 import MessageComposer from "@/components/Messages/MessageComposer";
 import MessageList from "@/components/Messages/MessageList";
+import MessageSectionsList from "@/components/Messages/MessageSectionsList";
 import MessageTabs from "@/components/Messages/MessageTabs";
 import { DisplayMessage, MensajesTab } from "@/components/Messages/types";
 import { generateMessageSuggestions } from "@/presentation/helpers/generate-message-suggestions";
@@ -30,6 +31,37 @@ const TABS: { key: MensajesTab; label: string }[] = [
   { key: "todos", label: "Todos" },
   { key: "favoritos", label: "Favoritos" },
 ];
+
+const normalizeText = (value: string) =>
+  value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+
+const getSectionTitle = (categoria: string) => {
+  const normalized = normalizeText(categoria);
+
+  if (normalized.includes("personalizado") || normalized.includes("directo")) {
+    return "Personalizado / directo";
+  }
+  if (normalized.includes("primer contacto")) {
+    return "Primer contacto";
+  }
+  if (normalized.includes("ventas") || normalized.includes("negocios")) {
+    return "Ventas / negocios";
+  }
+  if (normalized.includes("asesoria") || normalized.includes("soporte")) {
+    return "Asesoría / soporte";
+  }
+  if (normalized.includes("presentacion")) {
+    return "Presentación personal";
+  }
+  if (normalized.includes("seguimiento") || normalized.includes("recontacto")) {
+    return "Seguimiento / recontacto";
+  }
+
+  return categoria.trim();
+};
 
 const MensajesScreen = () => {
   const { top, bottom } = useSafeAreaInsets();
@@ -81,6 +113,38 @@ const MensajesScreen = () => {
     return Array.from(uniqueMessages.values());
   }, [messages, favoritos.mensajes]);
 
+  const seccionesMensajes = useMemo(() => {
+    const sectionOrder = [
+      "Personalizado / directo",
+      "Primer contacto",
+      "Ventas / negocios",
+      "Asesoría / soporte",
+      "Presentación personal",
+      "Seguimiento / recontacto",
+    ];
+
+    const grouped = mensajesDisponibles.reduce(
+      (acc, message) => {
+        const key = getSectionTitle(message.categoria ?? "");
+        if (!acc[key]) {
+          acc[key] = [];
+        }
+        acc[key].push(message);
+        return acc;
+      },
+      {} as Record<string, DisplayMessage[]>,
+    );
+
+    return sectionOrder
+      .filter((title) => grouped[title]?.length)
+      .map((title) => ({
+        title,
+        subtitle:
+          "Selecciona un mensaje y márcalo con estrella si quieres guardarlo.",
+        data: grouped[title],
+      }));
+  }, [mensajesDisponibles]);
+
   const mensajesFavoritos = useMemo<DisplayMessage[]>(() => {
     return favoritos.mensajes.map((texto, index) => ({
       id: `favorito-${index}-${texto}`,
@@ -128,6 +192,14 @@ const MensajesScreen = () => {
     } else {
       await addFavorito(mensaje.texto);
     }
+
+    setMensajesGenerados((currentMessages) =>
+      currentMessages.map((item) =>
+        item.texto === mensaje.texto
+          ? { ...item, esFavorito: !mensaje.esFavorito }
+          : item,
+      ),
+    );
   };
 
   const eliminarFavorito = async (mensaje: DisplayMessage) => {
@@ -188,15 +260,11 @@ const MensajesScreen = () => {
             )}
           </ScrollView>
         ) : mostrarTab === "todos" ? (
-          <MessageList
-            data={mensajesDisponibles}
+          <MessageSectionsList
+            sections={seccionesMensajes}
             onCopy={copiarAlPortapapeles}
             onFavoriteAction={toggleFavorito}
-            showCategory
-            emptyTitle="Sin mensajes"
-            emptySubtitle="No hay mensajes cargados en el store todavía."
-            emptyIcon="chatbubble-ellipses-outline"
-            contentContainerStyle={{ paddingBottom: bottom + 80 }}
+            contentBottomPadding={bottom + 80}
           />
         ) : (
           <MessageList
