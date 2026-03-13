@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     borderRightColor: "#e2e8f0",
   },
   inputWrapper: {
-    flex: isSmallScreen ? 0.6 : 0.65,
+    width: "100%",
   },
   messagesSection: {
     marginBottom: 4,
