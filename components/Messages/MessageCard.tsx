@@ -1,0 +1,130 @@
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import {
+  COLOR_BLANCO,
+  COLOR_PRIMARY,
+  COLOR_SECONDARY,
+  COLOR_SECONDARY_ACCENT,
+} from "@/config/data/consts";
+import { DisplayMessage } from "./types";
+
+type FavoriteAction = "toggle" | "delete";
+
+interface MessageCardProps {
+  message: DisplayMessage;
+  onCopy: (texto: string) => void;
+  onFavoriteAction?: (message: DisplayMessage) => void;
+  favoriteAction?: FavoriteAction;
+  showCategory?: boolean;
+}
+
+const MessageCard = ({
+  message,
+  onCopy,
+  onFavoriteAction,
+  favoriteAction = "toggle",
+  showCategory = false,
+}: MessageCardProps) => {
+  const favoriteIcon =
+    favoriteAction === "delete"
+      ? "trash-bin"
+      : message.esFavorito
+        ? "star"
+        : "star-outline";
+
+  const favoriteColor =
+    favoriteAction === "delete"
+      ? "#ef4444"
+      : message.esFavorito
+        ? "#f0e925ff"
+        : COLOR_BLANCO;
+
+  return (
+    <View style={styles.card}>
+      <View style={styles.content}>
+        {showCategory && !!message.categoria && (
+          <View style={styles.categoryBadge}>
+            <Text style={styles.categoryText}>{message.categoria}</Text>
+          </View>
+        )}
+
+        <Text style={styles.messageText}>{message.texto}</Text>
+      </View>
+
+      <View style={styles.actions}>
+        {onFavoriteAction && (
+          <Pressable
+            onPress={() => onFavoriteAction(message)}
+            style={({ pressed }) => [
+              styles.actionButton,
+              { opacity: pressed ? 0.6 : 1 },
+            ]}
+          >
+            <Ionicons name={favoriteIcon} size={20} color={favoriteColor} />
+          </Pressable>
+        )}
+
+        <Pressable
+          onPress={() => onCopy(message.texto)}
+          style={({ pressed }) => [
+            styles.actionButton,
+            { opacity: pressed ? 0.6 : 1 },
+          ]}
+        >
+          <Ionicons name="copy" size={20} color={COLOR_BLANCO} />
+        </Pressable>
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: COLOR_SECONDARY_ACCENT,
+    borderRadius: 10,
+    padding: 12,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+  },
+  content: {
+    flex: 1,
+    marginRight: 10,
+    gap: 8,
+  },
+  categoryBadge: {
+    alignSelf: "flex-start",
+    backgroundColor: "rgba(255,255,255,0.12)",
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+  },
+  categoryText: {
+    fontFamily: "PoppinsRegular",
+    fontSize: 11,
+    color: COLOR_PRIMARY,
+  },
+  messageText: {
+    fontFamily: "PoppinsRegular",
+    fontSize: 13,
+    color: COLOR_BLANCO,
+    lineHeight: 18,
+  },
+  actions: {
+    flexDirection: "row",
+    gap: 8,
+  },
+  actionButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    backgroundColor: COLOR_SECONDARY,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
+
+export default MessageCard;

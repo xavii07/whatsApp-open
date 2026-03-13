@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     zIndex: -1,
     opacity: 0.9,
-    // backgroundColor: COLOR_PRIMARY,
   },
   subtitle: {
     fontFamily: "PoppinsRegular",
