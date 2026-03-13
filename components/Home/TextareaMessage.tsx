@@ -11,6 +11,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { obtenerMensajeAleatorio } from "@/config/utils/selectRandomMessage";
 import { useMessagesStore } from "@/presentation/store/useMessages";
 import { COLOR_BLANCO } from "@/config/data/consts";
+import { router } from "expo-router";
 
 interface Props {
   showTextarea: boolean;
@@ -67,12 +68,7 @@ const TextareaMessage = ({
         )}
 
         <Pressable
-          onPress={() =>
-            Alert.alert(
-              "Genera mensaje con IA",
-              "Funcionalidad en desarrollo..."
-            )
-          }
+          onPress={() => router.push("/mensajes")}
           style={({ pressed }) => [
             styles.actionButton,
             styles.iaGenerateButton,
