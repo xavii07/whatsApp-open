@@ -34,9 +34,7 @@ export default function TabTwoScreen() {
       <View style={styles.emptyContainer2}>
         <Ionicons name="time-outline" size={64} color="#ccc" />
         <Text style={styles.emptyTitle}>Sin historial</Text>
-        <Text style={styles.emptySubtitle}>
-          Tus mensajes enviados aparecerán aquí
-        </Text>
+        <Text style={styles.emptySubtitle}>Tus numeros aparecerán aquí</Text>
       </View>
     </SafeAreaView>
   );

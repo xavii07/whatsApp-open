@@ -31,7 +31,7 @@ const ModalApps = ({
 
   const addMessageToHistory = (tipoApp: string) => {
     const country = countries.find(
-      (country: Country) => country.codigoPais === codigo
+      (country: Country) => country.codigoPais === codigo,
     );
     addHistory(
       {
@@ -43,7 +43,7 @@ const ModalApps = ({
         nombreUser: "Anonimo",
         tipoApp,
       },
-      new Date().toISOString().split("T")[0]
+      new Date().toISOString().split("T")[0],
     );
   };
 
@@ -75,7 +75,7 @@ const ModalApps = ({
       mensaje || ""
     }`;
     const puedeAbrir = await Linking.canOpenURL(
-      `tg://resolve?domain=${codigo}${telefono}`
+      `tg://resolve?domain=${codigo}${telefono}`,
     );
 
     if (puedeAbrir) {
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 20,
     alignItems: "center",
-    paddingVertical: 20,
+    paddingVertical: 50,
   },
   image: {
     width: 50,
