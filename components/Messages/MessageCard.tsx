@@ -54,7 +54,7 @@ const MessageCard = ({
               { opacity: pressed ? 0.6 : 1 },
             ]}
           >
-            <Ionicons name={favoriteIcon} size={20} color={favoriteColor} />
+            <Ionicons name={favoriteIcon} size={18} color={favoriteColor} />
           </Pressable>
         )}
 
@@ -66,7 +66,7 @@ const MessageCard = ({
               { opacity: pressed ? 0.6 : 1 },
             ]}
           >
-            <Ionicons name="bookmark-outline" size={20} color={COLOR_BLANCO} />
+            <Ionicons name="bookmark-outline" size={18} color={COLOR_BLANCO} />
           </Pressable>
         )}
 
@@ -77,7 +77,7 @@ const MessageCard = ({
             { opacity: pressed ? 0.6 : 1 },
           ]}
         >
-          <Ionicons name="copy" size={20} color={COLOR_BLANCO} />
+          <Ionicons name="copy" size={18} color={COLOR_BLANCO} />
         </Pressable>
       </View>
     </View>
@@ -123,8 +123,8 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   actionButton: {
-    width: 30,
-    height: 30,
+    width: 25,
+    height: 25,
     borderRadius: 8,
     backgroundColor: COLOR_SECONDARY,
     justifyContent: "center",

@@ -37,12 +37,12 @@ const CardHistory = ({ data, fecha }: Props) => {
 
     if (puedeAbrir) {
       Linking.openURL(
-        `whatsapp-business://send?phone=${data.codigoPais}${data.telefono}`
+        `whatsapp-business://send?phone=${data.codigoPais}${data.telefono}`,
       );
     } else {
       Alert.alert(
         "Error",
-        "No se pudo abrir WhatsApp Business. Verifica que esté instalado."
+        "No se pudo abrir WhatsApp Business. Verifica que esté instalado.",
       );
     }
   };
@@ -53,12 +53,12 @@ const CardHistory = ({ data, fecha }: Props) => {
 
     if (puedeAbrir) {
       Linking.openURL(
-        `whatsapp://send?phone=${data.codigoPais}${data.telefono}`
+        `whatsapp://send?phone=${data.codigoPais}${data.telefono}`,
       );
     } else {
       Alert.alert(
         "Error",
-        "No se pudo abrir WhatsApp. Verifica que esté instalado."
+        "No se pudo abrir WhatsApp. Verifica que esté instalado.",
       );
     }
   };
@@ -71,7 +71,7 @@ const CardHistory = ({ data, fecha }: Props) => {
     } else {
       Alert.alert(
         "Error",
-        "No se pudo abrir Telegram. Verifica que esté instalado."
+        "No se pudo abrir Telegram. Verifica que esté instalado.",
       );
     }
   };
@@ -100,7 +100,7 @@ const CardHistory = ({ data, fecha }: Props) => {
           style: "destructive",
           onPress: () => removeHistory(fecha, data.id),
         },
-      ]
+      ],
     );
   };
 
@@ -188,26 +188,41 @@ const CardHistory = ({ data, fecha }: Props) => {
         isModalVisible={isModalVisible}
         onModalClose={() => setIsModalVisible(false)}
         text="Editar nombre de contacto"
+        position="top"
       >
-        <View style={styles.container}>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              placeholder="Juan Pérez"
-              placeholderTextColor="#9ca3af"
-              style={styles.input}
-              value={nombreUser}
-              onChangeText={(text) => setNombreUser(text.slice(0, 20))}
-            />
+        <View style={styles.editContainer}>
+          <TextInput
+            placeholder="Juan Pérez"
+            placeholderTextColor="#94a3b8"
+            style={styles.editInput}
+            value={nombreUser}
+            onChangeText={(text) => setNombreUser(text.slice(0, 20))}
+            autoFocus
+            returnKeyType="done"
+            onSubmitEditing={handleSaveName}
+          />
+
+          <View style={styles.editActions}>
+            <Pressable
+              onPress={() => setIsModalVisible(false)}
+              style={({ pressed }) => [
+                styles.secondaryButton,
+                { opacity: pressed ? 0.8 : 1 },
+              ]}
+            >
+              <Text style={styles.secondaryButtonText}>Cancelar</Text>
+            </Pressable>
 
             <Pressable
               onPress={handleSaveName}
               disabled={nombreUser.trim().length === 0}
               style={({ pressed }) => [
-                styles.iconButtonRight,
-                { opacity: pressed ? 0.6 : 1 },
+                styles.primaryButton,
+                nombreUser.trim().length === 0 && styles.primaryButtonDisabled,
+                { opacity: pressed ? 0.85 : 1 },
               ]}
             >
-              <Ionicons name="checkmark" size={25} color={COLOR_BLANCO} />
+              <Text style={styles.primaryButtonText}>Guardar</Text>
             </Pressable>
           </View>
         </View>
@@ -225,6 +240,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderWidth: 1,
     borderColor: "#e2e8f0",
+    overflow: "hidden",
     ...Platform.select({
       ios: {
         shadowColor: "#000",
@@ -252,6 +268,7 @@ const styles = StyleSheet.create({
 
   infoContainer: {
     flex: 1,
+    width: 0,
     marginRight: 8,
   },
 
@@ -272,6 +289,7 @@ const styles = StyleSheet.create({
   actionsContainer: {
     flexDirection: "row",
     gap: 4,
+    flexShrink: 0,
   },
 
   actionButton: {
@@ -293,38 +311,60 @@ const styles = StyleSheet.create({
     borderColor: "#bbf7d0",
   },
 
-  container: {
-    paddingHorizontal: 20,
-    marginTop: 15,
+  editContainer: {
+    gap: 12,
+    paddingBottom: 2,
   },
 
-  inputWrapper: {
-    position: "relative",
-    justifyContent: "center",
-  },
-
-  input: {
-    backgroundColor: COLOR_BLANCO,
-    paddingVertical: 10,
-    paddingLeft: 14,
-    paddingRight: 90,
+  editInput: {
+    backgroundColor: "#3a3f47",
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#555c66",
+    paddingHorizontal: 12,
+    paddingVertical: 10,
     fontFamily: "PoppinsRegular",
-    color: "#111827",
+    color: COLOR_BLANCO,
     fontSize: 14,
   },
 
-  iconButtonRight: {
-    position: "absolute",
-    right: 0,
-    top: 0,
-    bottom: 0,
-    borderTopEndRadius: 10,
-    borderBottomEndRadius: 10,
-    width: 50,
+  editActions: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    gap: 8,
+    marginBottom: 8,
+  },
+
+  secondaryButton: {
+    backgroundColor: "#3a3f47",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#555c66",
+    paddingHorizontal: 14,
+    paddingVertical: 9,
+  },
+
+  secondaryButtonText: {
+    fontFamily: "PoppinsRegular",
+    fontSize: 12,
+    color: COLOR_BLANCO,
+  },
+
+  primaryButton: {
     backgroundColor: COLOR_SECONDARY,
-    justifyContent: "center",
-    alignItems: "center",
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 9,
+  },
+
+  primaryButtonDisabled: {
+    opacity: 0.4,
+  },
+
+  primaryButtonText: {
+    fontFamily: "PoppinsSemiBold",
+    fontSize: 12,
+    color: COLOR_BLANCO,
   },
 });
 
