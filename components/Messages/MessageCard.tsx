@@ -15,6 +15,7 @@ interface MessageCardProps {
   message: DisplayMessage;
   onCopy: (texto: string) => void;
   onFavoriteAction?: (message: DisplayMessage) => void;
+  onSaveCategoryAction?: (message: DisplayMessage) => void;
   favoriteAction?: FavoriteAction;
   showCategory?: boolean;
 }
@@ -23,6 +24,7 @@ const MessageCard = ({
   message,
   onCopy,
   onFavoriteAction,
+  onSaveCategoryAction,
   favoriteAction = "toggle",
   showCategory = false,
 }: MessageCardProps) => {
@@ -65,6 +67,18 @@ const MessageCard = ({
           </Pressable>
         )}
 
+        {onSaveCategoryAction && (
+          <Pressable
+            onPress={() => onSaveCategoryAction(message)}
+            style={({ pressed }) => [
+              styles.actionButton,
+              { opacity: pressed ? 0.6 : 1 },
+            ]}
+          >
+            <Ionicons name="bookmark-outline" size={20} color={COLOR_BLANCO} />
+          </Pressable>
+        )}
+
         <Pressable
           onPress={() => onCopy(message.texto)}
           style={({ pressed }) => [
@@ -81,9 +95,9 @@ const MessageCard = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: COLOR_SECONDARY_ACCENT,
+    backgroundColor: COLOR_BLANCO,
     borderRadius: 10,
-    padding: 12,
+    padding: 8,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -109,17 +123,17 @@ const styles = StyleSheet.create({
   },
   messageText: {
     fontFamily: "PoppinsRegular",
-    fontSize: 13,
-    color: COLOR_BLANCO,
-    lineHeight: 18,
+    fontSize: 12,
+    color: COLOR_SECONDARY,
+    lineHeight: 15,
   },
   actions: {
     flexDirection: "row",
     gap: 8,
   },
   actionButton: {
-    width: 36,
-    height: 36,
+    width: 30,
+    height: 30,
     borderRadius: 8,
     backgroundColor: COLOR_SECONDARY,
     justifyContent: "center",

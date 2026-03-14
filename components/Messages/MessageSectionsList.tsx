@@ -1,7 +1,11 @@
 import { SectionList, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { COLOR_BLANCO, COLOR_PRIMARY } from "@/config/data/consts";
+import {
+  COLOR_BLANCO,
+  COLOR_PRIMARY,
+  COLOR_SECONDARY_ACCENT,
+} from "@/config/data/consts";
 import MessageCard from "./MessageCard";
 import { DisplayMessage } from "./types";
 
@@ -43,10 +47,6 @@ const MessageSectionsList = ({
               <Text style={styles.countText}>{section.data.length}</Text>
             </View>
           </View>
-
-          {!!section.subtitle && (
-            <Text style={styles.sectionSubtitle}>{section.subtitle}</Text>
-          )}
         </View>
       )}
       stickySectionHeadersEnabled={false}
@@ -80,13 +80,17 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   sectionHeader: {
-    backgroundColor: "rgba(7,94,84,0.45)",
+    backgroundColor: COLOR_SECONDARY_ACCENT,
+    borderColor: COLOR_BLANCO,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.16)",
     borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    marginBottom: 10,
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
   titleRow: {
     flexDirection: "row",
@@ -101,7 +105,7 @@ const styles = StyleSheet.create({
     color: COLOR_BLANCO,
   },
   countBadge: {
-    backgroundColor: "rgba(255,255,255,0.18)",
+    backgroundColor: "rgba(255,255,255,0.99)",
     borderRadius: 999,
     minWidth: 26,
     height: 26,
@@ -113,12 +117,6 @@ const styles = StyleSheet.create({
     fontFamily: "PoppinsSemiBold",
     fontSize: 12,
     color: COLOR_PRIMARY,
-  },
-  sectionSubtitle: {
-    marginTop: 4,
-    fontFamily: "PoppinsRegular",
-    fontSize: 11,
-    color: "rgba(255,255,255,0.75)",
   },
   itemSeparator: {
     height: 10,

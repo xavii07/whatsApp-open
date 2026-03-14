@@ -34,15 +34,14 @@ const MessageComposer = ({
       <View style={styles.infoCard}>
         <Text style={styles.label}>Genera mensajes con IA</Text>
         <Text style={styles.subtitle}>
-          Describe qué quieres enviar y esta sección queda lista para conectar
-          un modelo LLM.
+          Describe lo que necesitas y te ayudaré a redactarlo
         </Text>
       </View>
 
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Ej: venta, soporte, consulta..."
+          placeholder="Ej: Quiero solicitar un reembolso a una empresa que me vendio un producto defectuoso"
           placeholderTextColor="#999"
           value={value}
           onChangeText={onChangeText}
@@ -67,7 +66,7 @@ const MessageComposer = ({
         ) : (
           <>
             <Ionicons name="sparkles-outline" size={20} color={COLOR_BLANCO} />
-            <Text style={styles.buttonText}>Generar opciones</Text>
+            <Text style={styles.buttonText}>Generar mensaje</Text>
           </>
         )}
       </Pressable>

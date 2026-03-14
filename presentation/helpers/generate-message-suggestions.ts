@@ -1,76 +1,140 @@
-import { MensajePredefinido } from "@/config/data/consts";
 import { DisplayMessage } from "@/components/Messages/types";
-
-const FAVORITOS_CATEGORIA = "⭐ Favoritos";
 
 interface GenerateMessageSuggestionsParams {
   prompt: string;
-  categories: MensajePredefinido[];
   favoriteMessages: string[];
-  delayMs?: number;
 }
 
-const normalizeText = (value: string) =>
-  value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
+const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
+const OPENROUTER_MODEL = "openrouter/free";
 
-const sleep = (delayMs: number) =>
-  new Promise((resolve) => setTimeout(resolve, delayMs));
+const buildSystemPrompt = () => {
+  return [
+    "Eres un asistente experto en redactar INICIOS de conversación para WhatsApp y Telegram en español.",
+    "Debes convertir la intención del usuario en frases cortas, claras y listas para enviar.",
+    "Ofrece variación de tono: una opción neutral, una cordial y una directa.",
+    "No respondas preguntas fuera de esta tarea.",
+    "Debes responder con EXACTAMENTE 3 opciones.",
+    "Cada opción debe tener MÁXIMO 10 palabras.",
+    "Sin numeración, sin viñetas, sin comillas y sin explicación.",
+    "Una opción por línea.",
+    "Evita frases genéricas y evita repetir estructura entre opciones.",
+  ].join(" ");
+};
 
-export const generateMessageSuggestions = async ({
-  prompt,
-  categories,
-  favoriteMessages,
-  delayMs = 800,
-}: GenerateMessageSuggestionsParams): Promise<DisplayMessage[]> => {
-  await sleep(delayMs);
+const trimToTenWords = (value: string) => {
+  const words = value.split(/\s+/).filter(Boolean);
+  return words.slice(0, 10).join(" ").trim();
+};
 
-  const normalizedPrompt = normalizeText(prompt);
-  const tokens = normalizedPrompt
-    .split(/\s+/)
-    .map((token) => token.trim())
-    .filter((token) => token.length > 2);
+const sanitizeLine = (line: string) =>
+  line
+    .replace(/^\s*[-*•\d.)]+\s*/, "")
+    .replace(/^\s*["'“”]+|["'“”]+\s*$/g, "")
+    .trim();
 
-  const candidates = categories
-    .filter((category) => category.categoria !== FAVORITOS_CATEGORIA)
-    .flatMap((category) =>
-      category.mensajes.map((texto, index) => ({
-        id: `${category.categoria}-${index}-${texto}`,
-        texto,
-        categoria: category.categoria.trim(),
-        normalizedText: normalizeText(`${category.categoria} ${texto}`),
-      })),
-    );
+const parseMessagesFromLLM = (content: string) => {
+  const lines = content
+    .split(/\r?\n/)
+    .map(sanitizeLine)
+    .filter((line) => line.length > 0);
 
-  const rankedCandidates = candidates
-    .map((candidate) => ({
-      ...candidate,
-      score: tokens.reduce((score, token) => {
-        return candidate.normalizedText.includes(token) ? score + 1 : score;
-      }, 0),
-    }))
-    .sort((first, second) => second.score - first.score);
+  const unique = new Map<string, string>();
 
-  const selectedCandidates = rankedCandidates.some(
-    (candidate) => candidate.score > 0,
-  )
-    ? rankedCandidates.filter((candidate) => candidate.score > 0)
-    : rankedCandidates;
-
-  const uniqueMessages = new Map<string, DisplayMessage>();
-
-  selectedCandidates.forEach((candidate, index) => {
-    if (!uniqueMessages.has(candidate.texto) && uniqueMessages.size < 4) {
-      uniqueMessages.set(candidate.texto, {
-        id: `generated-${Date.now()}-${index}`,
-        texto: candidate.texto,
-        categoria: candidate.categoria,
-        esFavorito: favoriteMessages.includes(candidate.texto),
-      });
+  lines.forEach((line) => {
+    const compact = trimToTenWords(line);
+    if (compact.length > 0 && !unique.has(compact.toLowerCase())) {
+      unique.set(compact.toLowerCase(), compact);
     }
   });
 
-  return Array.from(uniqueMessages.values());
+  return Array.from(unique.values()).slice(0, 3);
+};
+
+const buildFallbackMessages = (prompt: string) => {
+  const topic = trimToTenWords(prompt.replace(/[.?!]/g, "").trim()) || "esto";
+
+  const base = [
+    `Hola, me interesa hablar sobre ${topic}`,
+    `¿Podemos revisar ${topic} cuando tengas un momento?`,
+    `Gracias, quedo atento a tu respuesta sobre ${topic}`,
+  ];
+
+  return base.map(trimToTenWords).slice(0, 3);
+};
+
+export const generateMessageSuggestions = async ({
+  prompt,
+  favoriteMessages,
+}: GenerateMessageSuggestionsParams): Promise<DisplayMessage[]> => {
+  const apiKey = process.env.EXPO_PUBLIC_OPENROUTER_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("Falta EXPO_PUBLIC_OPENROUTER_API_KEY");
+  }
+
+  let parsedMessages: string[] = [];
+
+  try {
+    const response = await fetch(OPENROUTER_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: OPENROUTER_MODEL,
+        messages: [
+          {
+            role: "system",
+            content: buildSystemPrompt(),
+          },
+          {
+            role: "user",
+            content:
+              `Genera 3 inicios de mensaje para: ${prompt}. ` +
+              "Deben sonar naturales para enviar por chat ahora.",
+          },
+        ],
+        max_tokens: 120,
+        temperature: 0.5,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      const isQuotaError =
+        response.status === 402 ||
+        response.status === 429 ||
+        /quota|rate|limit|credits?/i.test(errorText);
+
+      if (isQuotaError) {
+        parsedMessages = buildFallbackMessages(prompt);
+      } else {
+        throw new Error(`OpenRouter error: ${response.status} ${errorText}`);
+      }
+    } else {
+      const result = await response.json();
+      const content = result?.choices?.[0]?.message?.content;
+
+      if (typeof content !== "string" || content.trim().length === 0) {
+        parsedMessages = buildFallbackMessages(prompt);
+      } else {
+        parsedMessages = parseMessagesFromLLM(content);
+      }
+    }
+  } catch (error) {
+    parsedMessages = buildFallbackMessages(prompt);
+  }
+
+  if (parsedMessages.length === 0) {
+    parsedMessages = buildFallbackMessages(prompt);
+  }
+
+  return parsedMessages.map((texto, index) => ({
+    id: `generated-llm-${Date.now()}-${index}`,
+    texto,
+    categoria: "🤖 LLM",
+    esFavorito: favoriteMessages.includes(texto),
+  }));
 };

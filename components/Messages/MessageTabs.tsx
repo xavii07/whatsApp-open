@@ -1,10 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import {
-  COLOR_BLANCO,
-  COLOR_PRIMARY,
-  COLOR_SECONDARY,
-} from "@/config/data/consts";
+import { COLOR_PRIMARY, COLOR_SECONDARY } from "@/config/data/consts";
 import { MensajesTab } from "./types";
 
 interface TabOption {
@@ -68,7 +64,7 @@ const styles = StyleSheet.create({
   tabText: {
     fontFamily: "PoppinsRegular",
     fontSize: 12,
-    color: "rgba(255,255,255,0.7)",
+    color: "rgba(255,255,255,0.99)",
   },
   tabTextActive: {
     fontFamily: "PoppinsSemiBold",

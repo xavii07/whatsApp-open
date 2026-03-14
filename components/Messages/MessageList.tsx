@@ -19,6 +19,7 @@ interface MessageListProps {
   data: DisplayMessage[];
   onCopy: (texto: string) => void;
   onFavoriteAction?: (message: DisplayMessage) => void;
+  onSaveCategoryAction?: (message: DisplayMessage) => void;
   favoriteAction?: FavoriteAction;
   showCategory?: boolean;
   emptyTitle: string;
@@ -32,6 +33,7 @@ const MessageList = ({
   data,
   onCopy,
   onFavoriteAction,
+  onSaveCategoryAction,
   favoriteAction = "toggle",
   showCategory = false,
   emptyTitle,
@@ -49,6 +51,7 @@ const MessageList = ({
           message={item}
           onCopy={onCopy}
           onFavoriteAction={onFavoriteAction}
+          onSaveCategoryAction={onSaveCategoryAction}
           favoriteAction={favoriteAction}
           showCategory={showCategory}
         />

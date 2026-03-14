@@ -77,6 +77,7 @@ const MensajesScreen = () => {
     getMessagesFavoritos,
     addFavorito,
     deleteFavorito,
+    addMessageToCategory,
   } = useMessagesStore();
 
   useEffect(() => {
@@ -139,8 +140,6 @@ const MensajesScreen = () => {
       .filter((title) => grouped[title]?.length)
       .map((title) => ({
         title,
-        subtitle:
-          "Selecciona un mensaje y márcalo con estrella si quieres guardarlo.",
         data: grouped[title],
       }));
   }, [mensajesDisponibles]);
@@ -154,6 +153,12 @@ const MensajesScreen = () => {
     }));
   }, [favoritos.mensajes]);
 
+  const categoriasDisponibles = useMemo(() => {
+    return messages
+      .filter((category) => category.categoria !== FAVORITOS_CATEGORIA)
+      .map((category) => category.categoria);
+  }, [messages]);
+
   const generarMensajesConIA = async () => {
     if (instruccion.trim().length === 0) {
       Alert.alert("Error", "Por favor ingresa una instrucción");
@@ -165,13 +170,18 @@ const MensajesScreen = () => {
     try {
       const generatedMessages = await generateMessageSuggestions({
         prompt: instruccion,
-        categories: messages,
         favoriteMessages: favoritos.mensajes,
       });
 
       setMensajesGenerados(generatedMessages);
-    } catch (error) {
-      Alert.alert("Error", "No se pudieron generar los mensajes");
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error &&
+        error.message.includes("EXPO_PUBLIC_OPENROUTER_API_KEY")
+          ? "Configura EXPO_PUBLIC_OPENROUTER_API_KEY para usar el modelo."
+          : "No se pudieron generar los mensajes";
+
+      Alert.alert("Error", message);
     } finally {
       setLoading(false);
     }
@@ -204,6 +214,21 @@ const MensajesScreen = () => {
 
   const eliminarFavorito = async (mensaje: DisplayMessage) => {
     await deleteFavorito(mensaje.texto);
+  };
+
+  const guardarEnCategoria = (mensaje: DisplayMessage) => {
+    const options = categoriasDisponibles.map((categoria) => ({
+      text: categoria,
+      onPress: async () => {
+        await addMessageToCategory(categoria, mensaje.texto);
+        Alert.alert("Guardado", `Mensaje agregado a ${categoria}`);
+      },
+    }));
+
+    Alert.alert("Guardar en categoría", "Selecciona una categoría", [
+      ...options,
+      { text: "Cancelar", style: "cancel" },
+    ]);
   };
 
   return (
@@ -249,6 +274,7 @@ const MensajesScreen = () => {
                   data={mensajesGenerados}
                   onCopy={copiarAlPortapapeles}
                   onFavoriteAction={toggleFavorito}
+                  onSaveCategoryAction={guardarEnCategoria}
                   showCategory
                   emptyTitle="Sin resultados"
                   emptySubtitle="Cuando generes mensajes aparecerán aquí."
