@@ -6,26 +6,28 @@ interface GenerateMessageSuggestionsParams {
 }
 
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
-const OPENROUTER_MODEL = "openrouter/free";
+const OPENROUTER_MODEL = process.env.EXPO_PUBLIC_OPENROUTER_MODEL;
 
 const buildSystemPrompt = () => {
-  return [
-    "Eres un asistente experto en redactar mensajes iniciales, saludos de conversación para WhatsApp y Telegram en español.",
-    "Debes convertir la intención del usuario en una frase corta, clara y lista para enviar.",
-    "Ofrece variación de tono: una opción neutral y cordial",
+  const base = [
+    "Eres un asistente experto en redactar mensajes iniciales y saludos de conversación para WhatsApp y Telegram en español.",
+    "Convierte la intención del usuario en una frase corta, clara y lista para enviar.",
+    "El tono debe ser natural, cordial y apropiado para un chat.",
     "No respondas preguntas fuera de esta tarea.",
-    "Debes responder con EXACTAMENTE 1 opcion.",
-    "Sin numeración, sin viñetas, sin comillas y sin explicación.",
+    "Responde con EXACTAMENTE 1 mensaje.",
+    "Sin numeración, sin viñetas, sin comillas y sin explicaciones adicionales.",
   ].join(" ");
+
+  return base;
 };
 
 const sanitizeLine = (line: string) =>
   line
     .replace(/^\s*[-*•\d.)]+\s*/, "")
-    .replace(/^\s*["'“”]+|["'“”]+\s*$/g, "")
+    .replace(/^\s*["'""]+|["'""]+\s*$/g, "")
     .trim();
 
-const parseMessagesFromLLM = (content: string) => {
+const parseMessagesFromLLM = (content: string): string[] => {
   const seen = new Set<string>();
 
   return content
@@ -40,11 +42,13 @@ const parseMessagesFromLLM = (content: string) => {
     });
 };
 
+let idCounter = 0;
+const generateId = () => `generated-llm-${Date.now()}-${++idCounter}`;
+
 const FALLBACK_MESSAGE = "No se pudo generar el mensaje";
 
 export const generateMessageSuggestions = async ({
   prompt,
-  favoriteMessages,
 }: GenerateMessageSuggestionsParams): Promise<DisplayMessage[]> => {
   const apiKey = process.env.EXPO_PUBLIC_OPENROUTER_API_KEY;
 
@@ -70,19 +74,17 @@ export const generateMessageSuggestions = async ({
           },
           {
             role: "user",
-            content:
-              `Genera 1 mensaje para: ${prompt}. ` +
-              "Debe sonar naturales para enviar por chat ahora.",
+            content: `Genera 1 mensaje para: ${prompt}. Debe sonar natural para enviar por chat ahora.`,
           },
         ],
-        max_tokens: 220,
+        max_tokens: 300,
         temperature: 0.8,
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`OpenRouter error: ${response.status} ${errorText}`);
+      throw new Error(`OpenRouter error ${response.status}: ${errorText}`);
     }
 
     const result = await response.json();
@@ -92,6 +94,7 @@ export const generateMessageSuggestions = async ({
       parsedMessages = parseMessagesFromLLM(content);
     }
   } catch (error) {
+    // console.error("[generateMessageSuggestions]", error);
     parsedMessages = [FALLBACK_MESSAGE];
   }
 
@@ -99,10 +102,10 @@ export const generateMessageSuggestions = async ({
     parsedMessages = [FALLBACK_MESSAGE];
   }
 
-  return parsedMessages.map((texto, index) => ({
-    id: `generated-llm-${Date.now()}-${index}`,
+  return parsedMessages.map((texto) => ({
+    id: generateId(),
     texto,
     categoria: "LLM",
-    esFavorito: favoriteMessages.includes(texto),
+    esFavorito: false,
   }));
 };

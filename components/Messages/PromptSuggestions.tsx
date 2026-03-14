@@ -46,7 +46,7 @@ const isSmallScreen = width < 375;
 const getCardWidthByWords = (message: string) => {
   const charsCount = message.trim().length;
   const base = isSmallScreen ? 120 : 140;
-  const widthByChars = base + charsCount * 4;
+  const widthByChars = base + charsCount * 2;
 
   return Math.max(base, widthByChars);
 };

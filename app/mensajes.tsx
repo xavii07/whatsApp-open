@@ -101,6 +101,7 @@ const MensajesScreen = () => {
         prompt: trimmedInstruction,
         favoriteMessages: favoritos.mensajes,
       });
+      setInstruccion("");
 
       setMensajesGenerados(generatedMessages);
     } catch (error: unknown) {
@@ -156,6 +157,29 @@ const MensajesScreen = () => {
     setModalCategoria(true);
   }, []);
 
+  const resetearMensajesGenerados = useCallback(() => {
+    Alert.alert(
+      "Borrar resultados",
+      "Se eliminarán todos los mensajes generados y se limpiará la instrucción.",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "Borrar todo",
+          style: "destructive",
+          onPress: () => {
+            setMensajesGenerados([]);
+            setInstruccion("");
+            setMensajePendienteCategoria(null);
+            setModalCategoria(false);
+          },
+        },
+      ],
+    );
+  }, []);
+
   const handleSeleccionarCategoria = useCallback(
     async (categoria: string) => {
       if (!mensajePendienteCategoria) return;
@@ -205,7 +229,21 @@ const MensajesScreen = () => {
 
             {mensajesGenerados.length > 0 && (
               <View style={styles.resultadosContainer}>
-                <Text style={styles.resultadosTitle}>Mensajes generados:</Text>
+                <View style={styles.resultadosHeader}>
+                  <Text style={styles.resultadosTitle}>
+                    Mensajes generados:
+                  </Text>
+
+                  <Pressable
+                    onPress={resetearMensajesGenerados}
+                    style={({ pressed }) => [
+                      styles.resetButton,
+                      { opacity: pressed ? 0.7 : 1 },
+                    ]}
+                  >
+                    <Text style={styles.resetButtonText}>Borrar todo</Text>
+                  </Pressable>
+                </View>
                 <MessageList
                   data={mensajesGenerados}
                   onCopy={copiarAlPortapapeles}
@@ -291,12 +329,31 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
   },
-  resultadosTitle: {
+  resultadosHeader: {
     marginHorizontal: 20,
+    marginBottom: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 12,
+  },
+  resultadosTitle: {
     fontFamily: "PoppinsSemiBold",
     fontSize: 14,
     color: COLOR_BLANCO,
-    marginBottom: 12,
+  },
+  resetButton: {
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.4)",
+    backgroundColor: "rgba(0,0,0,0.15)",
+  },
+  resetButtonText: {
+    fontFamily: "PoppinsSemiBold",
+    fontSize: 12,
+    color: COLOR_BLANCO,
   },
   generatedListContent: {
     paddingTop: 0,
