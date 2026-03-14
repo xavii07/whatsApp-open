@@ -24,10 +24,12 @@ export default function AppInfoModal({
   accentColor = "#2f9a67",
 }: Props) {
   const [openSection, setOpenSection] = useState<
-    "privacy" | "how" | "features" | "coming" | null
+    "privacy" | "how" | "features" | "updates" | "coming" | null
   >(null);
 
-  const toggle = (key: "privacy" | "how" | "features" | "coming") => {
+  const toggle = (
+    key: "privacy" | "how" | "features" | "updates" | "coming",
+  ) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setOpenSection((prev) => (prev === key ? null : key));
   };
@@ -144,6 +146,30 @@ export default function AppInfoModal({
               />
               <FeatureItem
                 text="Borrar historial y favoritos"
+                accentColor={accentColor}
+              />
+            </Accordion>
+
+            <Accordion
+              title="Última actualización"
+              open={openSection === "updates"}
+              onToggle={() => toggle("updates")}
+              accentColor={accentColor}
+            >
+              <FeatureItem
+                text="Corrección de bugs"
+                accentColor={accentColor}
+              />
+              <FeatureItem
+                text="Mejorado el diseño UI"
+                accentColor={accentColor}
+              />
+              <FeatureItem
+                text="Nueva sección mensajes para generar mensajes con IA y guardarlos"
+                accentColor={accentColor}
+              />
+              <FeatureItem
+                text="Búsqueda por país o código en el select de países"
                 accentColor={accentColor}
               />
             </Accordion>
