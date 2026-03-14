@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { COLOR_BLANCO } from "@/config/data/consts";
+import { COLOR_BLANCO, COLOR_SECONDARY_ACCENT } from "@/config/data/consts";
 
 type IconName = React.ComponentProps<typeof Ionicons>["name"];
 
@@ -27,10 +27,11 @@ const MessageEmptyState = ({
 
 const styles = StyleSheet.create({
   emptyContainer: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: -40,
+    backgroundColor: COLOR_SECONDARY_ACCENT,
+    padding: 10,
+    borderRadius: 10,
   },
   emptyTitle: {
     fontFamily: "PoppinsBold",

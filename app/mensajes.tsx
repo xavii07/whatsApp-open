@@ -1,6 +1,7 @@
 import {
   StyleSheet,
   Image,
+  Pressable,
   Text,
   View,
   ScrollView,
@@ -20,6 +21,7 @@ import MessageComposer from "@/components/Messages/MessageComposer";
 import MessageList from "@/components/Messages/MessageList";
 import MessageSectionsList from "@/components/Messages/MessageSectionsList";
 import MessageTabs from "@/components/Messages/MessageTabs";
+import ModalPicker from "@/components/Home/ModalPicker";
 import { DisplayMessage, MensajesTab } from "@/components/Messages/types";
 import {
   FAVORITOS_CATEGORIA,
@@ -43,6 +45,9 @@ const MensajesScreen = () => {
   );
   const [loading, setLoading] = useState(false);
   const [mostrarTab, setMostrarTab] = useState<MensajesTab>("generar");
+  const [modalCategoria, setModalCategoria] = useState(false);
+  const [mensajePendienteCategoria, setMensajePendienteCategoria] =
+    useState<DisplayMessage | null>(null);
   const {
     favoritos,
     messages,
@@ -146,22 +151,20 @@ const MensajesScreen = () => {
     [deleteFavorito],
   );
 
-  const guardarEnCategoria = useCallback(
-    (mensaje: DisplayMessage) => {
-      const options = categoriasDisponibles.map((categoria) => ({
-        text: categoria,
-        onPress: async () => {
-          await addMessageToCategory(categoria, mensaje.texto);
-          Alert.alert("Guardado", `Mensaje agregado a ${categoria}`);
-        },
-      }));
+  const guardarEnCategoria = useCallback((mensaje: DisplayMessage) => {
+    setMensajePendienteCategoria(mensaje);
+    setModalCategoria(true);
+  }, []);
 
-      Alert.alert("Guardar en categoría", "Selecciona una categoría", [
-        ...options,
-        { text: "Cancelar", style: "cancel" },
-      ]);
+  const handleSeleccionarCategoria = useCallback(
+    async (categoria: string) => {
+      if (!mensajePendienteCategoria) return;
+      setModalCategoria(false);
+      await addMessageToCategory(categoria, mensajePendienteCategoria.texto);
+      Alert.alert("Guardado", `Mensaje agregado a ${categoria}`);
+      setMensajePendienteCategoria(null);
     },
-    [categoriasDisponibles, addMessageToCategory],
+    [mensajePendienteCategoria, addMessageToCategory],
   );
 
   return (
@@ -238,6 +241,27 @@ const MensajesScreen = () => {
           />
         )}
       </KeyboardAvoidingView>
+
+      <ModalPicker
+        isModalVisible={modalCategoria}
+        text="Guardar en categoría"
+        onModalClose={() => setModalCategoria(false)}
+      >
+        <View style={styles.modalCategorias}>
+          {categoriasDisponibles.map((categoria) => (
+            <Pressable
+              key={categoria}
+              onPress={() => handleSeleccionarCategoria(categoria)}
+              style={({ pressed }) => [
+                styles.modalCategoriaItem,
+                { opacity: pressed ? 0.6 : 1 },
+              ]}
+            >
+              <Text style={styles.modalCategoriaText}>{categoria}</Text>
+            </Pressable>
+          ))}
+        </View>
+      </ModalPicker>
     </SafeAreaView>
   );
 };
@@ -277,5 +301,23 @@ const styles = StyleSheet.create({
   generatedListContent: {
     paddingTop: 0,
     paddingBottom: 0,
+  },
+  modalCategorias: {
+    paddingHorizontal: 20,
+    paddingTop: 12,
+    gap: 8,
+  },
+  modalCategoriaItem: {
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    backgroundColor: "rgba(255,255,255,0.08)",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.12)",
+  },
+  modalCategoriaText: {
+    fontFamily: "PoppinsRegular",
+    fontSize: 13,
+    color: "#fff",
   },
 });

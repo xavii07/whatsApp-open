@@ -10,15 +10,15 @@ const OPENROUTER_MODEL = "openrouter/free";
 
 const buildSystemPrompt = () => {
   return [
-    "Eres un asistente experto en redactar INICIOS de conversación para WhatsApp y Telegram en español.",
+    "Eres un asistente experto en redactar mensajes iniciales, saludos de conversación para WhatsApp y Telegram en español.",
     "Debes convertir la intención del usuario en frases cortas, claras y listas para enviar.",
-    "Ofrece variación de tono: una opción neutral, una cordial y una directa.",
+    "Ofrece variación de tono: una opción neutral, una cordial",
     "No respondas preguntas fuera de esta tarea.",
-    "Debes responder con EXACTAMENTE 3 opciones.",
-    "Cada opción debe tener MÁXIMO 10 palabras.",
+    "Debes responder con EXACTAMENTE 2 opciones.",
     "Sin numeración, sin viñetas, sin comillas y sin explicación.",
     "Una opción por línea.",
     "Evita frases genéricas y evita repetir estructura entre opciones.",
+    "No hagas nada mas y no respondas preguntas genericas",
   ].join(" ");
 };
 
@@ -92,12 +92,12 @@ export const generateMessageSuggestions = async ({
           {
             role: "user",
             content:
-              `Genera 3 inicios de mensaje para: ${prompt}. ` +
+              `Genera 2 mensaje para: ${prompt}. ` +
               "Deben sonar naturales para enviar por chat ahora.",
           },
         ],
-        max_tokens: 120,
-        temperature: 0.5,
+        max_tokens: 220,
+        temperature: 0.8,
       }),
     });
 
@@ -134,7 +134,7 @@ export const generateMessageSuggestions = async ({
   return parsedMessages.map((texto, index) => ({
     id: `generated-llm-${Date.now()}-${index}`,
     texto,
-    categoria: "🤖 LLM",
+    categoria: "LLM",
     esFavorito: favoriteMessages.includes(texto),
   }));
 };
