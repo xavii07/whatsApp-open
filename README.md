@@ -27,3 +27,13 @@ MensaLink is a mobile app that allows you to share links with your friends and f
    ```bash
       http://localhost:19006
    ```
+
+## OpenRouter (LLM) configuration
+
+Create a `.env` file in the project root:
+
+```bash
+EXPO_PUBLIC_OPENROUTER_API_KEY=your_openrouter_api_key
+```
+
+The message generator uses OpenRouter and returns up to 3 short messages.
