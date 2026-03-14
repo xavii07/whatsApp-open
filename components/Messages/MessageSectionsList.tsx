@@ -1,12 +1,12 @@
 import { SectionList, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   COLOR_BLANCO,
   COLOR_PRIMARY,
   COLOR_SECONDARY_ACCENT,
 } from "@/config/data/consts";
 import MessageCard from "./MessageCard";
+import MessageEmptyState from "./MessageEmptyState";
 import { DisplayMessage } from "./types";
 
 interface MessageSection {
@@ -54,13 +54,11 @@ const MessageSectionsList = ({
       ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
       SectionSeparatorComponent={() => <View style={styles.sectionSeparator} />}
       ListEmptyComponent={
-        <View style={styles.emptyContainer}>
-          <Ionicons name="chatbubble-ellipses-outline" size={64} color="#ccc" />
-          <Text style={styles.emptyTitle}>Sin mensajes</Text>
-          <Text style={styles.emptySubtitle}>
-            No hay mensajes cargados en el store todavía.
-          </Text>
-        </View>
+        <MessageEmptyState
+          icon="chatbubble-ellipses-outline"
+          title="Sin mensajes"
+          subtitle="No hay mensajes cargados en el store todavía."
+        />
       }
       contentContainerStyle={[
         styles.contentContainer,
@@ -123,26 +121,6 @@ const styles = StyleSheet.create({
   },
   sectionSeparator: {
     height: 18,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: -40,
-  },
-  emptyTitle: {
-    fontFamily: "PoppinsBold",
-    fontSize: 18,
-    color: COLOR_BLANCO,
-    marginTop: 10,
-  },
-  emptySubtitle: {
-    fontFamily: "PoppinsRegular",
-    fontSize: 12,
-    color: "#ccc",
-    textAlign: "center",
-    lineHeight: 20,
-    marginHorizontal: 20,
   },
 });
 

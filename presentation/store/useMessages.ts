@@ -1,5 +1,6 @@
 import { StorageAdapter } from "@/config/adapters/storage-adapter";
 import { MensajePredefinido, mensajesPredefinidos } from "@/config/data/consts";
+import { FAVORITOS_CATEGORIA } from "@/config/data/messages";
 import { create } from "zustand";
 
 interface MessageState {
@@ -12,7 +13,6 @@ interface MessageState {
   addMessageToCategory: (categoria: string, mensaje: string) => Promise<void>;
 }
 
-const FAVORITOS_CATEGORIA = "⭐ Favoritos";
 const CUSTOM_MESSAGES_KEY = "customMessagesByCategory";
 
 const normalizeByCategory = (

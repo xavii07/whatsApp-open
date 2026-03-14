@@ -1,15 +1,8 @@
-import {
-  FlatList,
-  StyleProp,
-  StyleSheet,
-  Text,
-  View,
-  ViewStyle,
-} from "react-native";
+import { FlatList, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { COLOR_BLANCO } from "@/config/data/consts";
 import MessageCard from "./MessageCard";
+import MessageEmptyState from "./MessageEmptyState";
 import { DisplayMessage } from "./types";
 
 type FavoriteAction = "toggle" | "delete";
@@ -65,11 +58,11 @@ const MessageList = ({
         contentContainerStyle,
       ]}
       ListEmptyComponent={
-        <View style={styles.emptyContainer}>
-          <Ionicons name={emptyIcon} size={64} color="#ccc" />
-          <Text style={styles.emptyTitle}>{emptyTitle}</Text>
-          <Text style={styles.emptySubtitle}>{emptySubtitle}</Text>
-        </View>
+        <MessageEmptyState
+          icon={emptyIcon}
+          title={emptyTitle}
+          subtitle={emptySubtitle}
+        />
       }
     />
   );
@@ -86,26 +79,6 @@ const styles = StyleSheet.create({
   },
   separator: {
     height: 10,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: -40,
-  },
-  emptyTitle: {
-    fontFamily: "PoppinsBold",
-    fontSize: 18,
-    color: COLOR_BLANCO,
-    marginTop: 10,
-  },
-  emptySubtitle: {
-    fontFamily: "PoppinsRegular",
-    fontSize: 12,
-    color: "#ccc",
-    textAlign: "center",
-    lineHeight: 20,
-    marginHorizontal: 20,
   },
 });
 

@@ -8,7 +8,7 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import * as Clipboard from "expo-clipboard";
 import {
   SafeAreaView,
@@ -21,47 +21,19 @@ import MessageList from "@/components/Messages/MessageList";
 import MessageSectionsList from "@/components/Messages/MessageSectionsList";
 import MessageTabs from "@/components/Messages/MessageTabs";
 import { DisplayMessage, MensajesTab } from "@/components/Messages/types";
+import {
+  FAVORITOS_CATEGORIA,
+  MESSAGE_TABS,
+} from "@/components/Messages/constants";
 import { generateMessageSuggestions } from "@/presentation/helpers/generate-message-suggestions";
+import {
+  buildMensajesDisponibles,
+  buildMensajesFavoritos,
+  buildSeccionesMensajes,
+  getCategoriasDisponibles,
+  syncGeneratedFavorites,
+} from "@/presentation/helpers/messages-transformers";
 import { useMessagesStore } from "@/presentation/store/useMessages";
-
-const FAVORITOS_CATEGORIA = "⭐ Favoritos";
-
-const TABS: { key: MensajesTab; label: string }[] = [
-  { key: "generar", label: "Generar" },
-  { key: "todos", label: "Todos" },
-  { key: "favoritos", label: "Favoritos" },
-];
-
-const normalizeText = (value: string) =>
-  value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
-
-const getSectionTitle = (categoria: string) => {
-  const normalized = normalizeText(categoria);
-
-  if (normalized.includes("personalizado") || normalized.includes("directo")) {
-    return "Personalizado / directo";
-  }
-  if (normalized.includes("primer contacto")) {
-    return "Primer contacto";
-  }
-  if (normalized.includes("ventas") || normalized.includes("negocios")) {
-    return "Ventas / negocios";
-  }
-  if (normalized.includes("asesoria") || normalized.includes("soporte")) {
-    return "Asesoría / soporte";
-  }
-  if (normalized.includes("presentacion")) {
-    return "Presentación personal";
-  }
-  if (normalized.includes("seguimiento") || normalized.includes("recontacto")) {
-    return "Seguimiento / recontacto";
-  }
-
-  return categoria.trim();
-};
 
 const MensajesScreen = () => {
   const { top, bottom } = useSafeAreaInsets();
@@ -86,81 +58,33 @@ const MensajesScreen = () => {
 
   useEffect(() => {
     setMensajesGenerados((currentMessages) =>
-      currentMessages.map((message) => ({
-        ...message,
-        esFavorito: favoritos.mensajes.includes(message.texto),
-      })),
+      syncGeneratedFavorites(currentMessages, favoritos.mensajes),
     );
   }, [favoritos.mensajes]);
 
   const mensajesDisponibles = useMemo<DisplayMessage[]>(() => {
-    const uniqueMessages = new Map<string, DisplayMessage>();
-
-    messages
-      .filter((category) => category.categoria !== FAVORITOS_CATEGORIA)
-      .forEach((category) => {
-        category.mensajes.forEach((texto, index) => {
-          if (!uniqueMessages.has(texto)) {
-            uniqueMessages.set(texto, {
-              id: `${category.categoria}-${index}-${texto}`,
-              texto,
-              categoria: category.categoria.trim(),
-              esFavorito: favoritos.mensajes.includes(texto),
-            });
-          }
-        });
-      });
-
-    return Array.from(uniqueMessages.values());
+    return buildMensajesDisponibles(messages, favoritos.mensajes);
   }, [messages, favoritos.mensajes]);
 
-  const seccionesMensajes = useMemo(() => {
-    const sectionOrder = [
-      "Personalizado / directo",
-      "Primer contacto",
-      "Ventas / negocios",
-      "Asesoría / soporte",
-      "Presentación personal",
-      "Seguimiento / recontacto",
-    ];
+  const seccionesMensajes = useMemo(
+    () => buildSeccionesMensajes(mensajesDisponibles),
+    [mensajesDisponibles],
+  );
 
-    const grouped = mensajesDisponibles.reduce(
-      (acc, message) => {
-        const key = getSectionTitle(message.categoria ?? "");
-        if (!acc[key]) {
-          acc[key] = [];
-        }
-        acc[key].push(message);
-        return acc;
-      },
-      {} as Record<string, DisplayMessage[]>,
-    );
+  const mensajesFavoritos = useMemo(
+    () => buildMensajesFavoritos(favoritos.mensajes),
+    [favoritos.mensajes],
+  );
 
-    return sectionOrder
-      .filter((title) => grouped[title]?.length)
-      .map((title) => ({
-        title,
-        data: grouped[title],
-      }));
-  }, [mensajesDisponibles]);
+  const categoriasDisponibles = useMemo(
+    () => getCategoriasDisponibles(messages),
+    [messages],
+  );
 
-  const mensajesFavoritos = useMemo<DisplayMessage[]>(() => {
-    return favoritos.mensajes.map((texto, index) => ({
-      id: `favorito-${index}-${texto}`,
-      texto,
-      esFavorito: true,
-      categoria: FAVORITOS_CATEGORIA,
-    }));
-  }, [favoritos.mensajes]);
+  const generarMensajesConIA = useCallback(async () => {
+    const trimmedInstruction = instruccion.trim();
 
-  const categoriasDisponibles = useMemo(() => {
-    return messages
-      .filter((category) => category.categoria !== FAVORITOS_CATEGORIA)
-      .map((category) => category.categoria);
-  }, [messages]);
-
-  const generarMensajesConIA = async () => {
-    if (instruccion.trim().length === 0) {
+    if (trimmedInstruction.length === 0) {
       Alert.alert("Error", "Por favor ingresa una instrucción");
       return;
     }
@@ -169,7 +93,7 @@ const MensajesScreen = () => {
 
     try {
       const generatedMessages = await generateMessageSuggestions({
-        prompt: instruccion,
+        prompt: trimmedInstruction,
         favoriteMessages: favoritos.mensajes,
       });
 
@@ -185,51 +109,60 @@ const MensajesScreen = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [instruccion, favoritos.mensajes]);
 
-  const copiarAlPortapapeles = async (texto: string) => {
+  const copiarAlPortapapeles = useCallback(async (texto: string) => {
     try {
       await Clipboard.setStringAsync(texto);
       Alert.alert("Éxito", "Mensaje copiado al portapapeles");
     } catch (error) {
       Alert.alert("Error", "No se pudo copiar el mensaje");
     }
-  };
+  }, []);
 
-  const toggleFavorito = async (mensaje: DisplayMessage) => {
-    if (mensaje.esFavorito) {
+  const toggleFavorito = useCallback(
+    async (mensaje: DisplayMessage) => {
+      if (mensaje.esFavorito) {
+        await deleteFavorito(mensaje.texto);
+      } else {
+        await addFavorito(mensaje.texto);
+      }
+
+      setMensajesGenerados((currentMessages) =>
+        currentMessages.map((item) =>
+          item.texto === mensaje.texto
+            ? { ...item, esFavorito: !mensaje.esFavorito }
+            : item,
+        ),
+      );
+    },
+    [addFavorito, deleteFavorito],
+  );
+
+  const eliminarFavorito = useCallback(
+    async (mensaje: DisplayMessage) => {
       await deleteFavorito(mensaje.texto);
-    } else {
-      await addFavorito(mensaje.texto);
-    }
+    },
+    [deleteFavorito],
+  );
 
-    setMensajesGenerados((currentMessages) =>
-      currentMessages.map((item) =>
-        item.texto === mensaje.texto
-          ? { ...item, esFavorito: !mensaje.esFavorito }
-          : item,
-      ),
-    );
-  };
+  const guardarEnCategoria = useCallback(
+    (mensaje: DisplayMessage) => {
+      const options = categoriasDisponibles.map((categoria) => ({
+        text: categoria,
+        onPress: async () => {
+          await addMessageToCategory(categoria, mensaje.texto);
+          Alert.alert("Guardado", `Mensaje agregado a ${categoria}`);
+        },
+      }));
 
-  const eliminarFavorito = async (mensaje: DisplayMessage) => {
-    await deleteFavorito(mensaje.texto);
-  };
-
-  const guardarEnCategoria = (mensaje: DisplayMessage) => {
-    const options = categoriasDisponibles.map((categoria) => ({
-      text: categoria,
-      onPress: async () => {
-        await addMessageToCategory(categoria, mensaje.texto);
-        Alert.alert("Guardado", `Mensaje agregado a ${categoria}`);
-      },
-    }));
-
-    Alert.alert("Guardar en categoría", "Selecciona una categoría", [
-      ...options,
-      { text: "Cancelar", style: "cancel" },
-    ]);
-  };
+      Alert.alert("Guardar en categoría", "Selecciona una categoría", [
+        ...options,
+        { text: "Cancelar", style: "cancel" },
+      ]);
+    },
+    [categoriasDisponibles, addMessageToCategory],
+  );
 
   return (
     <SafeAreaView style={[styles.container]}>
@@ -248,7 +181,7 @@ const MensajesScreen = () => {
         <MessageTabs
           activeTab={mostrarTab}
           onChange={setMostrarTab}
-          tabs={TABS}
+          tabs={MESSAGE_TABS}
         />
 
         {mostrarTab === "generar" ? (

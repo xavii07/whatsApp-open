@@ -5,9 +5,9 @@ import {
   COLOR_BLANCO,
   COLOR_PRIMARY,
   COLOR_SECONDARY,
-  COLOR_SECONDARY_ACCENT,
 } from "@/config/data/consts";
 import { DisplayMessage } from "./types";
+import { getFavoriteVisuals } from "./message-card.utils";
 
 type FavoriteAction = "toggle" | "delete";
 
@@ -28,19 +28,10 @@ const MessageCard = ({
   favoriteAction = "toggle",
   showCategory = false,
 }: MessageCardProps) => {
-  const favoriteIcon =
-    favoriteAction === "delete"
-      ? "trash-bin"
-      : message.esFavorito
-        ? "star"
-        : "star-outline";
-
-  const favoriteColor =
-    favoriteAction === "delete"
-      ? "#ef4444"
-      : message.esFavorito
-        ? "#f0e925ff"
-        : COLOR_BLANCO;
+  const { icon: favoriteIcon, color: favoriteColor } = getFavoriteVisuals(
+    favoriteAction,
+    message.esFavorito,
+  );
 
   return (
     <View style={styles.card}>
