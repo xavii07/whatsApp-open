@@ -74,7 +74,7 @@ const TextareaMessage = ({
             styles.iaGenerateButton,
             { opacity: pressed ? 0.7 : 1 },
           ]}
-          accessibilityLabel="Generar mensaje con IA (próximamente)"
+          accessibilityLabel="Generar mensaje con IA"
           accessibilityRole="button"
         >
           <Ionicons name="bulb" size={18} color={COLOR_BLANCO} />

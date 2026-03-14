@@ -13,6 +13,7 @@ import {
   COLOR_SECONDARY,
   COLOR_SECONDARY_ACCENT,
 } from "@/config/data/consts";
+import PromptSuggestions from "./PromptSuggestions";
 
 interface MessageComposerProps {
   value: string;
@@ -37,6 +38,8 @@ const MessageComposer = ({
           Describe lo que necesitas y te ayudaré a redactarlo
         </Text>
       </View>
+
+      <PromptSuggestions onSelectPrompt={onChangeText} />
 
       <View style={styles.inputContainer}>
         <TextInput
