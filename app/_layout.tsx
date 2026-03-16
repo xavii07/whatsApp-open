@@ -41,11 +41,7 @@ export default function RootLayout() {
   useEffect(() => {
     if (Platform.OS === "web") return;
 
-    mobileAds()
-      .initialize()
-      .then((adapterStatuses) => {
-        console.log("AdMob inicializado", adapterStatuses);
-      });
+    mobileAds().initialize();
   }, []);
 
   if (!loaded) {

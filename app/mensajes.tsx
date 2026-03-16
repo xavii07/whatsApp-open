@@ -11,13 +11,12 @@ import {
 } from "react-native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import * as Clipboard from "expo-clipboard";
-import { AdEventType, InterstitialAd } from "react-native-google-mobile-ads";
 import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import { COLOR_PRIMARY, COLOR_BLANCO } from "@/config/data/consts";
-import { AD_UNIT_IDS, SHOULD_RENDER_ADS } from "@/config/ads";
+import { useInterstitialAd } from "@/presentation/hooks/useInterstitialAd";
 import Header from "@/components/Header";
 import MessageComposer from "@/components/Messages/MessageComposer";
 import MessageList from "@/components/Messages/MessageList";
@@ -38,6 +37,7 @@ import { useMessagesStore } from "@/presentation/store/useMessages";
 
 const MensajesScreen = () => {
   const { top, bottom } = useSafeAreaInsets();
+  const { showAd } = useInterstitialAd();
   const [instruccion, setInstruccion] = useState("");
   const [mensajesGenerados, setMensajesGenerados] = useState<DisplayMessage[]>(
     [],
@@ -47,9 +47,6 @@ const MensajesScreen = () => {
   const [modalCategoria, setModalCategoria] = useState(false);
   const [mensajePendienteCategoria, setMensajePendienteCategoria] =
     useState<DisplayMessage | null>(null);
-  const [interstitialLoaded, setInterstitialLoaded] = useState(false);
-  const interstitialShowCountRef = React.useRef(0);
-  const interstitialRef = React.useRef<InterstitialAd | null>(null);
   const {
     favoritos,
     messages,
@@ -68,46 +65,6 @@ const MensajesScreen = () => {
       syncGeneratedFavorites(currentMessages, favoritos.mensajes),
     );
   }, [favoritos.mensajes]);
-
-  useEffect(() => {
-    if (!SHOULD_RENDER_ADS) return;
-
-    const interstitial = InterstitialAd.createForAdRequest(
-      AD_UNIT_IDS.INTERSTITIAL,
-      {
-        requestNonPersonalizedAdsOnly: true,
-      },
-    );
-
-    interstitialRef.current = interstitial;
-
-    const unsubscribeLoaded = interstitial.addAdEventListener(
-      AdEventType.LOADED,
-      () => setInterstitialLoaded(true),
-    );
-
-    const unsubscribeClosed = interstitial.addAdEventListener(
-      AdEventType.CLOSED,
-      () => {
-        setInterstitialLoaded(false);
-        interstitial.load();
-      },
-    );
-
-    const unsubscribeError = interstitial.addAdEventListener(
-      AdEventType.ERROR,
-      () => setInterstitialLoaded(false),
-    );
-
-    interstitial.load();
-
-    return () => {
-      unsubscribeLoaded();
-      unsubscribeClosed();
-      unsubscribeError();
-      interstitialRef.current = null;
-    };
-  }, []);
 
   const mensajesDisponibles = useMemo<DisplayMessage[]>(() => {
     return buildMensajesDisponibles(messages, favoritos.mensajes);
@@ -146,13 +103,7 @@ const MensajesScreen = () => {
       setInstruccion("");
 
       setMensajesGenerados(generatedMessages);
-
-      interstitialShowCountRef.current += 1;
-      const shouldShowInterstitial = interstitialShowCountRef.current % 3 === 0;
-
-      if (shouldShowInterstitial && interstitialLoaded) {
-        await interstitialRef.current?.show();
-      }
+      await showAd();
     } catch (error: unknown) {
       const message =
         error instanceof Error &&
@@ -164,7 +115,7 @@ const MensajesScreen = () => {
     } finally {
       setLoading(false);
     }
-  }, [instruccion, favoritos.mensajes, interstitialLoaded]);
+  }, [instruccion, favoritos.mensajes, showAd]);
 
   const copiarAlPortapapeles = useCallback(async (texto: string) => {
     try {
