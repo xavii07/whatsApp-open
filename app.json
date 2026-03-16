@@ -44,6 +44,12 @@
             }
           }
         }
+      ],
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-6339915348153686~9680636479"
+        }
       ]
     ],
     "extra": {

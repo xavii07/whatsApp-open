@@ -7,6 +7,8 @@ import { Tabs } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
+import { Platform } from "react-native";
+import mobileAds from "react-native-google-mobile-ads";
 import "react-native-reanimated";
 
 SplashScreen.preventAutoHideAsync();
@@ -34,6 +36,16 @@ export default function RootLayout() {
 
   useEffect(() => {
     getHistory();
+  }, []);
+
+  useEffect(() => {
+    if (Platform.OS === "web") return;
+
+    mobileAds()
+      .initialize()
+      .then((adapterStatuses) => {
+        console.log("AdMob inicializado", adapterStatuses);
+      });
   }, []);
 
   if (!loaded) {

@@ -6,8 +6,10 @@ import {
   COLOR_PRIMARY,
   COLOR_SECONDARY_ACCENT,
 } from "@/config/data/consts";
+import { AD_UNIT_IDS, SHOULD_RENDER_ADS } from "@/config/ads";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
+import { BannerAd, BannerAdSize } from "react-native-google-mobile-ads";
 import {
   Image,
   Pressable,
@@ -62,6 +64,15 @@ export default function HomeScreen() {
           <FormComponent />
         </ScrollView>
       </KeyboardAvoidingView>
+      {SHOULD_RENDER_ADS && (
+        <View style={[styles.bannerContainer, { paddingBottom: bottom + 8 }]}>
+          <BannerAd
+            unitId={AD_UNIT_IDS.BANNER}
+            size={BannerAdSize.FULL_BANNER}
+            requestOptions={{ requestNonPersonalizedAdsOnly: true }}
+          />
+        </View>
+      )}
       <InfoApp
         onClose={() => setShowModalInfo(false)}
         visible={showModalInfo}
@@ -112,5 +123,10 @@ const styles = StyleSheet.create({
     fontFamily: "PoppinsRegular",
     fontSize: 12,
     color: "#ddd",
+  },
+  bannerContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 8,
   },
 });
