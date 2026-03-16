@@ -1,8 +1,10 @@
 import CardDate from "@/components/CardDate/CardDate";
 import Header from "@/components/Header";
+import { AD_UNIT_IDS, SHOULD_RENDER_ADS } from "@/config/ads";
 import { HistoryData } from "@/infrastructure/interfaces/history.response";
 import { useHistory } from "@/presentation/store/useHistory";
 import { StyleSheet, View, Text, Image, FlatList } from "react-native";
+import { BannerAd, BannerAdSize } from "react-native-google-mobile-ads";
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -60,6 +62,16 @@ export default function TabTwoScreen() {
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={EmptyComponent}
       />
+
+      {SHOULD_RENDER_ADS && (
+        <View style={[styles.bannerContainer, { paddingBottom: bottom }]}>
+          <BannerAd
+            unitId={AD_UNIT_IDS.BANNER_HISTORIAL}
+            size={BannerAdSize.FULL_BANNER}
+            requestOptions={{ requestNonPersonalizedAdsOnly: true }}
+          />
+        </View>
+      )}
     </SafeAreaView>
   );
 }
@@ -134,5 +146,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: COLOR_BLANCO,
     letterSpacing: 0.4,
+  },
+  bannerContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 8,
   },
 });

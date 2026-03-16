@@ -63,16 +63,16 @@ export default function HomeScreen() {
           </View>
           <FormComponent />
         </ScrollView>
+        {SHOULD_RENDER_ADS && (
+          <View style={styles.bannerContainer}>
+            <BannerAd
+              unitId={AD_UNIT_IDS.BANNER}
+              size={BannerAdSize.FULL_BANNER}
+              requestOptions={{ requestNonPersonalizedAdsOnly: true }}
+            />
+          </View>
+        )}
       </KeyboardAvoidingView>
-      {SHOULD_RENDER_ADS && (
-        <View style={[styles.bannerContainer, { paddingBottom: bottom }]}>
-          <BannerAd
-            unitId={AD_UNIT_IDS.BANNER}
-            size={BannerAdSize.FULL_BANNER}
-            requestOptions={{ requestNonPersonalizedAdsOnly: true }}
-          />
-        </View>
-      )}
       <InfoApp
         onClose={() => setShowModalInfo(false)}
         visible={showModalInfo}
