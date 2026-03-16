@@ -7,34 +7,7 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
-
-const PROMPTS = [
-  {
-    label: "Saludo cliente",
-    prompt:
-      "Genera un saludo corto para iniciar una conversación con un cliente potencial de forma amable y profesional.",
-  },
-  {
-    label: "Seguimiento",
-    prompt:
-      "Genera un mensaje corto para dar seguimiento a un cliente que mostró interés pero aún no responde.",
-  },
-  {
-    label: "Recordatorio pago",
-    prompt:
-      "Genera un mensaje amable recordando a un cliente que tiene un pago pendiente.",
-  },
-  {
-    label: "Confirmar cita",
-    prompt:
-      "Genera un mensaje para confirmar una cita o reunión con un cliente.",
-  },
-  {
-    label: "Agradecimiento",
-    prompt:
-      "Genera un mensaje corto agradeciendo a un cliente por su compra o confianza.",
-  },
-];
+import { PROMPT_SUGGESTIONS } from "./prompt-suggestions.constants";
 
 interface PromptSuggestionsProps {
   onSelectPrompt: (prompt: string) => void;
@@ -54,12 +27,10 @@ const getCardWidthByWords = (message: string) => {
 const PromptSuggestions = ({ onSelectPrompt }: PromptSuggestionsProps) => {
   const promptRows = useMemo(() => {
     const rows = 2;
-    const groupedRows: Array<Array<(typeof PROMPTS)[number]>> = Array.from(
-      { length: rows },
-      () => [],
-    );
+    const groupedRows: Array<Array<(typeof PROMPT_SUGGESTIONS)[number]>> =
+      Array.from({ length: rows }, () => []);
 
-    PROMPTS.forEach((prompt, index) => {
+    PROMPT_SUGGESTIONS.forEach((prompt, index) => {
       const rowIndex = index % rows;
       groupedRows[rowIndex].push(prompt);
     });
