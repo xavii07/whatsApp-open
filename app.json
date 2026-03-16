@@ -12,7 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#25D366"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.xavii077.mensalink"
@@ -58,6 +60,12 @@
       },
       "router": {}
     },
-    "owner": "prograwebs"
+    "owner": "prograwebs",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/94e33654-d1fd-4fb6-8cf9-ff4b741bcdf9"
+    }
   }
 }
